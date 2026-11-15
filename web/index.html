@@ -2097,6 +2097,83 @@ a{color:inherit}
 /* toasts during onboarding sit above the bottom button, not over the content */
 #app.scr .toast{top:auto;bottom:calc(var(--h-xl,56px) + 48px + env(safe-area-inset-bottom,0px))}
 
+
+/* ===== Onboarding v3: header, fit-to-screen, spice, rain ===== */
+.ob-head{position:sticky;top:0;z-index:6;background:#fff}
+.ob-head .f-top.ob-top{position:static;display:grid;grid-template-columns:72px 1fr 72px;align-items:center;gap:0;height:calc(64px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);border-bottom:0}
+.ob-head .backbtn{justify-self:start}
+.ob-head .skip{justify-self:end}
+.ob-head .sp{width:48px;justify-self:end}
+.ob-ttl{text-align:center;font-size:16px;line-height:24px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ob-prog{padding:0 var(--gutter) var(--s4);border-bottom:1px solid var(--line)}
+.opr{display:flex;align-items:center;justify-content:space-between;height:24px;margin-bottom:var(--s2)}
+.opr b{font-size:13px;line-height:16px;font-weight:600;color:var(--mute)}
+.opr em{height:24px;padding:0 var(--s3);display:inline-flex;align-items:center;border-radius:var(--r-full);background:var(--t-blue);color:#1E4FD6;font-style:normal;font-size:12px;line-height:16px;font-weight:600}
+.ob-prog .dots{display:flex;gap:6px}
+.ob-prog .dots i{flex:1;height:8px;border-radius:var(--r-full);background:var(--surface-2);position:relative;overflow:hidden}
+.ob-prog .dots i.past{background:var(--ink)}
+.ob-prog .dots i.on{background:var(--surface-2)}
+.ob-prog .dots i.on::after{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--ink);transform-origin:left;transform:scaleX(.5);animation:segGrow .6s .15s cubic-bezier(.3,1.2,.5,1) both}
+@keyframes segGrow{from{transform:scaleX(0)}}
+/* steps that must fit the screen (no scrolling) */
+#onboard.fit.show{display:flex;flex-direction:column}
+#onboard.fit>.ob-head{flex:none}
+#onboard.fit>.ob{flex:1;min-height:0}
+#onboard.fit .ob.tinder{display:flex;flex-direction:column;overflow:hidden;padding-top:var(--s4);padding-bottom:0}
+#onboard.fit .tt-head{flex:none;margin-bottom:var(--s3)}
+#onboard.fit .tinder .deck{flex:1 1 auto;min-height:200px;max-height:520px;height:auto;margin-bottom:var(--s4)}
+#onboard.fit .tinder .swbtns{flex:none}
+#onboard.fit .tinder .tray{flex:none;position:static;margin-top:var(--s4)}
+#onboard.fit .tinfo h3{font-size:22px;line-height:28px}
+/* spice step */
+#onboard.fit .ob.spicev{display:flex;flex-direction:column;padding-top:var(--s5);padding-bottom:0}
+.spicev h1{font-size:clamp(26px,7.4vw,32px);line-height:1.15}
+.spicev .lead{margin-bottom:0}
+#onboard.fit .ob.spicev .ctabar{flex:none}
+#onboard.fit .ob.spicev .grow{display:none}
+@media (max-height:780px){.h-try{display:none}.spicev .heat{padding:var(--s4);gap:var(--s1)}.h-chili{margin-bottom:0}.spicev .lead{display:none}.spicev .hs{padding:var(--s4) var(--s5) var(--s3)}.spicev .heat{margin-top:var(--s4)}}
+.spicev h1{text-align:center}
+.spicev .lead{text-align:center}
+.spicev .heat{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:safe center;gap:var(--s2);margin-top:var(--s5);padding:var(--s6) var(--s5);border-radius:28px;transition:background .35s}
+.spicev .heat.blast{animation:shakeHard .45s ease-in-out}
+.h-chili{position:relative;z-index:1;display:flex;gap:var(--s1);margin-bottom:var(--s2)}
+.hchl{width:32px;height:32px;display:grid;place-items:center;filter:grayscale(1) opacity(.35);transition:filter .25s,transform .25s}
+.hchl .px{width:28px;height:28px}
+.hchl.on{filter:none;animation:hcPop .35s calc(var(--i)*40ms) cubic-bezier(.3,1.7,.5,1) both}
+@keyframes hcPop{from{transform:scale(.4) rotate(-20deg)}}
+.hface-w{position:relative;z-index:1}
+.spicev .hface{width:clamp(88px,14vh,156px);height:clamp(88px,14vh,156px);cursor:pointer}
+.hsteam{position:absolute;left:50%;top:-8px;width:80px;height:40px;transform:translateX(-50%);opacity:0;transition:opacity .3s;pointer-events:none}
+.hsteam i{position:absolute;bottom:0;width:6px;height:16px;border-radius:3px;background:rgba(255,255,255,.9);animation:hsteamUp 1.6s ease-out infinite}
+.hsteam i:nth-child(1){left:16px}.hsteam i:nth-child(2){left:37px;animation-delay:.5s}.hsteam i:nth-child(3){left:58px;animation-delay:1s}
+@keyframes hsteamUp{0%{transform:translateY(8px) scaleY(.5);opacity:0}30%{opacity:.9}100%{transform:translateY(-28px) scaleY(1.2);opacity:0}}
+.heat.l2 .hsteam,.heat.l3 .hsteam,.heat.l4 .hsteam{opacity:1}
+.sweat{position:absolute;right:18px;top:28px;width:10px;height:14px;background:#5AB4FF;clip-path:polygon(50% 0,100% 60%,80% 100%,20% 100%,0 60%);opacity:0;pointer-events:none}
+.sweat.s2{right:auto;left:22px;top:44px;animation-delay:.6s!important}
+.heat.l3 .sweat,.heat.l4 .sweat{animation:sweat 1.4s ease-in infinite}
+@keyframes sweat{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(26px)}}
+.spicev .heat .lvl{margin-top:var(--s2);font-size:clamp(30px,5vh,40px);line-height:1.1}
+.spicev .heat .desc{font-size:16px;line-height:24px}
+.h-try{position:relative;z-index:1;display:flex;flex-wrap:nowrap;max-width:100%;justify-content:center;align-items:center;gap:var(--s2);margin-top:var(--s4)}
+.ht-l{font-size:12px;line-height:16px;font-weight:600;color:var(--ink-2)}
+.ht-c{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;height:32px;display:inline-block;line-height:32px!important;align-items:center;padding:0 var(--s3);border-radius:var(--r-full);background:rgba(255,255,255,.75);font-size:13px;line-height:16px;font-weight:600;animation:enterUp .3s calc(var(--i)*60ms) both}
+/* spice slider: labels centred under every dot */
+.spicev .hs{flex:none;margin-top:var(--s4);padding:var(--s5) var(--s6) var(--s4)}
+.spicev .hs-rail{height:56px;margin:0 var(--s3)}
+.spicev .hs-track{top:24px;height:8px}
+.spicev .hs-thumb{width:56px;height:56px;margin-left:-28px}
+.spicev .hs-bub .px{width:36px;height:36px}
+.spicev .hs-labels{margin:var(--s3) var(--s3) 0}
+.spicev .hs-labels button,.spicev .hs-labels button:first-child,.spicev .hs-labels button:last-child{transform:translateX(-50%);font-size:12px}
+.spicev .hs-labels button.sel{transform:translateX(-50%) scale(1.08)}
+/* rain: light and calm instead of a heavy curtain */
+#wx .wx-rain{background-image:repeating-linear-gradient(105deg,transparent 0 30px,rgba(90,130,190,.16) 30px 31px,transparent 31px 72px);background-size:220px 220px;animation:rain 1.4s linear infinite;-webkit-mask-image:linear-gradient(#000,rgba(0,0,0,.25) 70%,transparent);mask-image:linear-gradient(#000,rgba(0,0,0,.25) 70%,transparent)}
+#wx .wx-rain.r2{display:none}
+@keyframes rain{to{background-position:-60px 220px}}
+#app.wx-rain #map,#app.wx-storm #map{filter:saturate(.88) brightness(.97)}
+#app.wx-rain .wx-clouds,#app.wx-storm .wx-clouds{opacity:.45}
+@media (prefers-reduced-motion:reduce){.ob-prog .dots i.on::after,.hchl.on,.hsteam i,.sweat,.ht-c,.spicev .heat.blast{animation:none!important}}
+
 @media (prefers-reduced-motion:reduce){.skl,.skli,.skr,.pc.skc,.ml-pin .px,.ml-dots i{animation:none!important}}
 
 @media (prefers-reduced-motion:reduce){.wd,.rc,.tl-dot,.fu button,.am.u.fresh,.leg .px,.shim,.am-av.spin .askic{animation:none!important}}
@@ -3371,6 +3448,9 @@ const TASTES={sea:{e:'fish-cooked',label:'Seafood Soul',d:'You follow the fishin
  none:{e:'map-pin',label:'Open Explorer',d:'Picky era? Valid. We’ll show you a bit of everything.'}};
 const SPICE=[['Mild','Zero heat. Just vibes.'],['Medium','A little kick, as a treat.'],['Kerala hot','Proper mulaku. Like amma makes.'],['Extra hot','Sweating, but make it delicious.'],['Inferno','Spice tolerance: unhinged.']];
 const HEATBG=['#E3F7DD','#FFF3D6','#FFE3CC','#FFD0C0','#FFB4A0'];
+const SPICETRY=[['Appam & stew','Ghee roast dosa'],['Chicken 65','Pazhampori & beef'],['Beef ularthiyathu','Meen curry'],['Kanthari chicken','Chilli porotta'],['Kanthari beef fry','Chilli chicken']];
+function chiliRow(v){return [0,1,2,3,4].map(i=>`<span class="hchl ${i<=v?'on':''}" style="--i:${i}">${px(i===4&&v===4?'emoji-1f525':'red-chili')}</span>`).join('')}
+function tryHTML(v){return `<span class="ht-l">Try</span>${SPICETRY[v].map((d,i)=>`<span class="ht-c" style="--i:${i}">${esc(d)}</span>`).join('')}`}
 const PACT=[
  ['map-pin','I won’t gatekeep','Found a hidden gem? It goes on the map. Sharing is caring.'],
  ['smile','I’ll keep it real','Honest reviews only. No fake hype, no paid vibes.'],
@@ -3401,10 +3481,12 @@ function startOnboarding(single){
 function obTop(skipFn,skipLabel){
   const st=STEPS[ob.step];const single=ob.single!=null;
   const back=single?"closeSingle()":ob.step===0&&ob.avs===0?"show('auth','back')":"obBack()";
-  return `<div class="f-top ob-top"><button class="backbtn" aria-label="Back" onclick="${back}">${BACKSVG}</button>
-    <div class="prog">${single?`<div class="ptxt"><b>Finish setup</b><span>${st.t}</span></div>`:`<div class="ptxt"><b>${ob.step+1}/${STEPS.length}</b><span>${st.t}</span>${st.req?'':`<em>${st.later?'Can do later':'Optional'}</em>`}</div>
-      <div class="dots" aria-hidden="true">${STEPS.map((s,i)=>`<i class="${i<ob.step?'past':i===ob.step?'on':''}"></i>`).join('')}</div>`}</div>
-    ${skipFn?`<button class="skip" onclick="${skipFn}">${skipLabel||'Skip'}</button>`:'<div class="sp"></div>'}</div>`;
+  const badge=st.req?'':`<em>${st.later?'Can do later':'Optional'}</em>`;
+  return `<div class="ob-head"><div class="f-top ob-top"><button class="backbtn" aria-label="Back" onclick="${back}">${BACKSVG}</button>
+    <div class="ob-ttl">${single?'Finish setup':esc(st.t)}</div>
+    ${skipFn?`<button class="skip" onclick="${skipFn}">${skipLabel||'Skip'}</button>`:'<div class="sp"></div>'}</div>
+    ${single?'':`<div class="ob-prog"><div class="opr"><b>Step ${ob.step+1} of ${STEPS.length}</b>${badge}</div>
+      <div class="dots" role="progressbar" aria-valuemin="1" aria-valuemax="${STEPS.length}" aria-valuenow="${ob.step+1}">${STEPS.map((s,i)=>`<i class="${i<ob.step?'past':i===ob.step?'on':''}"></i>`).join('')}</div></div>`}</div>`;
 }
 document.addEventListener('DOMContentLoaded',()=>{});
 const BACKSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
@@ -3430,7 +3512,7 @@ function stepDone(didIt=true){
 function ctaBar(inner){return `<div class="grow"></div><div class="ctabar">${inner}</div>`}
 
 function renderOb(back){$('#onboard').classList.remove('noanim');
-  const el=$('#onboard');const k=STEPS[ob.step]?.k;el.classList.toggle('hot',k==='spice'&&ob.spice>=3);
+  const el=$('#onboard');const k=STEPS[ob.step]?.k;el.classList.toggle('hot',k==='spice'&&ob.spice>=3);el.classList.toggle('fit',ob.step<STEPS.length&&((k==='taste'&&ob.seen<FOODS.length)||k==='spice'));
   if(back){el.classList.remove('back');void el.offsetWidth;el.classList.add('back')}
   if(ob.step>=STEPS.length)return renderDone();
   if(k==='name'){
@@ -3477,11 +3559,13 @@ function renderOb(back){$('#onboard').classList.remove('noanim');
   else if(k==='spice'){
     const v=ob.spice;
     el.innerHTML=obTop('skipStep()')+`<div class="ob spicev">
-    <div class="enter"><h1>How spicy do you go?</h1><div class="lead">Be honest. We’ll warn you before you get humbled.</div></div>
+    <div class="enter"><h1>How spicy do you go?</h1><div class="lead">Be honest. We’ll warn you.</div></div>
     <div class="heat enter" id="heat" style="--hb:${HEATBG[v]}">
       <div class="flames">${[0,1,2,3,4,5].map(i=>`<i style="--x:${12+i*15}%;--d:${i*.25}s"></i>`).join('')}</div>
-      <div class="hface ${v===4?'shake':''}" id="sface">${avImg({...ob.av,heat:v,bg:'#FFFFFF'})}</div>
+      <div class="h-chili" id="hchili" aria-hidden="true">${chiliRow(v)}</div>
+      <div class="hface-w"><div class="hsteam" aria-hidden="true"><i></i><i></i><i></i></div><div class="hface ${v===4?'shake':''}" id="sface" onclick="tapFx(this)">${avImg({...ob.av,heat:v,bg:'#FFFFFF'})}</div><span class="sweat" aria-hidden="true"></span><span class="sweat s2" aria-hidden="true"></span></div>
       <div class="lvl" id="slvl">${SPICE[v][0]}</div><div class="desc" id="sdesc">${SPICE[v][1]}</div>
+      <div class="h-try" id="htry">${tryHTML(v)}</div>
     </div>
     <div class="hs enter" id="meter" role="slider" aria-label="Spice level" aria-valuemin="0" aria-valuemax="4" aria-valuenow="${v}" tabindex="0">${meterHTML(v)}</div>
     ${ctaBar(`<button class="bigbtn" onclick="stepDone()">Locked in</button>`)}</div>`;
@@ -3511,7 +3595,7 @@ function pickTurf(n){ob.home=n;try{navigator.vibrate&&navigator.vibrate(8)}catch
 const HCOL=['#7BC74D','#F5B82E','#FF8A00','#FF4F2E','#C2185B'];
 function meterHTML(v){const p=v*25;return `<div class="hs-rail"><div class="hs-track"><div class="hs-fill" style="width:${p}%"></div>${[0,1,2,3,4].map(i=>`<span class="hs-tick ${i<=v?'on':''}" style="left:${i*25}%"></span>`).join('')}</div>
   <div class="hs-thumb" style="left:${p}%;--c:${HCOL[v]}"><span class="hs-bub">${px(v===4?'emoji-1f525':'red-chili')}</span></div></div>
-  <div class="hs-labels">${[0,1,2,3,4].map(i=>`<button class="${i===v?'sel':''}" style="left:${i*25}%" onclick="setSpice(${i})">${SPICE[i][0]}</button>`).join('')}</div>`}
+  <div class="hs-labels">${[0,1,2,3,4].map(i=>`<button class="${i===v?'sel':''}" style="left:${i*25}%" onclick="setSpice(${i})">${['Mild','Medium','Kerala','Extra','Inferno'][i]}</button>`).join('')}</div>`}
 function paintMeter(f,v){const m=$('#meter');if(!m)return;const p=f*100;m.querySelector('.hs-fill').style.width=p+'%';const t=m.querySelector('.hs-thumb');t.style.left=p+'%';t.style.setProperty('--c',HCOL[v]);
   m.querySelectorAll('.hs-tick').forEach((k,i)=>k.classList.toggle('on',i<=v));m.querySelectorAll('.hs-labels button').forEach((k,i)=>k.classList.toggle('sel',i===v));
   const bub=t.querySelector('.hs-bub');const want=v===4?'emoji-1f525':'red-chili';if(bub.dataset.k!==want){bub.dataset.k=want;bub.innerHTML=px(want)}}
@@ -3586,6 +3670,8 @@ function burst(el,n){if(!el)return;const r=el.getBoundingClientRect(),app=$('#ap
 function setSpice(v,dragging){if(v===ob.spice&&!dragging&&$('#meter .hs-labels .sel'))return;ob.spice=v;const h=$('#heat');if(!h)return;
   h.style.setProperty('--hb',HEATBG[v]);h.className='heat l'+v;
   const f=$('#sface');f.innerHTML=avImg({...ob.av,heat:v,bg:'#FFFFFF'});f.classList.remove('shake','pop');void f.offsetWidth;f.classList.add(v===4?'shake':'pop');
+  const prev=+(h.dataset.l??v);h.dataset.l=v;const hc=$('#hchili');if(hc)hc.innerHTML=chiliRow(v);const ht=$('#htry');if(ht)ht.innerHTML=tryHTML(v);
+  if(v===4&&prev<4){h.classList.add('blast');try{burst(f,14)}catch(e){}setTimeout(()=>h.classList.remove('blast'),600)}
   const l=$('#slvl');l.textContent=SPICE[v][0];l.classList.remove('swap');void l.offsetWidth;l.classList.add('swap');$('#sdesc').textContent=SPICE[v][1];
   if(!dragging)paintMeter(v/4,v);$('#meter').setAttribute('aria-valuenow',v);
   const b=$('#meter .hs-bub');if(b){b.classList.remove('boing');void b.offsetWidth;b.classList.add('boing')}

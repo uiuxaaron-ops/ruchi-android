@@ -32,9 +32,9 @@ if (html.length === before) console.warn('! Google Fonts link not found — chec
 // on iPhone it is the real notch / Dynamic Island inset.
 html = html.split('env(safe-area-inset-top,0px)').join('var(--sat,0px)').split('env(safe-area-inset-top)').join('var(--sat,0px)');
 const topGap = `<style id="android-top-gap">
-html.native-android,html.native-android body{background:#FFFFFF}
+html.native-android,html.native-android body{background:var(--bg,#FFFFFF)}
 html:not(.native-android){--sat:env(safe-area-inset-top,0px)}
-html.native-ios,html.native-ios body,html.pwa,html.pwa body{background:#FFFFFF}
+html.native-ios,html.native-ios body,html.pwa,html.pwa body{background:var(--bg,#FFFFFF)}
 html.pwa #app{max-width:none}
 html.native-android{--top-gap:max(env(safe-area-inset-top,0px),40px)}
 html.native-android #app{position:fixed;top:var(--top-gap);left:0;right:0;bottom:0;height:auto;max-width:none;margin:0}
@@ -48,7 +48,8 @@ const pwaHead = `<link rel="manifest" href="manifest.webmanifest">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Ruchi">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#FFFFFF">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B0B0C" media="(prefers-color-scheme: dark)">
 <script>if(matchMedia('(display-mode: standalone)').matches||navigator.standalone)document.documentElement.classList.add('pwa');
 if('serviceWorker' in navigator&&location.protocol==='https:'&&!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform()))addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>`;
 html = html.replace('</head>', pwaHead + '\n</head>');

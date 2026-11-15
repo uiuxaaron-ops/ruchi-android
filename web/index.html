@@ -2239,6 +2239,167 @@ a{color:inherit}
 .hflip .askic{width:28px!important;height:28px!important}
 @keyframes hflip{0%,30%{transform:rotateY(0)}50%,80%{transform:rotateY(180deg)}100%{transform:rotateY(360deg)}}
 .askbtn:active .hflip{animation-play-state:paused}
+
+/* ===== Map control row: list + hide/show cards ===== */
+#mapctl{position:absolute;left:50%;width:max-content;bottom:calc(104px + 12px + 212px + 12px + env(safe-area-inset-bottom,0px));z-index:10;display:flex;align-items:center;gap:var(--s2);transform:translateX(-50%);transition:bottom .45s cubic-bezier(.3,1.2,.5,1)}
+#mapctl .listbtn{white-space:nowrap;position:static;left:auto;right:auto;bottom:auto;transform:none}
+#mapctl .listbtn:active{transform:scale(.94)}
+.cardtog{height:40px;min-width:40px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0;border:0;border-radius:999px;background:var(--glass-bg,rgba(255,255,255,.85));backdrop-filter:var(--glass-fx,blur(16px));-webkit-backdrop-filter:var(--glass-fx,blur(16px));box-shadow:var(--glass-edge,0 0 0 1px var(--line)),0 6px 18px rgba(9,9,11,.1);color:var(--ink);font:600 14px/20px var(--font-ui);transition:padding .3s,transform .15s}
+.cardtog svg{width:20px;height:20px;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.cardtog span{display:none;white-space:nowrap}
+.cardtog:active{transform:scale(.92)}
+#app.cardsoff .cardtog{padding:0 var(--s4) 0 var(--s3);background:var(--ink);color:#fff;box-shadow:0 8px 20px rgba(9,9,11,.22)}
+#app.cardsoff .cardtog span{display:inline}
+#app.cardsoff .cardtog svg{transform:rotate(180deg)}
+.cardtog.flip svg{animation:boing .4s cubic-bezier(.3,1.6,.5,1)}
+#cards{transition:transform .45s cubic-bezier(.3,1.1,.4,1),opacity .3s}
+#app.cardsoff #cards{transform:translateY(calc(100% + 140px));opacity:0;pointer-events:none}
+#app.cardsoff #mapctl{bottom:calc(104px + 16px + env(safe-area-inset-bottom,0px))}
+#app.adding #mapctl,#app.onpage #mapctl{display:none}
+@media (min-width:900px){#app.inapp #mapctl{left:calc(var(--s6) + 200px)}}
+
+
+/* ===== Lovely (AI): landing + minimal chat ===== */
+#app.lvland #askbar{display:none!important}
+.lv-land{min-height:100%;display:flex;flex-direction:column;padding:0 var(--gutter);background:#fff}
+.lv-top{height:64px;display:flex;align-items:center}
+.lv-ib{width:44px;height:44px;flex:none;display:grid;place-items:center;border:0;border-radius:50%;background:#F4F4F5;color:var(--ink);transition:transform .15s}
+.lv-ib:active{transform:scale(.9)}.lv-ib svg{width:20px;height:20px}
+.lv-hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:var(--s4)}
+.lv-stage{width:130px;height:110px;perspective:600px;margin-bottom:var(--s6);animation:lvFloat 3.2s ease-in-out infinite}
+.lv-spin{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:lvSpin 4.4s ease-in-out infinite;cursor:pointer}
+.lv-l{position:absolute;inset:0;transform:translateZ(var(--z));transform-style:preserve-3d}
+.lv-l i{position:absolute;left:calc(var(--x) * 10px);top:calc(var(--y) * 10px);width:10px;height:10px}
+.lv-l.f i{background:#FF2E4D;box-shadow:inset -1px -1px 0 rgba(120,0,20,.3)}.lv-l.f i.h{background:#FF6A80}
+.lv-l.m i{background:#C8102E}.lv-l.b i{background:#8E0A20}
+@keyframes lvSpin{0%,100%{transform:rotateY(-28deg) rotateX(6deg)}50%{transform:rotateY(28deg) rotateX(-4deg)}}
+@keyframes lvTap{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(180deg) scale(1.12)}100%{transform:rotateY(360deg) scale(1)}}
+.lv-spin.tap{animation:lvTap .8s cubic-bezier(.4,0,.2,1)}
+@keyframes lvFloat{50%{transform:translateY(-8px)}}
+.lv-kick{font-size:13px;line-height:16px;font-weight:600;color:var(--pink);animation:enterUp .4s .1s both}
+.lv-name{margin:var(--s1) 0 0;font-family:var(--font-serif);font-size:44px;line-height:48px;font-weight:600;animation:enterUp .4s .16s both}
+.lv-sub{max-width:300px;margin:var(--s3) 0 0;font-size:16px;line-height:24px;color:var(--mute);animation:enterUp .4s .22s both}
+.lv-feats{display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s8)}
+.lv-f{display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);border:1px solid #EFEFF1;border-radius:20px;animation:enterUp .4s calc(.3s + var(--i)*.07s) both}
+.lv-fi{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:12px;background:#FFF1F6}.lv-fi .px{width:28px;height:28px}
+.lv-f>span:last-child{display:flex;flex-direction:column;gap:2px}.lv-f b{font-size:15px;line-height:20px;font-weight:600}.lv-f small{font-size:13px;line-height:18px;color:var(--mute)}
+.lv-cta{position:sticky;bottom:0;z-index:3;margin:auto calc(-1 * var(--gutter)) 0;padding:var(--s6) var(--gutter) calc(var(--s5) + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:stretch;gap:var(--s3);background:linear-gradient(rgba(255,255,255,0),#fff 28px)}
+#app.lvland #page-ask{padding-bottom:0}
+.lv-cta p{margin:0;text-align:center;font-size:12px;line-height:16px;color:var(--mute)}
+/* chat */
+.askt.lvtop{display:grid;grid-template-columns:96px 1fr 96px;align-items:center;background:#fff!important;border-bottom:0!important}
+.askt.lvtop>b{text-align:center;font-size:16px;line-height:24px;font-weight:600}
+.lv-acts{display:flex;justify-content:flex-end;gap:var(--s2)}
+.lvtop .lv-ib{width:40px;height:40px}
+.lvw{min-height:calc(100% - 64px);display:flex;flex-direction:column}
+.lv-hi{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s4);text-align:center;padding:var(--s8) 0}
+.lv-mini{width:64px;height:64px;padding:12px;border:0;border-radius:22px;background:#FFF1F6;animation:lvFloat 3.2s ease-in-out infinite}
+.lv-mini .askic{width:100%;height:100%;animation:hflip 6s cubic-bezier(.65,0,.35,1) infinite}
+.lv-hi h2{margin:0;max-width:280px;font-family:var(--font-serif);font-size:24px;line-height:30px;font-weight:600;animation:enterUp .4s .1s both}
+.lv-sugs{display:flex;flex-direction:column;gap:var(--s2);padding-bottom:var(--s4)}
+.lv-sug{display:flex;align-items:center;gap:var(--s3);height:52px;padding:0 var(--s4);border:1px solid #E9E9EC;border-radius:999px;background:#fff;font:500 15px/20px var(--font-ui);color:var(--ink);text-align:left;animation:enterUp .35s calc(.15s + var(--i)*.06s) both;transition:background .15s,transform .15s}
+.lv-sug:active{transform:scale(.98);background:#FAFAFA}.lv-sug .px{width:24px;height:24px}
+/* messages: grey user bubble, plain AI text */
+.am.u p{background:#F1F1F3!important;color:var(--ink)!important;border-radius:20px 20px 6px 20px}
+.am.a{gap:var(--s3)}
+.lv-qp{align-self:flex-start;font-size:11px;line-height:16px;color:var(--mute);padding:2px 8px;border-radius:999px;background:#F4F4F5}
+.lv-think{display:flex;align-items:center;gap:var(--s2);color:var(--mute);font-size:14px}
+.lv-think b{font-weight:500}
+.lv-dots{display:grid;grid-template-columns:5px 5px;gap:2px}
+.lv-dots i{width:5px;height:5px;background:#A1A1AA;animation:lvDot 1s steps(1) infinite}
+.lv-dots i:nth-child(2){animation-delay:.25s}.lv-dots i:nth-child(4){animation-delay:.5s}.lv-dots i:nth-child(3){animation-delay:.75s}
+@keyframes lvDot{0%,49%{background:#FF3E9A}50%,100%{background:#D4D4D8}}
+.am.load .sk{display:none}
+.fu button{background:#fff!important;border:1px solid #E9E9EC!important;padding:0 var(--s4)!important;font-size:14px!important}
+/* saved plans */
+.lv-saved{display:flex;flex-direction:column;gap:var(--s2);padding-top:var(--s2)}
+.lv-sv{display:flex;align-items:center;gap:var(--s3);width:100%;padding:var(--s3) var(--s4);border:1px solid #EFEFF1;border-radius:20px;background:#fff;text-align:left;font:inherit;color:var(--ink)}
+.lv-svn{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:12px;background:#FFF1F6;color:var(--pink);font:600 18px/1 var(--font-serif)}
+.lv-sv>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}.lv-sv b{font-size:15px;line-height:20px}.lv-sv small{font-size:12px;color:var(--mute)}
+.lv-sv>svg{width:18px;height:18px;color:#A1A1AA}
+.lv-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:var(--s2);padding:var(--s10,40px) var(--s6)}
+.lv-empty>span{width:48px;height:48px;opacity:.5}.lv-empty b{font-size:16px}.lv-empty p{margin:0;font-size:14px;line-height:20px;color:var(--mute)}
+/* composer: one calm white box */
+#askbar .lv-box{flex:1;display:flex;flex-direction:column;gap:var(--s1);padding:var(--s3) var(--s2) var(--s2) var(--s4);border-radius:24px;background:#fff;box-shadow:0 0 0 1px #EBEBED,0 8px 24px rgba(9,9,11,.06)}
+#askbar .lv-box input{height:32px;border:0;outline:0;background:none;font:400 16px/24px var(--font-ui);color:var(--ink)}
+#askbar .lv-row{display:flex;align-items:center;justify-content:space-between}
+.lv-tip{font-size:12px;line-height:16px;color:#A1A1AA}
+#askbar .lv-box .ask-go{width:40px;height:40px;flex:0 0 40px;box-shadow:none}
+#askbar .lv-box .ask-go svg{width:20px;height:20px}
+
+/* ===== Lovely chat v2: hierarchy + brand colours ===== */
+.ask-th{gap:var(--s8)!important;padding-top:var(--s4)}
+.lv-who{display:flex;align-items:center;gap:var(--s2);height:24px}
+.lv-who b{font-size:13px;line-height:16px;font-weight:600;color:var(--ink)}
+.lv-hf{width:22px;height:22px;display:block;flex:none;perspective:120px}
+.lv-hf .askic{width:100%;height:100%;display:block}
+.lv-hf.spin .askic{animation:lvHeartFlip 1.1s cubic-bezier(.65,0,.35,1) infinite}
+@keyframes lvHeartFlip{0%{transform:rotateY(0) scale(1)}50%{transform:rotateY(180deg) scale(1.08)}100%{transform:rotateY(360deg) scale(1)}}
+#askLd.shim{font-weight:500}
+.am.a .am-say{font-size:16px;line-height:24px;color:var(--ink);margin-top:calc(-1 * var(--s1))}
+/* cards */
+.akcl{gap:var(--s2)!important}
+.akc.top{box-shadow:0 0 0 1.5px #FF9EC6,0 8px 24px rgba(255,62,154,.10)!important}
+.akc-top{background:#FFE4F1!important;color:#BE185D!important}
+.akc-why{color:var(--ink-2)!important}
+/* plan: black/pink instead of purple */
+.tl-dot{background:var(--ink)!important}
+.tl-time{color:var(--ink-2)!important}
+.tl-i::before{border-left-color:#E4E4E7!important}
+.plan-h b{font-size:20px}
+.pa.ic.on{color:var(--pink)!important;background:#FFE4F1!important}
+/* secondary "see all on the map" */
+.pa.main.solo{background:#fff!important;color:var(--ink)!important;box-shadow:0 0 0 1px #E4E4E7;height:44px}
+/* follow-ups: smaller, left aligned, clearly secondary */
+.fu{justify-content:flex-start}
+.fu button{height:36px!important;font-size:13px!important;color:var(--ink-2)!important}
+
+/* ===== Real map tiles ===== */
+#tiles .mtile{opacity:0;transition:opacity .35s}
+#tiles .mtile.in{opacity:1}
+#app.tiles .areas{display:none}
+#mapattr{position:absolute;right:var(--s2);top:calc(var(--s2) + 168px + env(safe-area-inset-top,0px));z-index:9;display:none;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.75);font-size:9px;line-height:12px;color:#71717A}
+#mapattr a{color:inherit;text-decoration:none}
+#app.tiles #mapattr{display:block}
+#app.onpage #mapattr,#app.searching #mapattr{display:none}
+/* ===== Header location button ===== */
+.hloc{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:0;border:0;background:none;font:inherit;font-size:13px;line-height:18px;color:var(--mute);cursor:pointer;text-align:left}
+.hloc .px{width:16px!important;height:16px!important;flex:none}
+.hloc span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hloc-ch{width:14px;height:14px;flex:none;color:var(--ink);transition:transform .2s}
+.hloc:active .hloc-ch{transform:translateY(2px)}
+/* ===== Change location page ===== */
+.locp{position:absolute;inset:0;z-index:41;display:none;flex-direction:column;background:#fff;overflow:hidden}
+.locp.show{display:flex;animation:scrIn .3s cubic-bezier(.2,.9,.25,1)}
+.loc-body{flex:1;overflow-y:auto;padding:var(--s2) var(--gutter) calc(var(--s8) + env(safe-area-inset-bottom,0px))}
+.loc-q{display:flex;align-items:center;gap:var(--s2);height:52px;padding:0 var(--s4);border-radius:999px;background:#F4F4F5}
+.loc-q svg{width:20px;height:20px;color:var(--mute);flex:none}
+.loc-q input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;font:400 16px/24px var(--font-ui);color:var(--ink)}
+.loc-gps{display:flex;align-items:center;gap:var(--s3);width:100%;margin-top:var(--s4);padding:var(--s3) var(--s4);border:1px solid #E4E4E7;border-radius:20px;background:#fff;text-align:left;font:inherit;color:var(--ink)}
+.loc-gps.busy .loc-gi svg{animation:spinStep 1s linear infinite}
+.loc-gi{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:12px;background:#E4ECFF;color:#2F6BFF}.loc-gi svg{width:22px;height:22px}
+.loc-gps>span:last-child,.loc-row>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.loc-gps b,.loc-row b{font-size:15px;line-height:20px;font-weight:600}
+.loc-gps small,.loc-row small{font-size:13px;line-height:18px;color:var(--mute)}
+.loc-sec{margin:var(--s6) 0 var(--s2);font-size:13px;line-height:16px;font-weight:600;color:var(--mute)}
+.loc-row{display:flex;align-items:center;gap:var(--s3);width:100%;padding:var(--s2) var(--s2) var(--s2) 0;border:0;border-bottom:1px solid #F4F4F5;background:none;text-align:left;font:inherit;color:var(--ink)}
+.loc-row:active{background:#FAFAFA}
+.loc-pi{width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:12px;background:#F4F4F5}.loc-pi .px{width:24px;height:24px}
+.loc-row.on .loc-pi{background:#FFE4F1}
+.loc-ck{width:24px;height:24px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--ink);color:#fff;font-size:13px}
+.loc-none{padding:var(--s8) var(--s4);text-align:center}.loc-none b{font-size:15px}.loc-none p{margin:var(--s1) 0 0;font-size:14px;color:var(--mute)}
+
+
+/* ===== Brand mark: pixel heart everywhere ===== */
+.logo i.lgh{background:#F2F2F2;padding:5px}
+.logo i.lgh .askic{width:100%;height:100%}
+.lgh-av{display:grid;place-items:center;width:100%;height:100%;background:#F2F2F2;border-radius:inherit}
+.lgh-av .askic{width:70%;height:70%}
+
+@media (prefers-reduced-motion:reduce){.lv-hf.spin .askic{animation:none}}
+
+@media (prefers-reduced-motion:reduce){.lv-stage,.lv-spin,.lv-mini,.lv-mini .askic,.lv-dots i{animation:none!important}}
+
 @media (prefers-reduced-motion:reduce){.hflip{animation:none}}
 
 @media (prefers-reduced-motion:reduce){.ob-prog .dots i.on::after,.hchl.on,.hsteam i,.sweat,.ht-c,.spicev .heat.blast{animation:none!important}}
@@ -2253,6 +2414,7 @@ a{color:inherit}
 </style>
 
 
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-1 -2 15 15%22 shape-rendering=%22crispEdges%22><rect x=%222%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%223%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%224%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%228%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%220%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%221%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%222%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%223%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%224%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%225%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2211%22 y=%221%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%220%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%221%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%222%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%223%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%224%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%225%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2211%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2212%22 y=%222%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%220%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%221%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF6A80%22/><rect x=%222%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%223%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2211%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2212%22 y=%223%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%220%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%221%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%222%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%223%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2211%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2212%22 y=%224%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%221%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%222%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%223%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2211%22 y=%225%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%222%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%223%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%2210%22 y=%226%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%223%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%229%22 y=%227%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%224%22 y=%228%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%228%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%228%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%228%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%228%22 y=%228%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%225%22 y=%229%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%229%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%227%22 y=%229%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/><rect x=%226%22 y=%2210%22 width=%221%22 height=%221%22 fill=%22%23FF2E4D%22/></svg>">
 </head>
 <body>
 <div id="app" class="scr">
@@ -2279,14 +2441,14 @@ a{color:inherit}
 
   <div id="top">
     <div class="hcard glass">
-      <div class="hrow"><button class="hav" id="helloAv" onclick="go('me')" aria-label="Your profile"></button><div class="txt"><b id="helloName">Hi there</b><small id="helloLoc">Trivandrum</small></div><button class="bell askbtn" id="askBtn" aria-label="Ask Ruchi" onclick="openAsk()"></button><button class="bell" aria-label="Your to-dos" onclick="openNotifs()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span id="bellBadge"></span></button></div>
+      <div class="hrow"><button class="hav" id="helloAv" onclick="go('me')" aria-label="Your profile"></button><div class="txt"><b id="helloName">Hi there</b><button class="hloc" id="helloLoc" onclick="openLoc()" aria-label="Change your location">Trivandrum</button></div><button class="bell askbtn" id="askBtn" aria-label="Lovely, your AI food buddy" onclick="openAsk()"></button><button class="bell" aria-label="Your to-dos" onclick="openNotifs()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span id="bellBadge"></span></button></div>
       <button class="sfake" onclick="openSearch()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span id="sfakeTxt">Craving something?</span></button>
     </div>
     <div class="toprow"><button class="wxpill" id="wxpill" onclick="cycleWx()"></button><span id="fpill"></span><button class="setup-pill" id="setupPill" onclick="openChecklist()"></button><div id="status"></div></div>
   </div>
 
   <div class="zoom"><button class="circ" aria-label="Zoom in" onclick="zoomBy(1.35)">+</button><button class="circ" aria-label="Zoom out" onclick="zoomBy(1/1.35)">−</button></div>
-  <button class="listbtn" id="listbtn" onclick="openList()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span id="listN">List</span></button>
+  <div id="mapctl"><button class="listbtn" id="listbtn" onclick="openList()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg><span id="listN">List</span></button><button class="cardtog" id="cardTog" onclick="toggleCards()" aria-label="Hide cards and show the full map" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg><span>Show top 5</span></button></div>
   <div id="cards"></div>
   <div id="mapload" class="glass" aria-live="polite"><span class="ml-pin" data-px="map-pin"></span><span>Finding spots near you</span><span class="ml-dots"><i></i><i></i><i></i></span></div>
   <div id="crosshair"><div class="bub" data-px="map-pin"></div></div>
@@ -2296,6 +2458,8 @@ a{color:inherit}
   </div>
 
   <section class="sv nfp" id="nfp" aria-label="Notifications"></section>
+  <section class="locp" id="locp" aria-label="Change location"></section>
+  <div id="mapattr">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a></div>
   <section class="sv lstp" id="lstp" aria-label="All spots"></section>
   <section class="sv" id="sv" aria-label="Search">
     <div class="sv-top"><button class="sv-back" onclick="closeSearch()" aria-label="Back"></button><label class="sv-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Try “beef near Pattom”" autocomplete="off" enterkeyhint="search"><button class="sv-x" id="svX" onclick="clearQ()" aria-label="Clear">✕</button></label></div>
@@ -2352,7 +2516,8 @@ const AREAS=[
  ['Chalai',8.4795,76.948],['Vanchiyoor',8.493,76.939],['Medical College',8.523,76.927],['Ulloor',8.539,76.922],
  ['Sreekaryam',8.548,76.917],['Kazhakkoottam',8.568,76.873],['Technopark',8.557,76.882],['Peroorkada',8.537,76.969],
  ['Shanghumugham',8.479,76.916],['Vettucaud',8.503,76.905],['Beemapally',8.461,76.931],['Kovalam',8.400,76.979],
- ['Thiruvallam',8.443,76.957],['Karamana',8.481,76.967],['Poojappura',8.488,76.978],['Airport',8.482,76.921],['Veli',8.513,76.893]
+ ['Thiruvallam',8.443,76.957],['Karamana',8.481,76.967],['Poojappura',8.488,76.978],['Airport',8.482,76.921],['Veli',8.513,76.893],
+ ['Nalanchira',8.5457,76.9437],['Pettah',8.495,76.931],['Kumarapuram',8.515,76.933],['Nemom',8.457,77.004],['Vizhinjam',8.3793,76.9922],['Balaramapuram',8.4256,77.0466],['Neyyattinkara',8.400,77.085],['Poovar',8.3199,77.0698],['Attingal',8.6964,76.815],['Varkala',8.7379,76.7163]
 ];
 /* Shown only if the shared database can't be reached (preview / signed out). */
 const FALLBACK_REVIEWS={seed:{items:{
@@ -2394,7 +2559,7 @@ function nearestArea(lat,lng){let b=null,d=1e9;for(const a of AREAS){const dd=(a
 let profiles={}; /* profiles/<uid> = {nick, avatar, spice, taste, home, onboarded} */
 function nameOf(id){if(!id||id==='seed')return 'Ruchi Team';if(id==='osm')return 'OpenStreetMap';if(profiles[id]?.nick)return profiles[id].nick;if(id===myId)return names[id]||'You';return names[id]||'A local'}
 function initials(n){return (n||'?').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase()}
-function avOf(id){if(id==='seed')return px('curry');const p=profiles[id];if(p?.av)return avImg(p.av);return p?.avatar?px(p.avatar):initials(nameOf(id))}
+function avOf(id){if(!id||id==='seed')return `<span class="lgh-av">${ASKIC}</span>`;const p=profiles[id];if(p?.av)return avImg(p.av);return p?.avatar?px(p.avatar):initials(nameOf(id))}
 
 /* confirmations: confirms/<uid> = {spots:{id:true}, closed:{id:true}} */
 function confirmsFor(id){let n=0;for(const k in confirmDocs){if(confirmDocs[k]?.spots?.[id])n++}return n}
@@ -2528,13 +2693,15 @@ function avImg(c,cls=''){return `<img class="avimg ${cls}" src="${avatarURL(c)}"
 function pts(arr){return arr.map(([lng,lat])=>{const p=toXY(lat,lng);return p.x+','+p.y}).join(' ')}
 function line(arr,cls){return `<polyline class="${cls}" points="${pts(arr)}"/>`}
 function drawMap(){
-  const coast=[[76.99,8.38],[76.975,8.40],[76.955,8.425],[76.935,8.45],[76.915,8.475],[76.905,8.49],[76.89,8.51],[76.875,8.535],[76.862,8.56],[76.85,8.59],[76.84,8.62],[77.1,8.62],[77.1,8.30],[76.99,8.30]];
+  const coast=[[77.14,8.27],[77.10,8.30],[77.07,8.32],[77.03,8.35],[76.99,8.38],[76.975,8.40],[76.955,8.425],[76.935,8.45],[76.915,8.475],[76.905,8.49],[76.89,8.51],[76.875,8.535],[76.862,8.56],[76.85,8.59],[76.84,8.62],[76.81,8.66],[76.77,8.70],[76.72,8.74],[76.69,8.79],[77.25,8.79],[77.25,8.27]];
   const canal=[[76.982,8.395],[76.962,8.425],[76.943,8.452],[76.924,8.475],[76.912,8.494],[76.899,8.511],[76.886,8.531],[76.874,8.553],[76.866,8.575]];
   const river=[[77.05,8.468],[77.0,8.474],[76.975,8.478],[76.96,8.474],[76.948,8.463],[76.94,8.452],[76.932,8.447]];
   const road=(a)=>a;
   const majors=[
     [[76.873,8.568],[76.917,8.548],[76.922,8.539],[76.933,8.530],[76.942,8.524],[76.950,8.503],[76.948,8.495],[76.944,8.483],[76.947,8.470],[76.957,8.443],[76.970,8.418],[76.979,8.400]], // NH66 / MG Rd spine
     [[76.873,8.568],[76.882,8.557],[76.896,8.530],[76.906,8.512],[76.919,8.494],[76.935,8.478],[76.957,8.443]], // bypass
+    [[76.873,8.568],[76.862,8.60],[76.84,8.65],[76.815,8.696],[76.76,8.72],[76.716,8.738]], // NH66 north: Attingal, Varkala
+    [[76.967,8.481],[77.004,8.457],[77.0466,8.4256],[77.085,8.40]], // NH66 south: Nemom, Balaramapuram, Neyyattinkara
   ];
   const minors=[
     [[76.950,8.503],[76.9585,8.509],[76.960,8.5195],[76.969,8.537],[76.98,8.56]],
@@ -2545,6 +2712,9 @@ function drawMap(){
     [[76.927,8.523],[76.942,8.524],[76.960,8.5195]],
     [[76.921,8.482],[76.931,8.461],[76.943,8.450]],
     [[76.906,8.512],[76.905,8.503],[76.916,8.479]],
+    [[76.979,8.400],[76.9922,8.3793]],
+    [[77.0466,8.4256],[77.06,8.37],[77.0698,8.3199]],
+    [[76.9437,8.5457],[76.917,8.548]],
   ];
   const lakes=[[76.893,8.519,45,30],[76.903,8.527,40,26]];
   const parks=[[76.955,8.5085,40,28],[76.948,8.528,30,22]];
@@ -2564,7 +2734,7 @@ function drawMap(){
   majors.forEach(m=>s+=line(m,'mjc'));
   const ap=toXY(8.482,76.921);
   s+=`<rect x="${ap.x-70}" y="${ap.y-14}" width="140" height="28" rx="14" fill="#E4E6EA" transform="rotate(-35 ${ap.x} ${ap.y})"/>`;
-  $('#svg').innerHTML=`<g id="world">${s}</g>`;
+  $('#svg').innerHTML=`<g id="world">${s}<g id="tiles"></g></g>`;tileEls.clear();
   $('#svg').setAttribute('width',10);$('#svg').setAttribute('height',10);
 }
 
@@ -2572,9 +2742,9 @@ function drawMap(){
 const mapEl=$('#map');
 function applyView(){
   $('#world').setAttribute('transform',`translate(${view.x},${view.y}) scale(${view.s})`);
-  renderOverlay();
+  renderOverlay();queueTiles();
 }
-function clampS(s){return Math.max(.18,Math.min(3,s))}
+function clampS(s){return Math.max(.07,Math.min(3,s))}
 function zoomAt(f,cx,cy){const ns=clampS(view.s*f);f=ns/view.s;view.x=cx-(cx-view.x)*f;view.y=cy-(cy-view.y)*f;view.s=ns;applyView()}
 function zoomBy(f){const r=mapEl.getBoundingClientRect();zoomAt(f,r.width/2,r.height/2)}
 function centerOn(lat,lng,s,offsetY=0){
@@ -2693,7 +2863,7 @@ function renderSearch(){
   const body=$('#svBody');let h='';
   if(LOAD.spots&&(q||sf!=='all')){body.innerHTML=skRows(5);const c=$('#svCta');if(c)c.innerHTML='';return}
   if(!q&&sf==='all'){
-    h+=`<div class="ai-ask"><div class="ai-h">${AI_SVG}<b>Ask Ruchi anything</b></div><p>Dishes, places, vibes or areas. We’ll figure it out.</p>
+    h+=`<div class="ai-ask"><div class="ai-h">${AI_SVG}<b>Ask Lovely anything</b></div><p>Dishes, places, vibes or areas. We’ll figure it out.</p>
       <div class="ai-ex">${['spicy beef near Pattom','chaya for a rainy evening','hidden seafood by the beach'].map(t=>`<button onclick="setQ('${t}')">“${t}”<i>↗</i></button>`).join('')}</div></div>`;
     const rc=recentGet();
     if(rc.length)h+=`<div class="sv-sec"><b>Recent</b><button onclick="localStorage.removeItem('ruchi_recent');renderSearch()">Clear</button></div><div class="hscroll">${rc.map(t=>`<button class="rchip" onclick="setQ('${esc(t).replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${esc(t)}</button>`).join('')}</div>`;
@@ -3022,6 +3192,82 @@ function introRun(){const el=$('#intro');if(!el)return;
   at(3800,()=>el.classList.add('word'));
   at(5000,introEnd);}
 function introEnd(){const el=$('#intro');if(!el||el.classList.contains('out'))return;introT.forEach(clearTimeout);if($('#landing').classList.contains('show')){slide=0;renderLanding()}el.classList.add('built','word','out');setTimeout(()=>el.remove(),700)}
+
+/* ===== hide/show home cards for a full map view ===== */
+function setCardsOff(off,silent){const a=$('#app');a.classList.toggle('cardsoff',off);const t=$('#cardTog');
+  if(t){t.setAttribute('aria-pressed',off);t.setAttribute('aria-label',off?'Show the top spots again':'Hide cards and show the full map');t.classList.remove('flip');void t.offsetWidth;t.classList.add('flip')}
+  try{localStorage.setItem('ruchi_cardsoff',off?'1':'')}catch(e){}if(!silent)try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
+function toggleCards(){setCardsOff(!$('#app').classList.contains('cardsoff'))}
+(function(){try{if(localStorage.getItem('ruchi_cardsoff')==='1')setCardsOff(true,true)}catch(e){}
+  const c=$('#cards');if(!c)return;let sx=0,sy=0,t0=0;
+  c.addEventListener('touchstart',e=>{const p=e.touches[0];sx=p.clientX;sy=p.clientY;t0=Date.now()},{passive:true});
+  c.addEventListener('touchend',e=>{const p=e.changedTouches[0];const dx=p.clientX-sx,dy=p.clientY-sy;
+    if(dy>56&&Math.abs(dy)>Math.abs(dx)*1.4&&Date.now()-t0<700)setCardsOff(true)},{passive:true});
+  const m=$('#mapctl');m&&m.addEventListener('touchend',e=>{const p=e.changedTouches[0];if(sy&&p.clientY-sy<-40&&$('#app').classList.contains('cardsoff'))setCardsOff(false)},{passive:true});
+  m&&m.addEventListener('touchstart',e=>{sy=e.touches[0].clientY},{passive:true});
+})();
+
+
+/* ================= REAL MAP TILES (whole city + district) =================
+   Street tiles © OpenStreetMap contributors, © CARTO. They sit on top of the
+   hand-drawn map; if tiles can't load, the drawn map shows instead. */
+const TILE_URL=(z,x,y)=>`https://${'abcd'[(x+y)%4]}.basemaps.cartocdn.com/light_all/${z}/${x}/${y}@2x.png`;
+let tileOK=true,tileErr=0,tileGood=0,tileQ=0,tileZ=null,tileGC=0;const tileEls=new Map();
+const lng2tx=(l,z)=>(l+180)/360*2**z, lat2ty=(a,z)=>{const r=a*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*2**z};
+const tx2lng=(x,z)=>x/2**z*360-180, ty2lat=(y,z)=>{const n=Math.PI-2*Math.PI*y/2**z;return 180/Math.PI*Math.atan(.5*(Math.exp(n)-Math.exp(-n)))};
+function queueTiles(){if(!tileOK)return;if(!tileQ)tileQ=requestAnimationFrame(()=>{tileQ=0;updateTiles()})}
+function updateTiles(){const g=$('#tiles');if(!g||!tileOK)return;const r=mapEl.getBoundingClientRect();if(!r.width)return;
+  const s=view.s,K=BOUNDS.k;let z=Math.round(Math.log2(K*s*360/256)+.3);z=Math.max(10,Math.min(18,z));
+  const lngA=BOUNDS.lngMin+(-view.x/s)/K,lngB=BOUNDS.lngMin+((r.width-view.x)/s)/K,latA=BOUNDS.latMax-(-view.y/s)/K,latB=BOUNDS.latMax-((r.height-view.y)/s)/K;
+  const x0=Math.floor(lng2tx(lngA,z)),x1=Math.floor(lng2tx(lngB,z)),y0=Math.floor(lat2ty(latA,z)),y1=Math.floor(lat2ty(latB,z));
+  if((x1-x0+1)*(y1-y0+1)>90)return;
+  const need=new Set();
+  for(let x=x0;x<=x1;x++)for(let y=y0;y<=y1;y++){const k=z+'/'+x+'/'+y;need.add(k);if(tileEls.has(k))continue;
+    const a=toXY(ty2lat(y,z),tx2lng(x,z)),b=toXY(ty2lat(y+1,z),tx2lng(x+1,z));
+    const im=document.createElementNS('http://www.w3.org/2000/svg','image');
+    im.setAttribute('x',a.x);im.setAttribute('y',a.y);im.setAttribute('width',b.x-a.x+.6/s);im.setAttribute('height',b.y-a.y+.6/s);im.setAttribute('preserveAspectRatio','none');im.setAttribute('class','mtile');
+    im.addEventListener('load',()=>{tileGood++;im.classList.add('in');$('#app').classList.add('tiles')});
+    im.addEventListener('error',()=>{tileErr++;im.remove();tileEls.delete(k);if(!tileGood&&tileErr>=4){tileOK=false;g.innerHTML='';tileEls.clear();$('#app').classList.remove('tiles')}});
+    im.setAttribute('href',TILE_URL(z,x,y));g.appendChild(im);tileEls.set(k,{el:im,z})}
+  for(const [k,t] of tileEls)if(!need.has(k)&&t.z===z){t.el.remove();tileEls.delete(k)}
+  if(z!==tileZ){tileZ=z;clearTimeout(tileGC);tileGC=setTimeout(()=>{for(const [k,t] of tileEls)if(t.z!==tileZ){t.el.remove();tileEls.delete(k)}},900)}
+  // keep the current zoom level on top
+  for(const k of need){const t=tileEls.get(k);if(t)g.appendChild(t.el)}
+}
+
+/* ================= CHANGE LOCATION ================= */
+let locQ='';
+function spotsNear(la,ln,km=3){return spots.filter(s=>kmBetween(la,ln,s.lat,s.lng)<=km).length}
+function openLoc(){if(adding)return;closeSheets();$('#toast').classList.remove('show');locQ='';renderLoc();$('#locp').classList.add('show');$('#app').classList.add('searching');setTimeout(()=>$('#locq')?.focus({preventScroll:true}),320)}
+function closeLoc(){$('#locp').classList.remove('show');$('#app').classList.remove('searching')}
+function renderLoc(){const el=$('#locp');if(!el)return;const p=profiles[myId]||{};const cur=p.home&&p.home!=='Just visiting'?p.home:null;
+  el.innerHTML=`<div class="sv-top nfp-top"><button class="sv-back" onclick="closeLoc()" aria-label="Back">${BACKSVG}</button><b>Your location</b><span></span></div>
+  <div class="loc-body"><label class="loc-q"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="locq" placeholder="Search an area, e.g. Pattom" autocomplete="off" value="${esc(locQ)}" oninput="locQ=this.value;renderLocList()"></label>
+  <button class="loc-gps" onclick="locGPS(this)"><span class="loc-gi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></span><span><b>Use my current location</b><small>Find spots right around you</small></span></button>
+  <div id="locList"></div></div>`;renderLocList()}
+function renderLocList(){const el=$('#locList');if(!el)return;const p=profiles[myId]||{};const cur=p.home;const q=locQ.trim().toLowerCase();
+  const all=AREAS.filter(a=>a[0]!=='Airport').map(a=>({n:a[0],la:a[1],ln:a[2],c:spotsNear(a[1],a[2])}));
+  const row=a=>`<button class="loc-row ${a.n===cur?'on':''}" onclick="setHomeArea('${a.n.replace(/'/g,"\\'")}')"><span class="loc-pi">${px('map-pin')}</span><span><b>${esc(a.n)}</b><small>${a.c?`${a.c} spot${a.c>1?'s':''} nearby`:'Trivandrum'}</small></span>${a.n===cur?'<span class="loc-ck">✓</span>':''}</button>`;
+  let h='';
+  if(q){const hits=all.filter(a=>a.n.toLowerCase().includes(q));
+    h=hits.length?`<div class="loc-sec">Matching areas</div>${hits.map(row).join('')}`:`<div class="loc-none"><b>No area called “${esc(locQ.trim())}” yet</b><p>Try a nearby area, or use your current location.</p></div>`}
+  else{const c=all.find(a=>a.n===cur);const rest=all.filter(a=>a.n!==cur).sort((a,b)=>b.c-a.c||a.n.localeCompare(b.n));
+    h=(c?`<div class="loc-sec">Current</div>${row(c)}`:'')+`<div class="loc-sec">All areas</div>${rest.map(row).join('')}`}
+  el.innerHTML=h}
+async function setHomeArea(n,ll){const old=profiles[myId]||localProfile()||{};const p={...old,home:n,updatedAt:Date.now()};if(ll)p.homeLL=ll;else delete p.homeLL;
+  profiles[myId]=p;try{localStorage.setItem('ruchi_profile',JSON.stringify(p))}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}
+  closeLoc();cardsKey='';rerenderAll();const [la,ln]=originLL();flyTo(la,ln,Math.max(view.s,.7),-80);toast(`Showing spots near ${n}`);
+  if(live&&dbx&&myId){try{await dbx.doc('profiles/'+myId).set(p)}catch(e){}}}
+function locGPS(btn){if(!navigator.geolocation){toast('Location isn’t available on this device');return}
+  btn.classList.add('busy');btn.querySelector('small').textContent='Finding you…';
+  navigator.geolocation.getCurrentPosition(pos=>{btn.classList.remove('busy');const la=pos.coords.latitude,ln=pos.coords.longitude;
+    let best=null,bd=1e9;for(const a of AREAS){if(a[0]==='Airport')continue;const d=kmBetween(la,ln,a[1],a[2]);if(d<bd){bd=d;best=a}}
+    if(!best||bd>35){btn.querySelector('small').textContent='Find spots right around you';toast('You look outside Trivandrum. Pick an area instead.');return}
+    setHomeArea(best[0],[la,ln])},
+  err=>{btn.classList.remove('busy');btn.querySelector('small').textContent='Find spots right around you';toast(err&&err.code===1?'Location is off. Allow it in settings, or pick an area.':'Couldn’t find you. Pick an area instead.')},
+  {enableHighAccuracy:true,timeout:10000,maximumAge:60000})}
+
 /* ================= LOADING + SKELETONS ================= */
 const LOAD={spots:true,reviews:true,profiles:true,confirms:true};
 const isLoading=()=>LOAD.spots||LOAD.reviews;
@@ -3068,27 +3314,39 @@ function askStarters(){const h=new Date().getHours();const rain=WX.mode==='rain'
     h>=19||h<5?{k:'frying-pan',c:'t-bl',t:'Late night food',s:'Still frying at this hour',q:'Where can I eat late tonight?'}:h<11?{k:'dosa',c:'t-bl',t:'Breakfast spots',s:'Puttu, appam, strong chaya',q:'Best breakfast spots near me'}:{k:'curry',c:'t-bl',t:'Lunch nearby',s:'Meals worth the walk',q:'Best lunch near me'},
     rain?{k:'tea',c:'t-gr',t:'Rainy day plan',s:'Indoors, warm and fried',q:'Plan a rainy day for me'}:{k:'emoji-1f334',c:'t-gr',t:'Sunset spots',s:'Golden hour, then dinner',q:'Where should I watch the sunset, and eat after?'}]}
 const ASKCHIPS=['Under ₹200','Date night','Something spicy','With friends','Only 3 hours'];
+const XSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+const PLUSSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';
+const HISTSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>';
+const lovelySeen=()=>{try{return localStorage.getItem('ruchi_lovely')==='1'}catch(e){return true}};
+function lovelyVoxel(){const L=(z,c)=>`<div class="lv-l ${c}" style="--z:${z}px">${HEART.map((row,y)=>[...row].map((ch,x)=>ch==='X'?`<i class="${c==='f'&&((y<=2&&x>=1&&x<=4)||(y===3&&x===1))?'h':''}" style="--x:${x};--y:${y}"></i>`:'').join('')).join('')}</div>`;
+  return `<div class="lv-stage"><div class="lv-spin" onclick="this.classList.remove('tap');void this.offsetWidth;this.classList.add('tap');setTimeout(()=>this.classList.remove('tap'),820);try{navigator.vibrate&&navigator.vibrate(10)}catch(e){}">${L(-15,'b')+L(-10,'m')+L(-5,'m')+L(0,'f')}</div></div>`}
+function lovelyStart(){try{localStorage.setItem('ruchi_lovely','1')}catch(e){}ASK.about=false;renderAsk();setTimeout(()=>{const q=$('#askq');q&&q.focus({preventScroll:true})},350)}
 function renderAsk(){const pg=$('#page-ask');if(!pg)return;
-  let h=`<div class="ptop askt"><button class="sv-back" onclick="closeAsk()" aria-label="Back">${BACKSVG}</button><b>Ask Ruchi</b>${ASK.thread.length?`<button class="ask-new" onclick="askReset()">New</button>`:'<span></span>'}</div>`+`<div class="pwrap askw">`;
-  if(!ASK.thread.length){const g=askGreet();const sv=plansGet();const p=profiles[myId]||{};
-    const ctx=[WX.mode&&WXM[WX.mode]?`${px(WX.mode==='rain'||WX.mode==='storm'?'tea':'emoji-1f334')}${WX.temp!=null?Math.round(WX.temp)+'° ':''}${WXM[WX.mode].t}`:null,p.home&&p.home!=='Just visiting'?`${px('map-pin')}Near ${esc(p.home)}`:`${px('map-pin')}Trivandrum`,typeof SPICE!=='undefined'&&SPICE[p.spice]?`${px(p.spice===4?'emoji-1f525':'red-chili')}${SPICE[p.spice][0]}`:null].filter(Boolean);
-    h+=`<div class="al">
-      <div class="al-hero"><button class="al-orb" onclick="askOrbTap(this)" aria-label="Talk to Ruchi">${ASKIC}</button>
-        <h1 class="al-h">${g.t}</h1><p class="al-sub">${g.line}</p>
-        <div class="al-ctx">${ctx.map((c,i)=>`<span style="--i:${i}">${c}</span>`).join('')}</div></div>
-      <button class="al-try" onclick="askTryTap()"><span class="al-tl">Try saying</span><span class="al-tq"><span id="alTy"></span><i class="al-car"></i></span></button>
-      <div class="al-sec">Start with</div>
-      <div class="al-list">${askStarters().map((x,i)=>`<button class="al-row" style="--i:${i}" onclick="askSend(${esc(JSON.stringify(x.q)).replace(/"/g,'&quot;')})"><span class="al-ic ${x.c}">${px(x.k)}</span><span class="al-tx"><b>${x.t}</b><small>${x.s}</small></span><svg class="al-ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>`).join('')}</div>
-      <div class="ask-chips al-chips">${ASKCHIPS.map((c,i)=>`<button style="--i:${i}" onclick="askSend('${c}')">${c}</button>`).join('')}</div>`;
-    if(sv.length)h+=`<div class="al-sec">Saved plans</div><div class="al-saved">${sv.map((p,i)=>`<button class="al-sp" onclick="askOpenSaved(${i})"><span class="al-spn">${p.stops.length}<small>stops</small></span><b>${esc(p.title||'Day plan')}</b><small>${ago(p.t)}</small></button>`).join('')}</div>`;
-    h+=`<p class="ask-note">Ruchi only suggests spots that are on Ruchi, ranked by real reviews.</p></div>`;
+  const land=ASK.about||(!lovelySeen()&&!ASK.thread.length);const app=$('#app');app.classList.toggle('lvland',land);
+  const nm=profiles[myId]?.nick;
+  if(land){
+    pg.innerHTML=`<div class="lv-land">
+      <div class="lv-top"><button class="lv-ib" onclick="${ASK.about?'ASK.about=false;renderAsk()':'closeAsk()'}" aria-label="Close">${XSVG}</button></div>
+      <div class="lv-hero">${lovelyVoxel()}<span class="lv-kick">Meet</span><h1 class="lv-name">Lovely</h1>
+        <p class="lv-sub">Your AI food buddy for Trivandrum. Tell Lovely what you’re craving and it plans the rest.</p></div>
+      <div class="lv-feats">${[['vintage-auto-rickshaw','Plans your whole day','Food and places, in the right order'],['emoji-1f48e','Finds hidden gems','The spots locals keep quiet'],['curry','Knows what to order','Must-try dishes from real reviews'],['tea','Just talk to it','Voice or text, in plain words']].map((f,i)=>`<div class="lv-f" style="--i:${i}"><span class="lv-fi">${px(f[0])}</span><span><b>${f[1]}</b><small>${f[2]}</small></span></div>`).join('')}</div>
+      <div class="lv-cta"><button class="bigbtn" onclick="lovelyStart()">Start chatting</button><p>Lovely only suggests spots that are on Ruchi.</p></div></div>`;
+    return}
+  let h=`<div class="ptop askt lvtop"><button class="lv-ib" onclick="${ASK.view==='saved'?"ASK.view='';renderAsk()":'closeAsk()'}" aria-label="${ASK.view==='saved'?'Back':'Close'}">${ASK.view==='saved'?BACKSVG:XSVG}</button><b>${ASK.view==='saved'?'Saved plans':'Lovely'}</b>
+    <span class="lv-acts">${ASK.view==='saved'?'':`<button class="lv-ib" onclick="askReset()" aria-label="New chat">${PLUSSVG}</button><button class="lv-ib" onclick="ASK.view='saved';renderAsk()" aria-label="Saved plans">${HISTSVG}</button>`}</span></div><div class="pwrap askw lvw">`;
+  if(ASK.view==='saved'){const sv=plansGet();
+    h+=sv.length?`<div class="lv-saved">${sv.map((p,i)=>`<button class="lv-sv" onclick="ASK.view='';askOpenSaved(${i})"><span class="lv-svn">${p.stops.length}</span><span><b>${esc(p.title||'Day plan')}</b><small>${p.stops.length} stops · ${ago(p.t)}</small></span>${CHEVSVG}</button>`).join('')}</div>`
+      :`<div class="lv-empty"><span>${ASKIC}</span><b>No saved plans yet</b><p>Ask Lovely to plan your day, then tap the bookmark to keep it here.</p></div>`;
+  } else if(!ASK.thread.length){
+    const h0=new Date().getHours();const meal=h0>=19||h0<5?['frying-pan','Late night food','Where can I eat late tonight?']:h0<11?['dosa','Breakfast nearby','Best breakfast spots near me']:['curry','Lunch nearby','Best lunch near me'];
+    h+=`<div class="lv-hi"><button class="lv-mini" onclick="ASK.about=true;renderAsk()" aria-label="About Lovely">${ASKIC}</button><h2>${nm?`What are we eating, ${esc(nm)}?`:'What are we eating today?'}</h2></div>
+      <div class="lv-sugs">${[['vintage-auto-rickshaw','Plan my day','Plan my full day in Trivandrum'],['emoji-1f48e','Hidden gems near me','Show me hidden gems near me'],meal].map((x,i)=>`<button class="lv-sug" style="--i:${i}" onclick="askSend(${esc(JSON.stringify(x[2])).replace(/"/g,'&quot;')})">${px(x[0])}<span>${x[1]}</span></button>`).join('')}</div>`;
   } else {
     h+=`<div class="ask-th">${ASK.thread.map((m,i)=>m.role==='user'?`<div class="am u ${m.shown?'':'fresh'}"><p>${esc(m.text)}</p></div>${(m.shown=true,'')}`:askAiHTML(m,i)).join('')}${ASK.busy?askLoadHTML():''}</div>`;
   }
   h+=`</div>`;pg.innerHTML=h;
-  renderAskBar();askTyStart();
-
-  if(ASK.thread.length)requestAnimationFrame(()=>{pg.scrollTop=pg.scrollHeight});
+  renderAskBar();
+  if(ASK.thread.length&&!ASK.view)requestAnimationFrame(()=>{pg.scrollTop=pg.scrollHeight});
 }
 
 /* ===== Ask bar: mic / send / stop + voice mode ===== */
@@ -3108,7 +3366,7 @@ function renderAskBar(){const bar=$('#askbar');if(!bar)return;
     <div class="vwave glass" id="vWave">${Array.from({length:28},(_,i)=>`<i style="--i:${i};--h:${(.25+Math.abs(Math.sin(i*1.7))*.75).toFixed(2)}"></i>`).join('')}</div>
     <button class="v-ok" onclick="voiceDone()" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></button></div>`;voiceUpd()}
     return}
-  if(!bar.querySelector('.ask-in')){bar.innerHTML=`<label class="ask-in glass">${ASKIC}<input id="askq" placeholder="Ask or tap the mic" autocomplete="off" enterkeyhint="send"></label><button class="ask-go" id="askGo" aria-label="Talk"></button>`;
+  if(!bar.querySelector('.ask-in')){bar.innerHTML=`<div class="lv-box"><input id="askq" placeholder="Ask Lovely anything…" autocomplete="off" enterkeyhint="send"><div class="lv-row"><span class="lv-tip"></span><button class="ask-go" id="askGo" aria-label="Talk"></button></div></div>`;
     const q=$('#askq');q.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();askSend(q.value)}});q.addEventListener('input',askGoState);
     $('#askGo').onclick=()=>{if(ASK.busy)return askStop();const v=$('#askq').value.trim();if(v)return askSend(v);if(canTalk())return voiceStart();$('#askq').focus()}}
   askGoState()}
@@ -3141,8 +3399,8 @@ function askTyStart(){clearTimeout(tyT);const el=$('#alTy');if(!el)return;if(mat
     else{n-=2;e.textContent=txt.slice(0,Math.max(0,n));if(n<=0){tyI++;tyT=setTimeout(askTyStart,250);return}tyT=setTimeout(step,18)}};step()}
 function askTryTap(){askSend(ASKTRY[tyI%ASKTRY.length])}
 
-const ASKLOAD=['Checking what’s open right now…','Asking the chaya chettans…','Reading the reviews…','Mapping the shortest route…','Counting the beef fry…'];
-function askLoadHTML(){return `<div class="am a load"><div class="am-h"><span class="am-av spin">${ASKIC}</span><b id="askLd" class="shim">${ASKLOAD[0]}</b></div><div class="sk">${[0,1].map(i=>`<div class="sk-c" style="--i:${i}"><i class="sk-im"></i><span><i></i><i></i><i></i></span></div>`).join('')}</div></div>`}
+const ASKLOAD=['Lovely is thinking…','Checking what’s open…','Reading the reviews…','Mapping the route…'];
+function askLoadHTML(){return `<div class="am a load"><div class="lv-who"><span class="lv-hf spin">${ASKIC}</span><b id="askLd" class="shim">Lovely is thinking…</b></div></div>`}
 const STARSVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
 const CHEVSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
 let acI=0;
@@ -3157,7 +3415,7 @@ function askCard(st,s,why,o={}){const ph=s.photo||reviewsFor(s.id).find(r=>r.pho
 function askOpenSpot(el,id){el.classList.remove('tapd');void el.offsetWidth;el.classList.add('tapd');try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}setTimeout(()=>openSpot(id),120)}
 function askWords(t,fresh){if(!fresh)return esc(t);return t.split(/(\s+)/).map((w,i)=>/\s/.test(w)?w:`<span class="wd" style="--w:${Math.min(i,60)}">${esc(w)}</span>`).join('')}
 function askAiHTML(m,i){const d=m.data||{};const stops=(d.stops||[]).filter(x=>spotById(x.id));const fresh=!m.shown;m.shown=true;acI=0;
-  let h=`<div class="am a ${fresh?'fresh':''}"><div class="am-h"><span class="am-av">${ASKIC}</span><b>Ruchi</b>${m.local?'<small>Quick picks</small>':''}</div>${d.say?`<p class="am-say">${askWords(d.say,fresh)}</p>`:''}`;
+  let h=`<div class="am a ${fresh?'fresh':''}"><div class="lv-who"><span class="lv-hf">${ASKIC}</span><b>Lovely</b></div>${d.say?`<p class="am-say">${askWords(d.say,fresh)}</p>`:''}`;
   if(d.kind==='plan'&&stops.length){let tot=0;stops.forEach((x,j)=>{if(j){const a=spotById(stops[j-1].id),b=spotById(x.id);tot+=kmBetween(a.lat,a.lng,b.lat,b.lng)}});
     h+=`<div class="plan"><div class="plan-h"><span class="plan-ic">${px('vintage-auto-rickshaw')}</span><span><b>${esc(d.title||'Your day')}</b><small>${stops.length} stops${tot?` · ${tot.toFixed(1)} km of riding`:''}${stops[0].time?` · starts ${esc(stops[0].time)}`:''}</small></span></div>
     <ol class="tl">${stops.map((x,j)=>{const s=spotById(x.id);let leg='';
@@ -3166,12 +3424,12 @@ function askAiHTML(m,i){const d=m.data||{};const stops=(d.stops||[]).filter(x=>s
     <div class="plan-a"><button class="pa main" onclick="askShowMap(${i})">${px('map-base')}<span>Show on map</span></button><button class="pa ic ${m.saved?'on':''}" onclick="askSave(${i},this)" aria-label="${m.saved?'Saved':'Save plan'}"><svg viewBox="0 0 24 24" fill="${m.saved?'currentColor':'none'}" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button><button class="pa ic" onclick="askSharePlan(${i})" aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg></button></div></div>`;
   } else if(stops.length){h+=`<div class="akcl">${stops.map((x,j)=>{const s=spotById(x.id);return askCard(spotStats(s),s,x.why,{top:j===0&&stops.length>1})}).join('')}</div>${stops.length>1?`<button class="pa main solo" style="--i:${stops.length}" onclick="askShowMap(${i})">${px('map-base')}<span>See all ${stops.length} on the map</span></button>`:''}`}
   if(m.err)h+=`<p class="am-err">${esc(m.err)} <button onclick="askRetry(${i})">Try again</button></p>`;
-  if(i===ASK.thread.length-1&&(d.followups||[]).length&&!ASK.busy)h+=`<div class="fu">${d.followups.slice(0,3).map((f,j)=>`<button style="--i:${j}" onclick="askSend(${esc(JSON.stringify(f)).replace(/"/g,'&quot;')})">${ASKIC}<span>${esc(f)}</span></button>`).join('')}</div>`;
+  if(i===ASK.thread.length-1&&(d.followups||[]).length&&!ASK.busy)h+=`<div class="fu">${d.followups.slice(0,3).map((f,j)=>`<button style="--i:${j}" onclick="askSend(${esc(JSON.stringify(f)).replace(/"/g,'&quot;')})"><span>${esc(f)}</span></button>`).join('')}</div>`;
   return h+`</div>`}
 function askCatalog(){return spots.map(s=>{const st=spotStats(s);return [s.id,s.name,isPlace(s)?'place':'food',TAG[s.tag]?.label||s.tag,s.area||'',isPlace(s)?'':(s.dish||''),s.price||'',s.timing||'',s.hidden?'hidden-gem':'',st.n?st.avg.toFixed(1)+'★('+st.n+')':'new',st.km.toFixed(1)+'km'].join(' | ')}).join('\n')}
 function askContext(){const d=new Date();const p=profiles[myId]||{};const sp=(typeof SPICE!=='undefined'&&SPICE[p.spice]?SPICE[p.spice][0]:'medium');
   return `Now: ${d.toLocaleString('en-IN',{weekday:'long',hour:'numeric',minute:'2-digit'})} in Trivandrum. Weather: ${WX.mode||'unknown'}${WX.temp!=null?', '+Math.round(WX.temp)+'°C':''}. User base area: ${p.home||'unknown'} (distances are from here). Spice preference: ${sp}.`}
-const ASKSYS=`You are Ruchi, a friendly local guide for Trivandrum (Kerala) inside a food-and-places map app. Voice: warm, short, a little playful Gen Z, plain English, at most one emoji.
+const ASKSYS=`You are Lovely, the AI food buddy inside the Ruchi app, a friendly local guide for Trivandrum (Kerala) inside a food-and-places map app. Voice: warm, short, a little playful Gen Z, plain English, at most one emoji.
 STRICT RULES:
 - Recommend ONLY spots from the CATALOG, by their exact id. Never invent places, prices or hours.
 - Prefer higher rating, closer distance and hidden gems; respect each spot's timing, the current time and weather (in rain or storm avoid beaches and open-air spots unless asked).
@@ -3205,7 +3463,7 @@ async function askSend(q){q=String(q||'').trim();if(!q||ASK.busy)return;try{navi
   ASK.thread.push({role:'ai',data:out,local:local&&!err?true:local,err:err&&err!=='stopped'?err:null});ASK.busy=false;renderAsk()}
 function askStop(){try{ASK.ctrl&&ASK.ctrl.abort()}catch(e){}}
 function askRetry(i){const u=ASK.thread[i-1];if(!u||u.role!=='user')return;ASK.thread.splice(i-1,2);askSend(u.text)}
-function askReset(){askStop();ASK.thread=[];ASK.busy=false;renderAsk();$('#page-ask').scrollTop=0}
+function askReset(){askStop();ASK.thread=[];ASK.busy=false;ASK.view='';renderAsk();$('#page-ask').scrollTop=0}
 /* offline planner: same ranking the app uses */
 function localAsk(q){const ql=q.toLowerCase();const rain=WX.mode==='rain'||WX.mode==='storm';
   const R=rankedSpots().map(x=>x.s).filter(s=>!(rain&&isPlace(s)&&/beach|sunset/i.test(s.name+' '+(s.desc||''))));
@@ -3219,7 +3477,7 @@ function localAsk(q){const ql=q.toLowerCase();const rain=WX.mode==='rain'||WX.mo
   let list=res.map(x=>x.s||x).filter(s=>s&&s.id);if(!list.length)list=R;
   return {say:'Here are my top picks for that.',kind:'spots',title:'',stops:list.slice(0,4).map(s=>({id:s.id,time:'',why:isPlace(s)?(s.timing||''):(s.dish?'Must try: '+s.dish:'')})),followups:['Plan my day','Hidden gems near me']}}
 function askOpenSaved(i){const p=plansGet()[i];if(!p)return;ASK.thread=[{role:'user',text:p.q||'My saved plan'},{role:'ai',data:{say:'',kind:'plan',title:p.title,stops:p.stops,followups:[]},saved:true}];renderAsk()}
-function askSave(i,btn){const m=ASK.thread[i];if(!m)return;if(m.saved){toast('Already in your saved plans');return}const u=ASK.thread[i-1];const a=plansGet();a.unshift({t:Date.now(),title:m.data.title||'Day plan',q:u?.text||'',stops:m.data.stops});plansSet(a);m.saved=true;if(btn){btn.classList.add('on','pop');btn.querySelector('svg').setAttribute('fill','currentColor');btn.setAttribute('aria-label','Saved')}try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}toast('Plan saved. Find it on the Ask home.')}
+function askSave(i,btn){const m=ASK.thread[i];if(!m)return;if(m.saved){toast('Already in your saved plans');return}const u=ASK.thread[i-1];const a=plansGet();a.unshift({t:Date.now(),title:m.data.title||'Day plan',q:u?.text||'',stops:m.data.stops});plansSet(a);m.saved=true;if(btn){btn.classList.add('on','pop');btn.querySelector('svg').setAttribute('fill','currentColor');btn.setAttribute('aria-label','Saved')}try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}toast('Saved. Find it under the clock icon.')}
 function askSharePlan(i){const m=ASK.thread[i];if(!m)return;const txt=(m.data.title||'My Trivandrum day')+'\n'+m.data.stops.map(x=>{const s=spotById(x.id);return `${x.time?x.time+' · ':''}${s.name}${s.dish&&!isPlace(s)?' ('+s.dish+')':''}`}).join('\n')+'\n\nPlanned on Ruchi';
   if(navigator.share)navigator.share({title:'My Ruchi plan',text:txt}).catch(()=>{});else{try{navigator.clipboard.writeText(txt);toast('Plan copied. Paste it anywhere.')}catch(e){toast('Couldn’t copy the plan')}}}
 function askShowMap(i){const m=ASK.thread[i];if(!m)return;const ids=m.data.stops.map(x=>x.id).filter(spotById);if(!ids.length)return;
@@ -3257,7 +3515,7 @@ function bindNav(){const bar=$('#lgbar');if(!bar||bar._b)return;bar._b=true;cons
   addEventListener('resize',()=>moveBub(false));
   requestAnimationFrame(()=>moveBub(false));
 }
-let lastTab='map';function openAsk(){if(adding)return;closeSearch&&closeSearch();go('ask')}function closeAsk(){go(lastTab||'map')}
+let lastTab='map';function openAsk(){if(adding)return;closeSearch&&closeSearch();go('ask')}function closeAsk(){ASK.about=false;ASK.view='';$('#app').classList.remove('lvland');go(lastTab||'map')}
 function go(p,silent){if(p!=='ask')lastTab=p;
   document.querySelectorAll('#lgbar button[data-p]').forEach(b=>{const on=b.dataset.p===p;if(on&&!b.classList.contains('on')){b.classList.remove('hop2');void b.offsetWidth;b.classList.add('hop2')}b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});$('#nav').classList.remove('mini');moveBub(true);
   $('#app').classList.toggle('onpage',p!=='map');$('#toast').classList.remove('show');
@@ -3355,7 +3613,7 @@ let cardsKey='';
 /* ===== "Best near you" ranking =====
    score = 45% quality (Bayesian rating) + 35% proximity + 20% trust (check-ins) + hidden-gem boost */
 function kmBetween(a,b,c,d){const R=6371,r=Math.PI/180,x=(c-a)*r,y=(d-b)*r;const h=Math.sin(x/2)**2+Math.cos(a*r)*Math.cos(c*r)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
-function originLL(){const p=profiles[myId];const a=AREAS.find(x=>x[0]===p?.home);if(a)return [a[1],a[2]];return [8.505,76.945]}
+function originLL(){const p=profiles[myId];if(Array.isArray(p?.homeLL))return p.homeLL;const a=AREAS.find(x=>x[0]===p?.home);if(a)return [a[1],a[2]];return [8.505,76.945]}
 function spotStats(s){const rv=reviewsFor(s.id);const n=rv.length;const sum=rv.reduce((a,r)=>a+(+r.rating||0),0);const avg=n?sum/n:0;
   const bay=(3.8*2+sum)/(2+n);const [la,ln]=originLL();const km=kmBetween(la,ln,s.lat,s.lng);
   const q=Math.max(0,(bay-3)/2),prox=Math.exp(-km/3),trust=Math.min(1,totalConfirms(s)/6);
@@ -3407,7 +3665,7 @@ function greet(){const h=new Date().getHours();return h<5?'Up late':h<12?'Mornin
 function updateMeChip(){
   const pr=profiles[myId];const na=$('#navAv');if(na)na.innerHTML=pr?.av?avImg(pr.av):px('smile');$('#helloAv').innerHTML=pr?.av?avImg(pr.av):px(pr?.avatar||'frying-pan');
   $('#helloName').textContent=pr?.nick?`${greet()}, ${pr.nick}`:greet();
-  $('#helloLoc').innerHTML=px('map-pin')+' '+esc(pr?.home&&pr.home!=='Just visiting'?pr.home+', Trivandrum':'Trivandrum');
+  $('#helloLoc').innerHTML=px('map-pin')+'<span>'+esc(pr?.home&&pr.home!=='Just visiting'?pr.home+', Trivandrum':'Trivandrum')+'</span><svg class="hloc-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
   const ds=[...new Set(spots.map(x=>x.dish).filter(Boolean))];const st=$('#sfakeTxt');if(st&&ds.length&&!st._s){st._s=1;st.textContent=`Craving something? Try “${ds[Math.floor(Math.random()*ds.length)].split(/[ &,]/)[0].toLowerCase()}”`}}
 function rerenderAll(){renderOverlay();renderCards();try{renderSetupPill()}catch(e){}updateMeChip();if($('#page-board').classList.contains('show'))renderBoard();if($('#page-me').classList.contains('show'))renderMe()}
 
@@ -3471,7 +3729,7 @@ function openAuth(mode){auth={mode,step:'phone',phone:'',code:String(1000+Math.f
 function renderAuth(){
   const su=auth.mode==='signup';
   if(auth.step==='phone'){
-    $('#auth').innerHTML=`<div class="f-top"><button class="backbtn" aria-label="Back" onclick="show('landing','back')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="logo"><i>${px('curry')}</i><b>Ruchi</b></div><div class="sp"></div></div>
+    $('#auth').innerHTML=`<div class="f-top"><button class="backbtn" aria-label="Back" onclick="show('landing','back')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><div class="logo"><i class="lgh">${ASKIC}</i><b>Ruchi</b></div><div class="sp"></div></div>
     <div class="a-wrap">
       <div class="seg" role="tablist"><button class="${su?'on':''}" onclick="auth.mode='signup';renderAuth()">Sign up</button><button class="${su?'':'on'}" onclick="auth.mode='login';renderAuth()">Log in</button></div>
       ${su?`<div class="a-art av-shuffle" id="avShuffle">${avImg(randAv())}</div>`:`<div class="a-back"><span class="steam">~ ~ ~</span>${px('tea')}</div>`}
@@ -3624,7 +3882,7 @@ function renderOb(back){$('#onboard').classList.remove('noanim');
     el.innerHTML=obTop('skipStep()','Later')+`<div class="ob pactv">
     <div class="enter"><h1>The Foodie Pact</h1><div class="lead">Five promises. Tap each one to agree, then sign it like you mean it.</div></div>
     <div class="doc enter" id="pact">
-      <div class="doc-h"><span class="logo"><i>${px('curry')}</i><b>Ruchi</b></span><small>Official-ish document</small></div>
+      <div class="doc-h"><span class="logo"><i class="lgh">${ASKIC}</i><b>Ruchi</b></span><small>Official-ish document</small></div>
       <div class="doc-t">I, <b>${esc(ob.nick||'a certified foodie')}</b>, solemnly swear:</div>
       ${PACT.map((c,i)=>`<button class="clause ${ob.pact.includes(i)?'on':''}" onclick="pactTap(${i})"><span class="cn">${i+1}</span><span class="ct"><b>${c[1]}</b><small>${c[2]}</small></span><span class="ck" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span></button>`).join('')}
       <div class="agree"><span>${n} of 5 agreed</span><div class="abar"><i style="width:${n/5*100}%"></i></div></div>

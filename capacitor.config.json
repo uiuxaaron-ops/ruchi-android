@@ -1,0 +1,22 @@
+{
+  "appId": "com.ruchi.trivandrum",
+  "appName": "Ruchi",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#FFFFFF"
+  },
+  "plugins": {
+    "SystemBars": {
+      "insetsHandling": "css",
+      "initialViewportFitValueHint": "cover",
+      "style": "LIGHT"
+    },
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "backgroundColor": "#FFFFFF",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_INSIDE"
+    }
+  }
+}

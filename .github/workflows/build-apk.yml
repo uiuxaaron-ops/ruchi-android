@@ -1,0 +1,58 @@
+name: Build Ruchi APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install
+        run: npm ci
+
+      - name: Build web + copy into Android
+        run: |
+          node build.js
+          npx cap sync android
+
+      - name: Build APK
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Rename
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk ruchi.apk
+
+      - name: Upload (Actions tab)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruchi-apk
+          path: ruchi.apk
+
+      - name: Publish download link (Releases)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Ruchi build ${{ github.run_number }}
+          body: Install ruchi.apk on an Android phone (allow installs from this source when asked).
+          files: ruchi.apk

@@ -18,5 +18,11 @@
       "showSpinner": false,
       "androidScaleType": "CENTER_INSIDE"
     }
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#FFFFFF",
+    "scrollEnabled": false,
+    "allowsLinkPreview": false
   }
 }

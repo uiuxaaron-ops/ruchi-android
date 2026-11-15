@@ -445,7 +445,8 @@
 
   /* ---------- Android niceties ---------- */
   if (isNative) {
-    document.documentElement.classList.add('native-android');
+    const plat = (Cap.getPlatform && Cap.getPlatform()) || 'android';
+    document.documentElement.classList.add('native-' + plat);   // native-android / native-ios
     // vibration -> native haptics (feels better than WebView vibrate)
     if (P.Haptics) {
       navigator.vibrate = (ms) => { P.Haptics.impact({ style: (ms || 0) >= 10 ? 'MEDIUM' : 'LIGHT' }).catch(() => {}); return true; };

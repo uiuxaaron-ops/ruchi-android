@@ -2,11 +2,12 @@
   "name": "ruchi-android",
   "version": "1.0.0",
   "private": true,
-  "description": "Ruchi — Trivandrum's hidden food map (Android app)",
+  "description": "Ruchi \u2014 Trivandrum\u2019s hidden food map (Android + iOS app)",
   "scripts": {
     "build": "node build.js",
-    "sync": "node build.js && npx cap sync android",
-    "open": "npx cap open android"
+    "sync": "node build.js && npx cap sync",
+    "open": "npx cap open android",
+    "open:ios": "npx cap open ios"
   },
   "dependencies": {
     "@capacitor-community/speech-recognition": "^7.0.1",
@@ -15,6 +16,7 @@
     "@capacitor/core": "^8.6.2",
     "@capacitor/filesystem": "^8.1.5",
     "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.6.2",
     "@capacitor/share": "^8.0.3",
     "@capacitor/splash-screen": "^8.0.2",
     "@supabase/supabase-js": "^2.119.0"

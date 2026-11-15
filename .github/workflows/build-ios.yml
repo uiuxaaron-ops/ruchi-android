@@ -1,0 +1,62 @@
+name: Build Ruchi iOS
+
+# Runs on demand (Actions tab -> Build Ruchi iOS -> Run workflow), so Mac build
+# minutes are only used when you want an iPhone build.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build web + copy into iOS (installs CocoaPods)
+        run: |
+          node build.js
+          npx cap sync ios
+
+      - name: Read version from Android build.gradle (keeps both apps in step)
+        run: |
+          echo "VNAME=$(grep -m1 versionName android/app/build.gradle | sed -E 's/.*"(.*)".*/\1/')" >> $GITHUB_ENV
+          echo "VCODE=$(grep -m1 versionCode android/app/build.gradle | sed -E 's/[^0-9]*([0-9]+).*/\1/')" >> $GITHUB_ENV
+
+      - name: Build app (unsigned)
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -archivePath build/Ruchi.xcarchive \
+            MARKETING_VERSION="$VNAME" CURRENT_PROJECT_VERSION="$VCODE" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            archive | tail -40
+
+      - name: Package .ipa
+        run: |
+          mkdir -p Payload
+          cp -R build/Ruchi.xcarchive/Products/Applications/App.app Payload/
+          zip -qry ruchi.ipa Payload
+          ls -l ruchi.ipa
+
+      - name: Upload (Actions tab)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ruchi-ipa
+          path: ruchi.ipa
+
+      - name: Publish download link (Releases)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-${{ github.run_number }}
+          name: Ruchi iOS build ${{ github.run_number }}
+          body: Unsigned iPhone build. Install with Sideloadly using your Apple ID, or sign it for TestFlight.
+          files: ruchi.ipa

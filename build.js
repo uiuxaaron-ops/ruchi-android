@@ -28,9 +28,13 @@ if (html.length === before) console.warn('! Google Fonts link not found — chec
 
 // 2) Android status bar: the app area starts below the status bar on every screen.
 //    The app's own top-inset paddings are zeroed so the gap is never doubled.
-html = html.split('env(safe-area-inset-top,0px)').join('0px').split('env(safe-area-inset-top)').join('0px');
+// Top safe area: Android adds its own fixed gap (below), so the app's own top inset is 0 there;
+// on iPhone it is the real notch / Dynamic Island inset.
+html = html.split('env(safe-area-inset-top,0px)').join('var(--sat,0px)').split('env(safe-area-inset-top)').join('var(--sat,0px)');
 const topGap = `<style id="android-top-gap">
 html.native-android,html.native-android body{background:#FFFFFF}
+html.native-ios{--sat:env(safe-area-inset-top,0px)}
+html.native-ios,html.native-ios body{background:#FFFFFF}
 html.native-android{--top-gap:max(env(safe-area-inset-top,0px),40px)}
 html.native-android #app{position:fixed;top:var(--top-gap);left:0;right:0;bottom:0;height:auto;max-width:none;margin:0}
 </style>`;

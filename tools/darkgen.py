@@ -124,7 +124,7 @@ def split_sel(text):
         else: cur += ch
     out.append(cur); return out
 
-KEEP = ('.thm-pv', '.swt i', '.lgr', '.hcard.glass,#lgbar')   # theme previews + switch knob keep their real colours
+KEEP = ('.thm-pv', '.swt i', '.lgr', '.hcard.glass,#lgbar', '.lgbub.lens', '.lit', '.glw')   # theme previews + switch knob keep their real colours
 ROOT_SKIP = True
 def rules(nodes, ind=''):
     global ROOT_SKIP

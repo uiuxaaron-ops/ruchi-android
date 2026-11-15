@@ -26,7 +26,17 @@ html = html.replace(/<link[^>]*fonts\.googleapis\.com[^>]*>\s*/g, '').replace(/<
 html = html.replace('</head>', `<style>${face}</style>\n</head>`);
 if (html.length === before) console.warn('! Google Fonts link not found — check the font setup');
 
-// 2) adapter scripts before the app script
+// 2) Android status bar: the app area starts below the status bar on every screen.
+//    The app's own top-inset paddings are zeroed so the gap is never doubled.
+html = html.split('env(safe-area-inset-top,0px)').join('0px').split('env(safe-area-inset-top)').join('0px');
+const topGap = `<style id="android-top-gap">
+html.native-android,html.native-android body{background:#FFFFFF}
+html.native-android{--top-gap:max(env(safe-area-inset-top,0px),40px)}
+html.native-android #app{position:fixed;top:var(--top-gap);left:0;right:0;bottom:0;height:auto;max-width:none;margin:0}
+</style>`;
+html = html.replace('</head>', topGap + '\n</head>');
+
+// 3) adapter scripts before the app script
 const inject = '<script src="config.js"></script>\n<script src="seed.js"></script>\n<script src="ruchi-native.js"></script>\n';
 const i = html.indexOf('<script>');
 if (i < 0) throw new Error('App <script> not found in web/index.html');

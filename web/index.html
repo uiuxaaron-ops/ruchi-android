@@ -2411,6 +2411,66 @@ a{color:inherit}
 @media (prefers-reduced-motion:reduce){.al-orb,.al-orb::before,.askic .tw1,.askic .tw2,.vwave i,.vdot,.al-car,.ask-go.m-stop{animation:none!important}}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== drop-a-spot steps ===== */
+.dz{padding-top:0}
+.dz-top{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:var(--s2);height:44px}
+.dz-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--ink)}
+.dz-ic svg{width:20px;height:20px}
+.dz-step{text-align:center;font-size:13px;line-height:16px;font-weight:600;color:var(--mute)}
+.dz-loc{height:36px;max-width:150px;padding:0 var(--s3) 0 var(--s2);display:inline-flex;align-items:center;gap:6px;border-radius:var(--r-full);background:var(--surface);font-size:13px;line-height:16px;font-weight:600;color:var(--ink)}
+.dz-loc span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dz-loc .px{width:16px;height:16px;flex:none}
+.dz-dots{display:flex;gap:6px;margin:var(--s3) 0 var(--s5)}
+.dz-dots i{flex:1;height:6px;border-radius:var(--r-full);background:var(--surface-2);transition:background .25s}
+.dz-dots i.past,.dz-dots i.on{background:var(--ink)}
+.dz-body h2{margin:0}
+.dz-lab{margin:var(--s5) 0 var(--s2);font-size:13px;line-height:16px;font-weight:600;color:var(--ink-2)}
+.dz-lab small{font-weight:500;color:var(--mute);margin-left:4px}
+.dz-types{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s2)}
+.dz-type{min-height:76px;padding:var(--s3) var(--s1) var(--s2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-radius:var(--r-md);background:var(--surface);font-size:12px;line-height:14px;font-weight:600;color:var(--ink-2);text-align:center;transition:background .15s,color .15s,transform .12s}
+.dz-type .px{width:28px;height:28px}
+.dz-type:active{transform:scale(.96)}
+.dz-type.on{background:var(--ink);color:#fff}
+.dz-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
+.dz-seg button{height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:var(--r-md);background:var(--surface);color:var(--ink)}
+.dz-seg b{font-size:16px;line-height:20px}
+.dz-seg small{font-size:12px;line-height:16px;color:var(--mute);font-weight:500}
+.dz-seg button.on{background:var(--ink);color:#fff}.dz-seg button.on small{color:rgba(255,255,255,.7)}
+.dz-chips{display:flex;flex-wrap:wrap;gap:var(--s2)}
+.dz-chips button{height:40px;padding:0 var(--s4);border-radius:var(--r-full);background:var(--surface);font-size:14px;line-height:20px;font-weight:500;color:var(--ink)}
+.dz-chips button.on{background:var(--ink);color:#fff}
+.dz-photo{margin-top:var(--s5);display:flex;gap:var(--s4);align-items:center;padding:var(--s3);border-radius:var(--r-lg);background:var(--surface)}
+.dz-thumb{width:88px;height:88px;flex:none;border-radius:var(--r-md);background:#fff;display:grid;place-items:center;overflow:hidden}
+.dz-thumb .px{width:36px;height:36px}
+.dz-thumb img{width:100%;height:100%;object-fit:cover}
+.dz-ptx{min-width:0;flex:1}
+.dz-ptx b{display:block;font-size:15px;line-height:20px}
+.dz-ptx small{display:block;margin-top:2px;font-size:13px;line-height:18px;color:var(--mute)}
+.dz-pb{display:flex;gap:var(--s2);margin-top:var(--s3);flex-wrap:wrap}
+.dz-pb button{height:36px;padding:0 var(--s4);border-radius:var(--r-full);background:#fff;font-size:13px;line-height:16px;font-weight:600;color:var(--ink)}
+.dz-pb button.x{background:transparent;color:var(--mute);padding:0 var(--s2)}
+.dz .toggle{margin-top:var(--s4)}
+.dz .toggle small{display:block}
+.dz-cnt{margin-top:4px;text-align:right;font-size:12px;line-height:16px;color:var(--mute)}
+.dz-sum{margin-top:var(--s5);display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s3) var(--s3) var(--s4);border-radius:var(--r-md);border:1px solid var(--line)}
+.dz-si .px{width:28px;height:28px;display:block}
+.dz-sum>span:nth-child(2){flex:1;min-width:0}
+.dz-sum b{display:block;font-size:15px;line-height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dz-sum small{display:block;font-size:13px;line-height:18px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dz-sum button{height:32px;padding:0 var(--s3);border-radius:var(--r-full);background:var(--surface);font-size:13px;font-weight:600}
+.dz .err:empty{min-height:0;margin:0}
+.dz-act{grid-template-columns:1fr !important}
+.dz-act .btn.dim{opacity:.4}
+.dz-here{display:inline-flex;align-items:center;gap:6px;margin:-4px 0 var(--s4);height:28px;padding:0 var(--s3) 0 var(--s2);border-radius:var(--r-full);background:rgba(118,118,128,.12);font-size:13px;line-height:16px;color:var(--ink-2)}
+.dz-here:empty{display:none}
+.dz-here .px{width:16px;height:16px}
+@media (prefers-reduced-motion:no-preference){
+  .dz-body.in-next{animation:dzIn .32s cubic-bezier(.2,.9,.25,1) both}
+  .dz-body.in-back{animation:dzBk .32s cubic-bezier(.2,.9,.25,1) both}
+  @keyframes dzIn{from{opacity:0;transform:translateX(24px)}}
+  @keyframes dzBk{from{opacity:0;transform:translateX(-24px)}}
+}
 </style>
 
 
@@ -2454,6 +2514,7 @@ a{color:inherit}
   <div id="crosshair"><div class="bub" data-px="map-pin"></div></div>
   <div id="addbar">
     <p><b>Drag the map</b> so the pin sits right on your spot.</p>
+    <div class="dz-here" id="addArea" aria-live="polite"></div>
     <div class="row"><button class="btn" onclick="cancelAdd()">Cancel</button><button class="btn yel" onclick="pinHere()">Pin it here</button></div>
   </div>
 
@@ -2743,9 +2804,10 @@ const mapEl=$('#map');
 function applyView(){
   $('#world').setAttribute('transform',`translate(${view.x},${view.y}) scale(${view.s})`);
   if(ovBase&&ovBase.s===view.s){$('#overlay').style.transform=`translate3d(${view.x-ovBase.x}px,${view.y-ovBase.y}px,0)`;clearTimeout(ovSettle);ovSettle=setTimeout(renderOverlay,140)}else renderOverlay();
-  queueTiles();
+  queueTiles();if(adding)dzHere();
 }
 let ovSettle=0;
+let dzHT=0;function dzHere(){if(dzHT)return;dzHT=requestAnimationFrame(()=>{dzHT=0;const el=$('#addArea');if(!el)return;const r=mapEl.getBoundingClientRect();const ll=toLL((r.width/2-view.x)/view.s,(r.height/2-view.y)/view.s);const a=nearestArea(ll.lat,ll.lng);if(el.dataset.a!==a){el.dataset.a=a;el.innerHTML=`${px('map-pin')}<span>Lands in <b>${esc(a)}</b></span>`}})}
 function clampS(s){return Math.max(.07,Math.min(3,s))}
 function zoomAt(f,cx,cy){const ns=clampS(view.s*f);f=ns/view.s;view.x=cx-(cx-view.x)*f;view.y=cy-(cy-view.y)*f;view.s=ns;applyView()}
 function zoomBy(f){const r=mapEl.getBoundingClientRect();zoomAt(f,r.width/2,r.height/2)}
@@ -2989,7 +3051,7 @@ function renderList(){const all=spots.map(s=>({s,st:spotStats(s)})).sort((a,b)=>
 </button>`}).join('')}</div><p class="osmattr">Some places from OpenStreetMap · © OpenStreetMap contributors</p></div>`;
 }
 function addFromOsm(i){const f=OSM_FOOD[i];if(!f||needPact())return;recentAdd(sq);closeSearch();go('map',true);
-  draft={lat:f.la,lng:f.ln,area:f.ar,tag:f.tag,hidden:false,photo:null,name:f.n,timing:f.t&&f.t!=='—'?f.t:''};
+  draft={step:2,lat:f.la,lng:f.ln,area:f.ar,tag:f.tag,hidden:false,photo:null,name:f.n,timing:f.t&&f.t!=='—'?f.t:''};
   flyTo(f.la,f.ln,1.4,-160);renderAddForm();showSheet('addSheet');toast('Add the must-try dish and it’s live')}
 function pairHTML(s){const want=isPlace(s)?x=>!isPlace(x):x=>isPlace(x);
   const near=spots.filter(x=>x.id!==s.id&&want(x)).map(x=>({x,km:kmBetween(s.lat,s.lng,x.lat,x.lng)})).filter(o=>o.km<=6).sort((a,b)=>a.km-b.km).slice(0,3);
@@ -3084,31 +3146,76 @@ function startAdd(){
   closeSheets();go('map',true);adding=true;$('#app').classList.add('adding');
   $('#crosshair').style.display='block';$('#addbar').style.display='block';$('#cards').style.display='none';$('#nav').style.display='none';
   if(view.s<1)zoomBy(1.2/view.s);
+  const aa=$('#addArea');if(aa)aa.dataset.a='';dzHere();
 }
 function cancelAdd(){adding=false;$('#app').classList.remove('adding');$('#crosshair').style.display='none';$('#addbar').style.display='none';$('#cards').style.display='';$('#nav').style.display=''}
 function pinHere(){
   const r=mapEl.getBoundingClientRect();const ll=toLL((r.width/2-view.x)/view.s,(r.height/2-view.y)/view.s);
-  draft={lat:+ll.lat.toFixed(5),lng:+ll.lng.toFixed(5),area:nearestArea(ll.lat,ll.lng),tag:'thattukada',hidden:true,photo:null};
+  const keep=draft&&draft.step?draft:null;
+  draft=Object.assign({tag:'thattukada',hidden:true,photo:null,step:1},keep||{},{lat:+ll.lat.toFixed(5),lng:+ll.lng.toFixed(5),area:nearestArea(ll.lat,ll.lng)});
   cancelAdd();renderAddForm();showSheet('addSheet');
 }
-function renderAddForm(){
-  $('#addSheet').innerHTML=`<div class="grab"></div><div class="form">
-    <h2>Drop your spot</h2><div class="sub">${px('map-pin')} Pinned near <b>${esc(draft.area)}</b> · <a href="#" onclick="event.preventDefault();closeSheets();startAdd()" style="color:var(--leaf)">move pin</a></div>
-    <div class="phpick ${draft.photo?'has':''}">${draft.photo?`<div class="phprev"><img src="${draft.photo}" alt=""><span class="phlab">This is your pin on the map</span></div>`:`<div class="phhint">${px('emoji-1f4f8')}<b>Add a photo, it becomes your pin</b><small>The board, the shop front or the plate. Optional.</small></div>`}
-      <div class="phbtns"><button type="button" onclick="$('#phCam').click()">${draft.photo?'Retake':'Take photo'}</button><button type="button" onclick="$('#ph').click()">From gallery</button></div></div>
+/* ================= DROP A SPOT — 3 short steps =================
+   1 What is it   (type tiles + name)
+   2 What's good  (dish + price chips + time chips)
+   3 Finishing touches (photo, tip, hidden gem) -> Post            */
+const DZ_PRICE=[['₹','Under ₹100'],['₹₹','₹100–300'],['₹₹₹','₹300+']];
+const DZ_TIME=['Breakfast','Lunch','Evening','Late night','All day'];
+const DZ_STEPS=[{t:'What is it?',d:'Pick a type and give it a name.'},{t:'What’s good here?',d:'Tell people what to order and when to go.'},{t:'Finishing touches',d:'All optional, but they get more people there.'}];
+function dzTimes(){return (draft.timing||'').split(' · ').filter(Boolean)}
+function renderAddForm(dir){
+  const st=draft.step||(draft.step=1),S=DZ_STEPS[st-1],tour=draft.tag==='tourist';
+  const dots=[1,2,3].map(i=>`<i class="${i<st?'past':i===st?'on':''}"></i>`).join('');
+  let body='';
+  if(st===1)body=`
+    <div class="dz-lab">Type</div>
+    <div class="dz-types">${TAGS.map(t=>`<button type="button" class="dz-type ${draft.tag===t.id?'on':''}" data-t="${t.id}" onclick="dzTag('${t.id}')">${t.icon}<span>${t.label}</span></button>`).join('')}</div>
+    <div class="field"><label for="f_name">Spot name</label><input id="f_name" placeholder="${tour?'e.g. Shanghumugham rocks':'e.g. Chettan’s tea stall'}" maxlength="50" autocomplete="off" enterkeyhint="next" value="${esc(draft.name||'')}" oninput="dzValid()" onkeydown="if(event.key==='Enter'){event.preventDefault();dzNext()}"></div>`;
+  if(st===2)body=`
+    <div class="field"><label for="f_dish">${tour?'Don’t miss':'Must-order dish'}</label><input id="f_dish" placeholder="${tour?'e.g. Sunset from the rocks':'e.g. Porotta & beef roast'}" maxlength="60" autocomplete="off" enterkeyhint="done" value="${esc(draft.dish||'')}" oninput="dzValid()" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"></div>
+    ${tour?'':`<div class="dz-lab">Price per person <small>optional</small></div>
+    <div class="dz-seg">${DZ_PRICE.map(([v,l])=>`<button type="button" class="${draft.price===v?'on':''}" onclick="dzPrice(this,'${v}')"><b>${v}</b><small>${l}</small></button>`).join('')}</div>`}
+    <div class="dz-lab">Best time to go <small>optional</small></div>
+    <div class="dz-chips">${DZ_TIME.map(t=>`<button type="button" class="${dzTimes().includes(t)?'on':''}" onclick="dzTime(this,'${t}')">${t}</button>`).join('')}</div>`;
+  if(st===3)body=`
+    <div class="dz-photo ${draft.photo?'has':''}">
+      <div class="dz-thumb">${draft.photo?`<img src="${draft.photo}" alt="Your photo">`:px('emoji-1f4f8')}</div>
+      <div class="dz-ptx"><b>${draft.photo?'Looking good':'Add a photo'}</b><small>${draft.photo?'This becomes your pin on the map.':'The board, the shop front or the plate.'}</small>
+        <div class="dz-pb"><button type="button" onclick="$('#phCam').click()">${draft.photo?'Retake':'Camera'}</button><button type="button" onclick="$('#ph').click()">Gallery</button>${draft.photo?`<button type="button" class="x" aria-label="Remove photo" onclick="draft.photo=null;renderAddForm()">Remove</button>`:''}</div></div>
+    </div>
     <input type="file" id="ph" accept="image/*" hidden onchange="pickPhoto(this)"><input type="file" id="phCam" accept="image/*" capture="environment" hidden onchange="pickPhoto(this)">
-    <div class="field"><label>Spot name</label><input id="f_name" placeholder="e.g. Chettan's tea stall" maxlength="50" value="${esc(draft.name||'')}"></div>
-    <div class="field"><label>Type</label><div class="tagpick">${TAGS.map(t=>`<button type="button" class="${draft.tag===t.id?'on':''}" onclick="draft.tag='${t.id}';saveDraft();renderAddForm()">${t.icon} ${t.label}</button>`).join('')}</div></div>
-    <div class="field"><label>${draft.tag==='tourist'?'Don’t miss':'Must-order dish'}</label><input id="f_dish" placeholder="${draft.tag==='tourist'?'e.g. Sunset from the rocks':'e.g. Porotta & beef roast'}" maxlength="60" value="${esc(draft.dish||'')}"></div>
-    <div class="two"><div class="field"><label>Price</label><input id="f_price" placeholder="₹ / ₹₹" maxlength="12" value="${esc(draft.price||'')}"></div>
-    <div class="field"><label>Best time</label><input id="f_time" placeholder="e.g. 6–10 pm" maxlength="24" value="${esc(draft.timing||'')}"></div></div>
-    <div class="field"><label>Local tip</label><textarea id="f_note" rows="2" maxlength="160" placeholder="How do you find it? What should people know?">${esc(draft.note||'')}</textarea></div>
-    <div class="field"><div class="toggle ${draft.hidden?'on':''}" onclick="saveDraft();draft.hidden=!draft.hidden;renderAddForm()"><div class="sw"></div><div><b>${px('emoji-1f48e')} It’s a hidden gem</b><small>Not on Google Maps, or barely any reviews there</small></div></div></div>
-    <div class="err" id="f_err"></div>
-    <div class="actions"><button class="btn" onclick="closeSheets()">Cancel</button><button class="btn pri" id="f_go" onclick="submitSpot()">Post it · +10 pts</button></div>
+    <div class="field"><label for="f_note">Local tip</label><textarea id="f_note" rows="3" maxlength="160" placeholder="How do you find it? What should people know?" oninput="dzCount(this)">${esc(draft.note||'')}</textarea><div class="dz-cnt" id="dzCnt">${(draft.note||'').length}/160</div></div>
+    <div class="toggle ${draft.hidden?'on':''}" role="switch" aria-checked="${!!draft.hidden}" tabindex="0" onclick="saveDraft();draft.hidden=!draft.hidden;this.classList.toggle('on',draft.hidden);this.setAttribute('aria-checked',draft.hidden)"><div class="sw"></div><div><b>${px('emoji-1f48e')} It’s a hidden gem</b><small>Not on Google Maps, or barely any reviews</small></div></div>
+    <div class="dz-sum"><span class="dz-si">${TAG[draft.tag].icon}</span><span><b>${esc(draft.name||'')}</b><small>${esc(draft.dish||'')}${draft.price?' · '+esc(draft.price):''}${draft.timing?' · '+esc(draft.timing):''}</small></span><button type="button" onclick="dzGo(1)">Edit</button></div>`;
+  $('#addSheet').innerHTML=`<div class="grab"></div><div class="form dz">
+    <div class="dz-top"><button class="dz-ic" aria-label="${st>1?'Back':'Close'}" onclick="${st>1?'dzBack()':'closeSheets()'}">${st>1?BACKSVG:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>'}</button>
+      <div class="dz-step">Step ${st} of 3</div>
+      <button class="dz-loc" onclick="closeSheets();startAdd()" aria-label="Move pin, now near ${esc(draft.area)}">${px('map-pin')}<span>${esc(draft.area)}</span></button></div>
+    <div class="dz-dots">${dots}</div>
+    <div class="dz-body ${dir?'in-'+dir:''}"><h2>${S.t}</h2><div class="sub">${S.d}</div>${body}</div>
+    <div class="err" id="f_err" role="alert"></div>
+    <div class="actions dz-act"><button class="btn pri" id="f_go" onclick="${st<3?'dzNext()':'submitSpot()'}">${st<3?'Continue':'Post it · +10 pts'}</button></div>
   </div>`;
+  dzValid();
 }
-function saveDraft(){const g=id=>$('#'+id)?.value?.trim();if(!$('#f_name'))return;Object.assign(draft,{name:g('f_name'),dish:g('f_dish'),price:g('f_price'),timing:g('f_time'),note:g('f_note')})}
+function dzValid(){const b=$('#f_go');if(!b||!draft)return;const st=draft.step;
+  const v=st===1?($('#f_name')?.value.trim().length>=3):st===2?($('#f_dish')?.value.trim().length>=2):true;
+  b.classList.toggle('dim',!v);const e=$('#f_err');if(e&&v)e.textContent=''}
+function dzTag(t){saveDraft();draft.tag=t;document.querySelectorAll('.dz-type').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  const i=$('#f_name');if(i)i.placeholder=t==='tourist'?'e.g. Shanghumugham rocks':'e.g. Chettan’s tea stall';try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}}
+function dzPrice(btn,v){draft.price=draft.price===v?'':v;btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===btn&&!!draft.price))}
+function dzTime(btn,t){let a=dzTimes();if(t==='All day')a=a.includes(t)?[]:[t];else{a=a.filter(x=>x!=='All day');a=a.includes(t)?a.filter(x=>x!==t):[...a,t]}
+  a.sort((x,y)=>DZ_TIME.indexOf(x)-DZ_TIME.indexOf(y));draft.timing=a.join(' · ');btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',a.includes(b.textContent)))}
+function dzCount(t){const c=$('#dzCnt');if(c)c.textContent=t.value.length+'/160'}
+function dzGo(n,dir){saveDraft();draft.step=n;renderAddForm(dir||'back');const sh=$('#addSheet');if(sh)sh.scrollTop=0}
+function dzBack(){dzGo(Math.max(1,draft.step-1),'back')}
+function dzNext(){saveDraft();const e=$('#f_err');
+  if(draft.step===1&&(!draft.name||draft.name.length<3)){e.textContent='Give it a name, at least 3 letters.';$('#f_name')?.focus();return}
+  if(draft.step===2&&(!draft.dish||draft.dish.length<2)){e.textContent=draft.tag==='tourist'?'Tell people what not to miss.':'What should people order?';$('#f_dish')?.focus();return}
+  try{navigator.vibrate&&navigator.vibrate(8)}catch(_){}
+  dzGo(draft.step+1,'next')}
+function saveDraft(){if(!draft)return;const g=id=>{const el=$('#'+id);return el?el.value.trim():undefined};
+  for(const [k,id] of [['name','f_name'],['dish','f_dish'],['note','f_note']]){const v=g(id);if(v!==undefined)draft[k]=v}}
 function pickPhoto(inp){
   const f=inp.files[0];if(!f)return;saveDraft();
   const img=new Image();img.onload=()=>{const max=640;let w=img.width,h=img.height;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
@@ -3128,7 +3235,7 @@ async function submitSpot(){
   $('#f_go').disabled=true;$('#f_go').textContent='Posting…';
   if(!live||!dbx){const id='local'+Date.now();spots.push({...body,id,by:myId||'preview'});closeSheets();rerenderAll();toast('Preview mode — spot shown only to you');openSpot(id);draft=null;return}
   try{const ref=await dbx.collection('spots').add(body);draft=null;closeSheets();toast('It’s live! +10 clout points');setTimeout(()=>openSpot(ref.id),400)}
-  catch(e){$('#f_go').disabled=false;$('#f_go').textContent='Post spot · +10 pts';
+  catch(e){$('#f_go').disabled=false;$('#f_go').textContent='Post it · +10 pts';
     err.textContent=e?.code==='invalid_argument'?'You need contributor access to post spots.':e?.code==='quota_exceeded'?'The map is full right now.':'Couldn’t post — check your connection and try again.'}
 }
 

@@ -37,11 +37,13 @@ html.native-android #app{position:fixed;top:var(--top-gap);left:0;right:0;bottom
 html = html.replace('</head>', topGap + '\n</head>');
 
 // 3) adapter scripts before the app script
-const inject = '<script src="config.js"></script>\n<script src="seed.js"></script>\n<script src="ruchi-native.js"></script>\n';
+const inject = '<script src="config.js"></script>\n<script src="supabase.js"></script>\n<script src="seed.js"></script>\n<script src="ruchi-native.js"></script>\n';
 const i = html.indexOf('<script>');
 if (i < 0) throw new Error('App <script> not found in web/index.html');
 html = html.slice(0, i) + inject + html.slice(i);
 
 fs.writeFileSync(path.join(www, 'index.html'), html);
 for (const f of ['config.js', 'seed.js', 'ruchi-native.js']) fs.copyFileSync(path.join(root, 'src', f), path.join(www, f));
+// Supabase client (cloud mode) — bundled, so the app never loads code from the internet
+fs.copyFileSync(path.join(root, 'node_modules/@supabase/supabase-js/dist/umd/supabase.js'), path.join(www, 'supabase.js'));
 console.log('✓ www/ built —', (html.length / 1024).toFixed(0), 'KB');

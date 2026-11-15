@@ -6,9 +6,11 @@
  * so this file provides the same `window.claude.use()` with
  * phone-side stand-ins:
  *
- *   db         -> data saved on the device (localStorage), seeded with
- *                 the starter spots in seed.js
- *   user       -> a stable id for this phone
+ *   db         -> CLOUD: shared Supabase database (config.js supabaseUrl/Key),
+ *                 cached on the phone, realtime, offline outbox.
+ *                 LOCAL (no Supabase config): data on this phone only,
+ *                 seeded with the starter spots in seed.js
+ *   user       -> cloud: silent Supabase account; local: a stable id per phone
  *   sample     -> Ask Ruchi AI through YOUR server (config.js -> aiEndpoint).
  *                 No endpoint = the app's built-in offline planner.
  *   dictation  -> Android speech recognition (Capacitor plugin)
@@ -106,6 +108,237 @@
       };
     }
   };
+
+
+  /* =====================================================================
+     CLOUD MODE (Supabase) — on when config.js has supabaseUrl + supabaseAnonKey.
+     Same db API as above, but every phone shares one database:
+       - silent sign-in (anonymous Supabase account per install)
+       - reads: cached copy first (instant, works offline), then live data,
+         then realtime pushes when anyone changes anything
+       - writes: shown instantly, sent to the server; if offline they wait
+         in an outbox and sync when the phone is back online
+       - photos (data:image/...) are uploaded to the "photos" bucket and
+         replaced by their public URL before saving
+       - first cloud launch moves this phone's own local data up
+     ===================================================================== */
+  function makeCloud(local) {
+    const SB = window.supabase;
+    if (!CFG.supabaseUrl || !CFG.supabaseAnonKey || !SB || !SB.createClient) return null;
+    const sb = SB.createClient(CFG.supabaseUrl, CFG.supabaseAnonKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false, storageKey: 'ruchi_auth' },
+      realtime: { params: { eventsPerSecond: 5 } }
+    });
+    const COLS = ['spots', 'reviews', 'confirms', 'profiles', 'experiments'];
+    let uid = null;
+    try { uid = localStorage.getItem('ruchi_cloud_uid'); } catch (e) {}
+
+    /* ---- cache (IndexedDB, same "ruchi" database as the local store) ---- */
+    const CK = 'ruchi_cloud_cache_v1', OK = 'ruchi_cloud_outbox_v1';
+    let cache = {}, outbox = [];
+    const kvGet = (k) => new Promise((res) => { local.idb().then((h) => { const t = h.transaction('kv').objectStore('kv').get(k); t.onsuccess = () => res(t.result || null); t.onerror = () => res(null); }).catch(() => { try { res(JSON.parse(localStorage.getItem(k) || 'null')); } catch (e) { res(null); } }); });
+    const kvPut = (k, v) => local.idb().then((h) => new Promise((res) => { const t = h.transaction('kv', 'readwrite'); t.objectStore('kv').put(v, k); t.oncomplete = res; t.onerror = res; })).catch(() => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} });
+    let cT = null;
+    const saveCache = () => { clearTimeout(cT); cT = setTimeout(() => kvPut(CK, cache), 400); };
+    const saveOutbox = () => kvPut(OK, outbox);
+    const cacheReady = Promise.all([kvGet(CK), kvGet(OK)]).then(([c, o]) => { cache = c || {}; outbox = Array.isArray(o) ? o : []; });
+
+    /* ---- auth: silent anonymous account, kept across launches ---- */
+    let authP = null;
+    const signIn = () => authP || (authP = (async () => {
+      const { data } = await sb.auth.getSession();
+      let u = data && data.session && data.session.user;
+      if (!u) {
+        const r = await sb.auth.signInAnonymously();
+        if (r.error) throw r.error;
+        u = r.data.user;
+      }
+      uid = u.id;
+      try { localStorage.setItem('ruchi_cloud_uid', uid); } catch (e) {}
+      return uid;
+    })().catch((e) => { authP = null; throw e; }));
+
+    /* ---- snapshots + listeners ---- */
+    const subs = {}, loaded = {};
+    const snapOf = (c, fromCache) => {
+      const m = cache[c] || {};
+      return { docs: Object.entries(m).map(([id, v]) => ({ id, data: () => clone(v), exists: true })), metadata: { fromCache: !!fromCache }, size: Object.keys(m).length };
+    };
+    const emit = (c, fromCache) => (subs[c] || []).forEach((cb) => { try { cb(snapOf(c, fromCache)); } catch (e) { console.error(e); } });
+    const putLocal = (c, id, v) => { (cache[c] = cache[c] || {})[id] = v; saveCache(); };
+    const dropLocal = (c, id) => { if (cache[c]) delete cache[c][id]; saveCache(); };
+
+    async function fetchAll(c) {
+      const rows = {};
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await sb.from('docs').select('id,data').eq('collection', c).range(from, from + 999);
+        if (error) throw error;
+        for (const r of data) rows[r.id] = r.data;
+        if (data.length < 1000) break;
+      }
+      // keep writes that haven't reached the server yet
+      for (const op of outbox) if (op.c === c) { if (op.t === 'del') delete rows[op.id]; else rows[op.id] = op.d; }
+      cache[c] = rows; loaded[c] = true; saveCache(); emit(c, false);
+    }
+    const refresh = (c) => fetchAll(c).catch((e) => { console.warn('ruchi cloud: fetch ' + c, e); });
+
+    let chan = null, everJoined = false;
+    function startRealtime() {
+      if (chan) return;
+      chan = sb.channel('ruchi-docs')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'docs' }, (p) => {
+          const row = p.eventType === 'DELETE' ? p.old : p.new;
+          if (!row || !COLS.includes(row.collection)) return;
+          if (outbox.some((o) => o.c === row.collection && o.id === row.id)) return; // our pending write wins
+          if (p.eventType === 'DELETE') dropLocal(row.collection, row.id); else putLocal(row.collection, row.id, row.data);
+          emit(row.collection, false);
+        })
+        .subscribe((st) => {
+          if (st === 'SUBSCRIBED') { if (everJoined) Object.keys(subs).forEach(refresh); everJoined = true; } // catch up after a reconnect
+        });
+    }
+
+    /* ---- photos: data URLs -> storage URLs ---- */
+    const isImg = (v) => typeof v === 'string' && v.startsWith('data:image/') && v.length > 2000;
+    async function uploadImg(dataUrl) {
+      const blob = await (await fetch(dataUrl)).blob();
+      const ext = (blob.type.split('/')[1] || 'jpg').replace('jpeg', 'jpg');
+      const path = uid + '/' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8) + '.' + ext;
+      const { error } = await sb.storage.from('photos').upload(path, blob, { contentType: blob.type || 'image/jpeg', cacheControl: '31536000', upsert: false });
+      if (error) throw error;
+      return sb.storage.from('photos').getPublicUrl(path).data.publicUrl;
+    }
+    async function withPhotoUrls(v) {
+      if (isImg(v)) return uploadImg(v);
+      if (Array.isArray(v)) return Promise.all(v.map(withPhotoUrls));
+      if (v && typeof v === 'object') { const o = {}; for (const [k, x] of Object.entries(v)) o[k] = await withPhotoUrls(x); return o; }
+      return v;
+    }
+
+    /* ---- sending writes (with offline outbox) ---- */
+    const isNetErr = (e) => !navigator.onLine || (e && (e.name === 'TypeError' || /fetch|network|Failed to|timeout/i.test(String(e.message || e))));
+    const permErr = (e) => ({ code: (e && e.code === '42501') || /row-level security|permission/i.test(String(e && e.message)) ? 'invalid_argument' : 'server', message: (e && e.message) || 'Save failed' });
+    async function send(op) {
+      await signIn();
+      if (op.t === 'del') {
+        const { data, error } = await sb.from('docs').delete().eq('collection', op.c).eq('id', op.id).select('id');
+        if (error) throw error;
+        if (!data || !data.length) throw { code: '42501', message: 'Not allowed to delete this' }; // the rules silently skip others' rows
+        return;
+      }
+      const d = await withPhotoUrls(op.d);
+      const { error } = await sb.from('docs').upsert({ collection: op.c, id: op.id, owner: uid, data: d }, { onConflict: 'collection,id' });
+      if (error) throw error;
+      if (JSON.stringify(d) !== JSON.stringify(op.d) && cache[op.c] && cache[op.c][op.id]) { putLocal(op.c, op.id, d); emit(op.c, false); } // show the hosted photo URL
+    }
+    let flushing = false;
+    async function flush() {
+      if (flushing || !outbox.length) return; flushing = true;
+      try {
+        while (outbox.length) {
+          const op = outbox[0];
+          try { await send(op); }
+          catch (e) {
+            if (isNetErr(e)) break;                      // still offline: try later
+            console.warn('ruchi cloud: dropped write', op.c + '/' + op.id, e);
+          }
+          outbox.shift(); saveOutbox();
+        }
+      } finally { flushing = false; }
+    }
+    window.addEventListener('online', flush);
+    setInterval(flush, 30000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { flush(); Object.keys(subs).forEach(refresh); } });
+
+    async function write(op) {
+      await cacheReady;
+      const prev = cache[op.c] && cache[op.c][op.id];
+      if (op.t === 'del') dropLocal(op.c, op.id); else putLocal(op.c, op.id, op.d);
+      emit(op.c, false);
+      const queued = outbox.some((o) => o.c === op.c && o.id === op.id);
+      if (!queued) {
+        try { await send(op); return; }
+        catch (e) {
+          if (!isNetErr(e)) {                           // refused by the server: undo
+            if (prev === undefined) dropLocal(op.c, op.id); else putLocal(op.c, op.id, prev);
+            emit(op.c, false); throw permErr(e);
+          }
+        }
+      }
+      outbox = outbox.filter((o) => !(o.c === op.c && o.id === op.id)); // keep only the latest write per doc
+      outbox.push(op); saveOutbox();
+    }
+
+    /* ---- the db object the app uses ---- */
+    const docRef = (path) => {
+      const [c, id] = path.split('/');
+      return {
+        id,
+        async get() {
+          await cacheReady;
+          try { const { data, error } = await sb.from('docs').select('data').eq('collection', c).eq('id', id).maybeSingle(); if (!error) { if (data) putLocal(c, id, data.data); else if (!outbox.some((o) => o.c === c && o.id === id)) dropLocal(c, id); } } catch (e) {}
+          const v = cache[c] && cache[c][id];
+          return { id, exists: v !== undefined, data: () => (v === undefined ? undefined : clone(v)) };
+        },
+        set: (d) => write({ t: 'set', c, id, d: clone(d) }),
+        async update(d) { await cacheReady; return write({ t: 'set', c, id, d: Object.assign({}, (cache[c] && cache[c][id]) || {}, clone(d)) }); },
+        delete: () => write({ t: 'del', c, id })
+      };
+    };
+    const db = {
+      doc: docRef,
+      collection(c) {
+        return {
+          doc: (id) => docRef(c + '/' + id),
+          async get() { await cacheReady; try { await fetchAll(c); } catch (e) {} return snapOf(c, !loaded[c]); },
+          async add(d) { await signIn().catch(() => {}); const id = newId(); await docRef(c + '/' + id).set(d); return { id }; },
+          onSnapshot(cb, err) {
+            (subs[c] = subs[c] || []).push(cb);
+            cacheReady.then(() => {
+              if (cache[c]) cb(snapOf(c, true));             // instant: last known data
+              return signIn().then(() => { startRealtime(); return fetchAll(c); });
+            }).catch((e) => { console.warn('ruchi cloud: ' + c, e); if (!cache[c] && err) err(e); });
+            return () => { subs[c] = (subs[c] || []).filter((f) => f !== cb); };
+          }
+        };
+      }
+    };
+
+    /* ---- move this phone's local data to the cloud, once ---- */
+    async function migrate() {
+      try { if (localStorage.getItem('ruchi_cloud_migrated') === uid) return; } catch (e) { return; }
+      await local.ready;
+      const st = local.store(), old = local.uid;
+      if (st && old) {
+        for (const c of ['profiles', 'reviews', 'confirms', 'experiments']) {
+          const v = st[c] && st[c][old];
+          if (v) await write({ t: 'set', c, id: uid, d: clone(v) }).catch(() => {});
+        }
+        for (const [id, v] of Object.entries(st.spots || {})) {
+          if (v && v.by === old) await write({ t: 'set', c: 'spots', id: newId(), d: Object.assign(clone(v), { by: uid }) }).catch(() => {});
+        }
+      }
+      try { localStorage.setItem('ruchi_cloud_migrated', uid); } catch (e) {}
+    }
+
+    const user = {
+      async id() {
+        try { await Promise.race([signIn(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000))]); }
+        catch (e) { if (!uid) return null; }               // offline but signed in before: keep going
+        migrate().then(flush).catch(() => {});
+        cacheReady.then(flush);
+        return uid;
+      },
+      async profiles(ids) {
+        await cacheReady;
+        const out = {};
+        for (const i of ids) { const p = cache.profiles && cache.profiles[i]; out[i] = { name: (p && p.nick) || '' }; }
+        return out;
+      }
+    };
+    window.RUCHI_CLOUD = { sb, flush, outbox: () => outbox.length, uid: () => uid };
+    return { db, user };
+  }
 
   /* ---------- user ---------- */
   let uid = null;
@@ -206,7 +439,8 @@
     }
   };
 
-  const caps = { db, user, sample, dictation, downloads };
+  const cloud = makeCloud({ ready, store: () => store, uid, idb });
+  const caps = cloud ? { db: cloud.db, user: cloud.user, sample, dictation, downloads } : { db, user, sample, dictation, downloads };
   window.claude = Object.freeze({ use: async (name) => caps[name] || null });
 
   /* ---------- Android niceties ---------- */

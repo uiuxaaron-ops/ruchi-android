@@ -16,7 +16,8 @@
     "@capacitor/filesystem": "^8.1.5",
     "@capacitor/haptics": "^8.0.2",
     "@capacitor/share": "^8.0.3",
-    "@capacitor/splash-screen": "^8.0.2"
+    "@capacitor/splash-screen": "^8.0.2",
+    "@supabase/supabase-js": "^2.119.0"
   },
   "devDependencies": {
     "@capacitor/assets": "^4.0.0",

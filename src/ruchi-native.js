@@ -26,19 +26,54 @@
   const P = (Cap && Cap.Plugins) || {};
   const isNative = !!(Cap && Cap.isNativePlatform && Cap.isNativePlatform());
 
-  /* ---------- local database (same API the app already uses) ---------- */
+  /* ---------- local database (same API the app already uses) ----------
+     Stored in IndexedDB (hundreds of MB) so photos never fill it up.
+     Older installs that used localStorage are migrated on first launch. */
   const KEY = 'ruchi_db_v1';
   const clone = (v) => JSON.parse(JSON.stringify(v));
-  let store;
-  try { store = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { store = null; }
-  if (!store) store = clone(window.RUCHI_SEED || { spots: {}, reviews: {}, confirms: {}, profiles: {}, experiments: {} });
-  // new starter spots shipped in a later app update get merged in
-  if (window.RUCHI_SEED) for (const [c, docs] of Object.entries(window.RUCHI_SEED)) {
-    store[c] = store[c] || {};
-    for (const [id, d] of Object.entries(docs)) if (!(id in store[c]) && !(store._deleted || []).includes(c + '/' + id)) store[c][id] = clone(d);
-  }
+  let store = null;
+  const seedInto = (st) => {
+    st = st || clone(window.RUCHI_SEED || { spots: {}, reviews: {}, confirms: {}, profiles: {}, experiments: {} });
+    if (window.RUCHI_SEED) for (const [c, docs] of Object.entries(window.RUCHI_SEED)) {
+      st[c] = st[c] || {};
+      for (const [id, d] of Object.entries(docs)) if (!(id in st[c]) && !(st._deleted || []).includes(c + '/' + id)) st[c][id] = clone(d);
+    }
+    return st;
+  };
+  const idb = () => new Promise((res, rej) => {
+    if (!window.indexedDB) return rej(new Error('no idb'));
+    const r = indexedDB.open('ruchi', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('kv');
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+  let dbh = null;
+  const ready = (async () => {
+    let fromLS = null;
+    try { fromLS = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+    try {
+      dbh = await idb();
+      const got = await new Promise((res) => { const t = dbh.transaction('kv').objectStore('kv').get(KEY); t.onsuccess = () => res(t.result || null); t.onerror = () => res(null); });
+      store = seedInto(got || fromLS);
+      if (!got) await writeIdb();                 // first run or migration from localStorage
+      if (fromLS) try { localStorage.removeItem(KEY); } catch (e) {}
+    } catch (e) {
+      dbh = null; store = seedInto(fromLS);       // very old WebView: fall back to localStorage
+    }
+  })();
+  const writeIdb = () => new Promise((res) => {
+    try { const t = dbh.transaction('kv', 'readwrite'); t.objectStore('kv').put(store, KEY); t.oncomplete = res; t.onerror = () => res(); } catch (e) { res(); }
+  });
+  let saveT = null;
+  const persist = () => {
+    clearTimeout(saveT);
+    saveT = setTimeout(async () => {
+      if (dbh) return writeIdb();
+      try { localStorage.setItem(KEY, JSON.stringify(store)); }
+      catch (e) { try { window.toast && window.toast('Phone storage is full. Free up space to keep saving.'); } catch (_) {} }
+    }, 120);
+  };
+  window.addEventListener('pagehide', () => { if (saveT) { clearTimeout(saveT); dbh ? writeIdb() : persist(); } });
   const subs = {};
-  const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { console.warn('Ruchi: storage full', e); } };
   const snap = (c) => ({
     docs: Object.entries(store[c] || {}).map(([id, v]) => ({ id, data: () => clone(v), exists: true })),
     metadata: { fromCache: false },
@@ -50,10 +85,10 @@
     const [c, id] = path.split('/');
     return {
       id,
-      async get() { const v = store[c] && store[c][id]; return { id, exists: !!v, data: () => (v ? clone(v) : undefined) }; },
-      async set(d) { store[c] = store[c] || {}; store[c][id] = clone(d); persist(); emit(c); },
-      async update(d) { store[c] = store[c] || {}; store[c][id] = Object.assign({}, store[c][id] || {}, clone(d)); persist(); emit(c); },
-      async delete() { if (store[c]) delete store[c][id]; (store._deleted = store._deleted || []).push(path); persist(); emit(c); }
+      async get() { await ready; const v = store[c] && store[c][id]; return { id, exists: !!v, data: () => (v ? clone(v) : undefined) }; },
+      async set(d) { await ready; store[c] = store[c] || {}; store[c][id] = clone(d); persist(); emit(c); },
+      async update(d) { await ready; store[c] = store[c] || {}; store[c][id] = Object.assign({}, store[c][id] || {}, clone(d)); persist(); emit(c); },
+      async delete() { await ready; if (store[c]) delete store[c][id]; (store._deleted = store._deleted || []).push(path); persist(); emit(c); }
     };
   };
   const db = {
@@ -61,11 +96,11 @@
     collection(c) {
       return {
         doc: (id) => docRef(c + '/' + id),
-        async get() { return snap(c); },
+        async get() { await ready; return snap(c); },
         async add(d) { const id = newId(); await docRef(c + '/' + id).set(d); return { id }; },
         onSnapshot(cb, err) {
           (subs[c] = subs[c] || []).push(cb);
-          setTimeout(() => cb(snap(c)), 0);
+          ready.then(() => cb(snap(c)));
           return () => { subs[c] = (subs[c] || []).filter((f) => f !== cb); };
         }
       };
@@ -79,6 +114,7 @@
     async id() { return uid; },
     async profiles(ids) {
       const out = {};
+      await ready;
       for (const i of ids) { const p = store.profiles && store.profiles[i]; out[i] = { name: (p && p.nick) || '' }; }
       return out;
     }
@@ -188,6 +224,7 @@
         const app = document.getElementById('app');
         if (app && app.classList.contains('voicing')) return call('voiceCancel');
         if (document.querySelector('.sheet.show, #shareModal.show')) return call('closeSheets');
+        if (shown('#locp')) return call('closeLoc');
         if (shown('#nfp')) return call('closeNotifs');
         if (shown('#lstp')) return call('closeList');
         if (shown('#sv')) return call('closeSearch');

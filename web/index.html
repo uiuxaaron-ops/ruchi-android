@@ -98,9 +98,9 @@ a{color:inherit}
 #map{position:absolute;inset:0;touch-action:none;background:#E3EEF5;overflow:hidden;cursor:grab}
 #map.dragging{cursor:grabbing}
 #map svg{position:absolute;left:0;top:0;overflow:visible}
-#overlay{position:absolute;inset:0;pointer-events:none}
-.area{position:absolute;transform:translate(-50%,-50%);font-size:11px;line-height:16px;font-weight:500;color:#A1A1AA;white-space:nowrap}
-.pin{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;display:flex;flex-direction:column;align-items:center;transition:transform .15s}
+#overlay{position:absolute;inset:0;pointer-events:none;will-change:transform}
+.area{position:absolute;left:0;top:0;transform:translate(-50%,-50%);font-size:11px;line-height:16px;font-weight:500;color:#A1A1AA;white-space:nowrap}
+.pin{position:absolute;left:0;top:0;will-change:translate;transform:translate(-50%,-50%);pointer-events:auto;display:flex;flex-direction:column;align-items:center;transition:transform .15s}
 .pin .bub{width:var(--h-lg);height:var(--h-lg);display:grid;place-items:center;border-radius:var(--r-full);background:#fff;box-shadow:var(--float)}
 .pin .bub .px{width:40px;height:40px;vertical-align:0}
 .pin.hidden .bub{box-shadow:0 0 0 3px var(--pink),var(--float)}
@@ -2742,8 +2742,10 @@ function drawMap(){
 const mapEl=$('#map');
 function applyView(){
   $('#world').setAttribute('transform',`translate(${view.x},${view.y}) scale(${view.s})`);
-  renderOverlay();queueTiles();
+  if(ovBase&&ovBase.s===view.s){$('#overlay').style.transform=`translate3d(${view.x-ovBase.x}px,${view.y-ovBase.y}px,0)`;clearTimeout(ovSettle);ovSettle=setTimeout(renderOverlay,140)}else renderOverlay();
+  queueTiles();
 }
+let ovSettle=0;
 function clampS(s){return Math.max(.07,Math.min(3,s))}
 function zoomAt(f,cx,cy){const ns=clampS(view.s*f);f=ns/view.s;view.x=cx-(cx-view.x)*f;view.y=cy-(cy-view.y)*f;view.s=ns;applyView()}
 function zoomBy(f){const r=mapEl.getBoundingClientRect();zoomAt(f,r.width/2,r.height/2)}
@@ -2779,11 +2781,13 @@ function visibleSpots(){
 }
 const PINC={thattukada:['#FF7A1A','#C2410C','#FFEBDD'],chaya:['#14B8A6','#0F766E','#DDF7F3'],toddy:['#3DBE29','#2F7D1E','#E3F7DD'],seafood:['#2F6BFF','#1E40AF','#E4ECFF'],bakery:['#F43F5E','#BE123C','#FFE4E8'],sweets:['#FF3E9A','#BE185D','#FFE4F1'],meals:['#0EA5E9','#0369A1','#E0F2FE'],tourist:['#8B5CF6','#6D28D9','#EFE8FF']};
 const pinEls=new Map();let pinIntro=true;
+let ovBase=null;
 function renderOverlay(){
-  const o=$('#overlay');const vis=new Set(visibleSpots().map(s=>s.id));
+  const o=$('#overlay');o.style.transform='';ovBase={x:view.x,y:view.y,s:view.s};const vis=new Set(visibleSpots().map(s=>s.id));
   let ar=o.querySelector('.areas');if(!ar){ar=document.createElement('div');ar.className='areas';o.innerHTML='';o.appendChild(ar);pinEls.clear()}
-  let h='';if(view.s>.3){for(const [n,lat,lng] of AREAS){const p=toXY(lat,lng);h+=`<div class="area" style="left:${p.x*view.s+view.x}px;top:${p.y*view.s+view.y+22}px">${n}</div>`}}
-  ar.innerHTML=h;
+  if(!ar._built||ar.children.length!==AREAS.length){ar.innerHTML=AREAS.map(a=>`<div class="area">${a[0]}</div>`).join('');ar._built=1}
+  ar.style.display=view.s>.3?'':'none';
+  if(view.s>.3){const kids=ar.children;for(let i=0;i<AREAS.length;i++){const p=toXY(AREAS[i][1],AREAS[i][2]);kids[i].style.translate=`${p.x*view.s+view.x}px ${p.y*view.s+view.y+22}px`}}
   const showLbl=view.s>1.35;const seen=new Set();let idx=0;
   for(const s of spots){seen.add(s.id);
     const p=toXY(s.lat,s.lng);const t=TAG[s.tag]||TAG.meals;const c=PINC[s.tag]||PINC.meals;
@@ -2797,7 +2801,7 @@ function renderOverlay(){
       el.innerHTML=tiny?'<i class="odot"></i>':(ph?`<div class="pbub"><img src="${ph}" alt=""><span class="pbadge">${t.icon}</span></div>`:`<div class="mpin"><span class="pp-face">${spotIcon(s)}</span></div>`)+`<i class="pp-tail"></i>${s.hidden?'<i class="spk s1"></i><i class="spk s2"></i><i class="spk s3"></i>':''}`+(lblOn?`<div class="lbl">${esc(s.name)}</div>`:'')+(pn?`<span class="ai-n">${pn}</span>`:'')}
     const cls=['pin','px2',isPlace(s)?'place':'',tiny?'tiny':'',s.src==='osm'?'osm':'',ph?'photo':'',ph&&far?'far':'',s.hidden?'hidden':'',isVerified(s)?'':'unver',sel?'sel':'',pk?'aipk':'',vis.has(s.id)&&(!aiPick.size||pk)?'':'dim',el.classList.contains('drop')?'drop':'',el.classList.contains('tap')?'tap':''].filter(Boolean).join(' ');
     if(el.className!==cls)el.className=cls;
-    el.style.left=(p.x*view.s+view.x)+'px';el.style.top=(p.y*view.s+view.y)+'px';el.style.setProperty('--c',c[0]);el.style.setProperty('--cd',c[1]);el.style.setProperty('--ct',c[2]);
+    el.style.translate=`${p.x*view.s+view.x}px ${p.y*view.s+view.y}px`;if(el._c!==c[0]){el._c=c[0];el.style.setProperty('--c',c[0]);el.style.setProperty('--cd',c[1]);el.style.setProperty('--ct',c[2])}
   }
   let rt=o.querySelector('.ai-route');if(aiPlan.length>1){if(!rt){rt=document.createElementNS('http://www.w3.org/2000/svg','svg');rt.setAttribute('class','ai-route');rt.innerHTML='<polyline/>';o.insertBefore(rt,ar.nextSibling)}
     rt.querySelector('polyline').setAttribute('points',aiPlan.map(spotById).filter(Boolean).map(s=>{const p=toXY(s.lat,s.lng);return (p.x*view.s+view.x)+','+(p.y*view.s+view.y)}).join(' '))}else if(rt)rt.remove();
@@ -3170,6 +3174,9 @@ async function saveCard(id){
 
 
 
+/* haptics only after the person has touched the screen (browsers block it before) */
+(function(){let tapped=false;const on=()=>{tapped=true};addEventListener('pointerdown',on,{capture:true,passive:true});addEventListener('keydown',on,{capture:true,passive:true});
+  const v=navigator.vibrate?navigator.vibrate.bind(navigator):null;if(v)try{navigator.vibrate=p=>tapped?v(p):false}catch(e){}})();
 /* ================= INTRO: pixel heart assembles, beats, hands off ================= */
 const HEART=['..XXX...XXX..','.XXXXX.XXXXX.','XXXXXXXXXXXXX','XXXXXXXXXXXXX','XXXXXXXXXXXXX','.XXXXXXXXXXX.','..XXXXXXXXX..','...XXXXXXX...','....XXXXX....','.....XXX.....','......X......'];
 let introT=[];
@@ -3257,7 +3264,7 @@ function renderLocList(){const el=$('#locList');if(!el)return;const p=profiles[m
 async function setHomeArea(n,ll){const old=profiles[myId]||localProfile()||{};const p={...old,home:n,updatedAt:Date.now()};if(ll)p.homeLL=ll;else delete p.homeLL;
   profiles[myId]=p;try{localStorage.setItem('ruchi_profile',JSON.stringify(p))}catch(e){}
   try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}
-  closeLoc();cardsKey='';rerenderAll();const [la,ln]=originLL();flyTo(la,ln,Math.max(view.s,.7),-80);toast(`Showing spots near ${n}`);
+  closeLoc();cardsKey='';rerenderAll();loadWeather();const [la,ln]=originLL();flyTo(la,ln,Math.max(view.s,.7),-80);toast(`Showing spots near ${n}`);
   if(live&&dbx&&myId){try{await dbx.doc('profiles/'+myId).set(p)}catch(e){}}}
 function locGPS(btn){if(!navigator.geolocation){toast('Location isn’t available on this device');return}
   btn.classList.add('busy');btn.querySelector('small').textContent='Finding you…';
@@ -3645,13 +3652,17 @@ const WXM={clear:{ic:'☀️',t:'Clear',tip:'Sunny out. Sweets and sunset spots 
 let WX={mode:null,temp:null,live:false,night:false};
 function wxFromCode(c,day){const night=day===0;let m='clear';if([2,3].includes(c))m='clouds';else if([45,48].includes(c))m='fog';else if((c>=51&&c<=67)||(c>=80&&c<=82))m='rain';else if(c>=95)m='storm';
   return {m,night:false}}
+let wxAt=0;
 async function loadWeather(){
-  const [la,ln]=originLL();
-  try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la}&longitude=${ln}&current=temperature_2m,weather_code,is_day&timezone=auto`);
+  const [la,ln]=originLL();wxAt=Date.now();
+  try{const ac=new AbortController();const tm=setTimeout(()=>ac.abort(),8000);
+    const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${la.toFixed(3)}&longitude=${ln.toFixed(3)}&current=temperature_2m,weather_code,is_day&timezone=auto`,{signal:ac.signal});clearTimeout(tm);
+    if(!r.ok)throw new Error('weather '+r.status);
     const j=await r.json();const c=j.current;const w=wxFromCode(c.weather_code,c.is_day);WX={mode:w.m,temp:Math.round(c.temperature_2m),live:true,night:w.night}}
-  catch(e){WX={mode:'clear',temp:null,live:false,night:false}}
+  catch(e){if(!WX.live)WX={mode:'clear',temp:null,live:false,night:false}}
   applyWx();
 }
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&$('#app').classList.contains('inapp')&&Date.now()-wxAt>30*60e3)loadWeather()});
 function applyWx(){const a=$('#app');Object.keys(WXM).forEach(k=>a.classList.remove('wx-'+k));a.classList.remove('wx-dark');
   if(!WX.mode)return;a.classList.add('wx-'+WX.mode);
   const m=WXM[WX.mode];const p=$('#wxpill');if(p){p.innerHTML=`<span class="wi">${m.ic}</span><b>${WX.temp!=null?WX.temp+'° ':''}${m.t}</b><small>${m.tip}</small>`;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}

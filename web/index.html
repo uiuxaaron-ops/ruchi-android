@@ -2174,13 +2174,14 @@ a{color:inherit}
 #app.wx-rain .wx-clouds,#app.wx-storm .wx-clouds{opacity:.45}
 
 /* ===== Intro animation (v2: build → 3D spin → double bloom → name → zoom out) ===== */
-#intro{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s10,40px);background:radial-gradient(120% 80% at 50% 42%,#FFF5F8 0,#fff 60%);cursor:pointer;-webkit-tap-highlight-color:transparent;overflow:hidden}
-.in-stage{position:relative;width:208px;height:176px;perspective:800px}
-.in-spin{position:absolute;inset:0;transform-style:preserve-3d}
+#intro{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s10,40px);background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;overflow:hidden}
+.in-stage{position:relative;width:156px;height:132px;perspective:700px}
+.in-spin{position:absolute;inset:0;z-index:2;transform-style:preserve-3d}
+.in-stage>.in-burst{z-index:1}.in-stage>.in-bloom{z-index:0}
 .in-heart{position:absolute;inset:0;transform-style:preserve-3d}
 .in-l{position:absolute;inset:0;transform:translateZ(var(--z));transform-style:preserve-3d}
-.in-l i{position:absolute;left:calc(var(--x) * 16px);top:calc(var(--y) * 16px);width:16px;height:16px}
-.in-l.hzf i{background:#FF2E4D;box-shadow:inset -2px -2px 0 rgba(120,0,20,.3),inset 2px 2px 0 rgba(255,255,255,.2);opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--r)) scale(.3)}
+.in-l i{position:absolute;left:calc(var(--x) * 12px);top:calc(var(--y) * 12px);width:12px;height:12px}
+.in-l.hzf i{background:#FF2E4D;box-shadow:inset -1.5px -1.5px 0 rgba(120,0,20,.3),inset 1.5px 1.5px 0 rgba(255,255,255,.2);opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--r)) scale(.3)}
 .in-l.hzf i.inhl{background:#FF6A80}
 .in-l.hzm i{background:#C8102E}
 .in-l.hzb i{background:#8E0A20}
@@ -2197,11 +2198,11 @@ a{color:inherit}
 #intro.bl2 .in-heart{animation:inPop2 .6s cubic-bezier(.3,1.8,.5,1)}
 @keyframes inPop1{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
 @keyframes inPop2{0%{transform:scale(1)}35%{transform:scale(1.42)}65%{transform:scale(.94)}100%{transform:scale(1)}}
-.in-bloom{position:absolute;left:50%;top:44%;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(circle,rgba(255,62,154,.45) 0,rgba(255,46,77,.18) 45%,transparent 70%);opacity:0;transform:scale(.3);pointer-events:none}
+.in-bloom{position:absolute;left:50%;top:46%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:3px solid #FF3E9A;opacity:0;transform:scale(.4);pointer-events:none}
+.in-bloom.b2{border-color:#FF7A1A;border-width:2px}
 #intro.bl1 .in-bloom.b1{animation:inBloom .9s cubic-bezier(.2,.8,.3,1) forwards}
 #intro.bl2 .in-bloom.b2{animation:inBloom 1.2s cubic-bezier(.2,.8,.3,1) forwards}
-@keyframes inBloom{0%{opacity:0;transform:scale(.3)}25%{opacity:1}100%{opacity:0;transform:scale(2.8)}}
-#intro.bl2{animation:flashBg .7s ease-out}
+@keyframes inBloom{0%{opacity:0;transform:scale(.5)}15%{opacity:.9}100%{opacity:0;transform:scale(2.2)}}
 @keyframes flashBg{0%{background-color:#fff}30%{background-color:#FFE4F1}100%{background-color:#fff}}
 .in-burst{position:absolute;left:50%;top:44%;pointer-events:none}
 .in-burst i{position:absolute;width:var(--s);height:var(--s);background:var(--c);opacity:0}
@@ -2210,11 +2211,11 @@ a{color:inherit}
 @keyframes inBurst{0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) rotate(180deg) scale(.4)}}
 /* name drops in letter by letter, pixel-steppy */
 .in-word{display:flex;flex-direction:column;align-items:center;gap:var(--s2)}
-.in-word b{display:flex;font-family:var(--font-serif);font-size:52px;line-height:56px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.in-word b{display:flex;font-family:var(--font-serif);font-size:40px;line-height:44px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
 .in-word b span{display:inline-block;opacity:0;transform:translateY(-28px)}
 #intro.word .in-word b span{animation:letterDrop .5s calc(var(--i)*70ms) steps(5,end) forwards}
 @keyframes letterDrop{0%{opacity:0;transform:translateY(-28px)}40%{opacity:1}70%{transform:translateY(4px)}100%{opacity:1;transform:none}}
-.in-word>span{font-size:15px;line-height:20px;color:var(--mute);opacity:0;transform:translateY(8px);transition:opacity .4s .45s,transform .4s .45s}
+.in-word>span{font-size:14px;line-height:20px;color:var(--mute);opacity:0;transform:translateY(8px);transition:opacity .4s .45s,transform .4s .45s}
 #intro.word .in-word>span{opacity:1;transform:none}
 .in-skip{position:absolute;bottom:calc(var(--s8) + env(safe-area-inset-bottom,0px));font-size:12px;line-height:16px;color:#A1A1AA;opacity:0;animation:fadeSkip .4s 1.2s forwards}
 @keyframes fadeSkip{to{opacity:1}}
@@ -3010,7 +3011,7 @@ function introRun(){const el=$('#intro');if(!el)return;
     h+=`<i class="${hi?'inhl':''}" style="--x:${x};--y:${y};--fx:${Math.round(Math.cos(a)*d)}px;--fy:${Math.round(Math.sin(a)*d)}px;--r:${Math.round(Math.random()*540-270)}deg;--d:${Math.round((10-y)*70+Math.abs(x-6)*35+Math.random()*160)}ms"></i>`}));return h+'</div>'};
   $('#inHeart').innerHTML=layer(-18,'hzb',0)+layer(-12,'hzm',0)+layer(-6,'hzm',0)+layer(0,'hzf',1);
   const sp=(id,n,r)=>{$(id).innerHTML=Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2+Math.random()*.3,d=r*(.7+Math.random()*.6);return `<i style="--bx:${Math.round(Math.cos(a)*d)}px;--by:${Math.round(Math.sin(a)*d)}px;--c:${['#FF3E9A','#FF7A1A','#8B5CF6','#2F6BFF','#3DBE29','#FF2E4D'][i%6]};--s:${6+Math.round(Math.random()*6)}px"></i>`}).join('')};
-  sp('#inBurst',16,150);sp('#inBurst2',22,210);
+  sp('#inBurst',14,120);sp('#inBurst2',20,165);
   $('#inWord').innerHTML=[...'Ruchi'].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join('');
   el.classList.add('play');if(reduce){el.classList.add('calm');introT=[setTimeout(introEnd,1100)];return}
   const at=(ms,fn)=>introT.push(setTimeout(fn,ms));const hap=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};

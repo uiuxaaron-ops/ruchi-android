@@ -2173,30 +2173,60 @@ a{color:inherit}
 #app.wx-rain #map,#app.wx-storm #map{filter:saturate(.88) brightness(.97)}
 #app.wx-rain .wx-clouds,#app.wx-storm .wx-clouds{opacity:.45}
 
-/* ===== Intro animation ===== */
-#intro{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s8);background:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
-#intro.out{animation:inOut .5s cubic-bezier(.6,0,.4,1) forwards;pointer-events:none}
-@keyframes inOut{to{opacity:0;transform:scale(1.06)}}
-.in-stage{position:relative;width:208px;height:176px}
-.in-heart{position:absolute;inset:0;transition:transform .5s cubic-bezier(.3,1.4,.5,1)}
-.in-heart i{position:absolute;left:calc(var(--x) * 16px);top:calc(var(--y) * 16px);width:16px;height:16px;background:#FF2E4D;box-shadow:inset -2px -2px 0 rgba(120,0,20,.35),inset 2px 2px 0 rgba(255,255,255,.18),3px 3px 0 #A10D25;opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--r)) scale(.4)}
-.in-heart i.inhl{background:#FF5A72}
-#intro.play .in-heart i{animation:pxIn .62s var(--d) cubic-bezier(.25,1.35,.45,1) forwards}
-@keyframes pxIn{60%{opacity:1}100%{opacity:1;transform:none}}
-#intro.built .in-heart i{opacity:1;transform:none}
-#intro.beat .in-heart{animation:beat .6s cubic-bezier(.3,1.6,.5,1)}
-@keyframes beat{0%{transform:scale(1)}30%{transform:scale(1.14)}55%{transform:scale(.96)}100%{transform:scale(1)}}
-.in-burst{position:absolute;left:50%;top:45%;pointer-events:none}
-.in-burst i{position:absolute;width:8px;height:8px;background:var(--c);opacity:0}
-#intro.beat .in-burst i{animation:inBurst .7s cubic-bezier(.2,.8,.3,1) forwards}
-@keyframes inBurst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(.5)}}
-.in-word{display:flex;flex-direction:column;align-items:center;gap:var(--s1);opacity:0;transform:translateY(12px);transition:opacity .45s,transform .45s cubic-bezier(.3,1.3,.5,1)}
-.in-word b{font-family:var(--font-serif);font-size:44px;line-height:48px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
-.in-word span{font-size:15px;line-height:20px;color:var(--mute)}
-#intro.word .in-word{opacity:1;transform:none}
-#intro.calm .in-heart i{animation:none!important;opacity:1;transform:none}
-#intro.calm .in-word{opacity:1;transform:none;transition:none}
-
+/* ===== Intro animation (v2: build → 3D spin → double bloom → name → zoom out) ===== */
+#intro{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s10,40px);background:radial-gradient(120% 80% at 50% 42%,#FFF5F8 0,#fff 60%);cursor:pointer;-webkit-tap-highlight-color:transparent;overflow:hidden}
+.in-stage{position:relative;width:208px;height:176px;perspective:800px}
+.in-spin{position:absolute;inset:0;transform-style:preserve-3d}
+.in-heart{position:absolute;inset:0;transform-style:preserve-3d}
+.in-l{position:absolute;inset:0;transform:translateZ(var(--z));transform-style:preserve-3d}
+.in-l i{position:absolute;left:calc(var(--x) * 16px);top:calc(var(--y) * 16px);width:16px;height:16px}
+.in-l.hzf i{background:#FF2E4D;box-shadow:inset -2px -2px 0 rgba(120,0,20,.3),inset 2px 2px 0 rgba(255,255,255,.2);opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--r)) scale(.3)}
+.in-l.hzf i.inhl{background:#FF6A80}
+.in-l.hzm i{background:#C8102E}
+.in-l.hzb i{background:#8E0A20}
+.in-l.hzm,.in-l.hzb{opacity:0;transition:opacity .25s}
+#intro.play .in-l.hzf i{animation:pxIn .7s var(--d) cubic-bezier(.2,1.4,.4,1) forwards}
+@keyframes pxIn{0%{opacity:0}25%{opacity:1}75%{transform:scale(1.15)}100%{opacity:1;transform:none}}
+#intro.built .in-l.hzf i{opacity:1;transform:none}
+#intro.built .in-l.hzm,#intro.built .in-l.hzb{opacity:1}
+/* 3D spin with a little lift */
+#intro.sp3 .in-spin{animation:spin3d 1.25s cubic-bezier(.65,0,.35,1) both}
+@keyframes spin3d{0%{transform:rotateY(0) rotateX(0) translateY(0) scale(1)}35%{transform:rotateY(150deg) rotateX(14deg) translateY(-18px) scale(.92)}70%{transform:rotateY(330deg) rotateX(-6deg) translateY(-6px) scale(1.02)}100%{transform:rotateY(360deg) rotateX(0) translateY(0) scale(1)}}
+/* double heartbeat "bloom bloom" */
+#intro.bl1 .in-heart{animation:inPop1 .42s cubic-bezier(.3,1.7,.5,1)}
+#intro.bl2 .in-heart{animation:inPop2 .6s cubic-bezier(.3,1.8,.5,1)}
+@keyframes inPop1{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes inPop2{0%{transform:scale(1)}35%{transform:scale(1.42)}65%{transform:scale(.94)}100%{transform:scale(1)}}
+.in-bloom{position:absolute;left:50%;top:44%;width:220px;height:220px;margin:-110px 0 0 -110px;border-radius:50%;background:radial-gradient(circle,rgba(255,62,154,.45) 0,rgba(255,46,77,.18) 45%,transparent 70%);opacity:0;transform:scale(.3);pointer-events:none}
+#intro.bl1 .in-bloom.b1{animation:inBloom .9s cubic-bezier(.2,.8,.3,1) forwards}
+#intro.bl2 .in-bloom.b2{animation:inBloom 1.2s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes inBloom{0%{opacity:0;transform:scale(.3)}25%{opacity:1}100%{opacity:0;transform:scale(2.8)}}
+#intro.bl2{animation:flashBg .7s ease-out}
+@keyframes flashBg{0%{background-color:#fff}30%{background-color:#FFE4F1}100%{background-color:#fff}}
+.in-burst{position:absolute;left:50%;top:44%;pointer-events:none}
+.in-burst i{position:absolute;width:var(--s);height:var(--s);background:var(--c);opacity:0}
+#intro.bl1 #inBurst i{animation:inBurst .8s cubic-bezier(.2,.8,.3,1) forwards}
+#intro.bl2 #inBurst2 i{animation:inBurst 1s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes inBurst{0%{opacity:1;transform:translate(0,0) rotate(0) scale(1)}100%{opacity:0;transform:translate(var(--bx),var(--by)) rotate(180deg) scale(.4)}}
+/* name drops in letter by letter, pixel-steppy */
+.in-word{display:flex;flex-direction:column;align-items:center;gap:var(--s2)}
+.in-word b{display:flex;font-family:var(--font-serif);font-size:52px;line-height:56px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.in-word b span{display:inline-block;opacity:0;transform:translateY(-28px)}
+#intro.word .in-word b span{animation:letterDrop .5s calc(var(--i)*70ms) steps(5,end) forwards}
+@keyframes letterDrop{0%{opacity:0;transform:translateY(-28px)}40%{opacity:1}70%{transform:translateY(4px)}100%{opacity:1;transform:none}}
+.in-word>span{font-size:15px;line-height:20px;color:var(--mute);opacity:0;transform:translateY(8px);transition:opacity .4s .45s,transform .4s .45s}
+#intro.word .in-word>span{opacity:1;transform:none}
+.in-skip{position:absolute;bottom:calc(var(--s8) + env(safe-area-inset-bottom,0px));font-size:12px;line-height:16px;color:#A1A1AA;opacity:0;animation:fadeSkip .4s 1.2s forwards}
+@keyframes fadeSkip{to{opacity:1}}
+/* exit: zoom through the heart into Get started */
+#intro.out{pointer-events:none;animation:inOut .65s cubic-bezier(.7,0,.3,1) forwards}
+#intro.out .in-stage{animation:zoomThru .65s cubic-bezier(.7,0,.3,1) forwards}
+#intro.out .in-word,#intro.out .in-skip{transition:opacity .2s;opacity:0}
+@keyframes zoomThru{to{transform:scale(9);opacity:0}}
+@keyframes inOut{0%,40%{opacity:1}100%{opacity:0}}
+#intro.calm .in-l.hzf i{animation:none!important;opacity:1;transform:none}
+#intro.calm .in-l.hzm,#intro.calm .in-l.hzb{opacity:1}
+#intro.calm .in-word b span,#intro.calm .in-word>span{opacity:1;transform:none;animation:none;transition:none}
 @media (prefers-reduced-motion:reduce){.ob-prog .dots i.on::after,.hchl.on,.hsteam i,.sweat,.ht-c,.spicev .heat.blast{animation:none!important}}
 
 @media (prefers-reduced-motion:reduce){.skl,.skli,.skr,.pc.skc,.ml-pin .px,.ml-dots i{animation:none!important}}
@@ -2212,7 +2242,7 @@ a{color:inherit}
 </head>
 <body>
 <div id="app" class="scr">
-  <div id="intro" aria-hidden="true" onclick="introEnd()"><div class="in-stage"><div class="in-heart" id="inHeart"></div><div class="in-burst" id="inBurst"></div></div><div class="in-word"><b>Ruchi</b><span>Eat where Trivandrum eats</span></div></div>
+  <div id="intro" aria-hidden="true" onclick="introEnd()"><div class="in-stage"><i class="in-bloom b1"></i><i class="in-bloom b2"></i><div class="in-spin"><div class="in-heart" id="inHeart"></div></div><div class="in-burst" id="inBurst"></div><div class="in-burst" id="inBurst2"></div></div><div class="in-word"><b id="inWord"></b><span>Eat where Trivandrum eats</span></div><span class="in-skip">Tap to skip</span></div>
   <!-- ============ LANDING ============ -->
   <section class="screen" id="landing">
     <div class="w-top"><div class="dots" id="wdots"><i></i><i></i><i></i></div></div>
@@ -2961,18 +2991,23 @@ const HEART=['..XXX...XXX..','.XXXXX.XXXXX.','XXXXXXXXXXXXX','XXXXXXXXXXXXX','XX
 let introT=[];
 function introRun(){const el=$('#intro');if(!el)return;
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const h=$('#inHeart');let html='',n=0;
-  HEART.forEach((row,y)=>[...row].forEach((c,x)=>{if(c!=='X')return;
-    const hi=(y<=2&&(x===2||x===3||x===4||x===1))||(y===3&&x===1);
-    const a=Math.random()*Math.PI*2,d=160+Math.random()*220;
-    html+=`<i class="${hi?'inhl':''}" style="--x:${x};--y:${y};--fx:${Math.round(Math.cos(a)*d)}px;--fy:${Math.round(Math.sin(a)*d)}px;--r:${Math.round(Math.random()*240-120)}deg;--d:${Math.round((y*11+Math.abs(x-6)*9)*7+Math.random()*90)}ms"></i>`;n++}));
-  h.innerHTML=html;
-  $('#inBurst').innerHTML=Array.from({length:12},(_,i)=>{const a=i/12*Math.PI*2;return `<i style="--bx:${Math.round(Math.cos(a)*120)}px;--by:${Math.round(Math.sin(a)*110)}px;--c:${['#FF3E9A','#FF7A1A','#8B5CF6','#2F6BFF','#3DBE29','#FF3E9A'][i%6]}"></i>`}).join('');
-  el.classList.add('play');if(reduce)el.classList.add('calm');
-  const T=reduce?[0,0,0,900]:[1250,1450,1750,2650];
-  introT=[setTimeout(()=>el.classList.add('built'),T[0]),setTimeout(()=>{el.classList.add('beat');try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}},T[1]),setTimeout(()=>el.classList.add('word'),T[2]),setTimeout(introEnd,T[3])];}
-function introEnd(){const el=$('#intro');if(!el||el.classList.contains('out'))return;introT.forEach(clearTimeout);el.classList.add('built','word','out');setTimeout(()=>el.remove(),520)}
-
+  // 3 stacked layers = a chunky voxel heart that shows depth when it spins
+  const layer=(z,cls,fly)=>{let h=`<div class="in-l ${cls}" style="--z:${z}px">`;HEART.forEach((row,y)=>[...row].forEach((c,x)=>{if(c!=='X')return;
+    const hi=fly&&((y<=2&&x>=1&&x<=4)||(y===3&&x===1));const a=Math.random()*Math.PI*2,d=260+Math.random()*320;
+    h+=`<i class="${hi?'inhl':''}" style="--x:${x};--y:${y};--fx:${Math.round(Math.cos(a)*d)}px;--fy:${Math.round(Math.sin(a)*d)}px;--r:${Math.round(Math.random()*540-270)}deg;--d:${Math.round((10-y)*70+Math.abs(x-6)*35+Math.random()*160)}ms"></i>`}));return h+'</div>'};
+  $('#inHeart').innerHTML=layer(-18,'hzb',0)+layer(-12,'hzm',0)+layer(-6,'hzm',0)+layer(0,'hzf',1);
+  const sp=(id,n,r)=>{$(id).innerHTML=Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2+Math.random()*.3,d=r*(.7+Math.random()*.6);return `<i style="--bx:${Math.round(Math.cos(a)*d)}px;--by:${Math.round(Math.sin(a)*d)}px;--c:${['#FF3E9A','#FF7A1A','#8B5CF6','#2F6BFF','#3DBE29','#FF2E4D'][i%6]};--s:${6+Math.round(Math.random()*6)}px"></i>`}).join('')};
+  sp('#inBurst',16,150);sp('#inBurst2',22,210);
+  $('#inWord').innerHTML=[...'Ruchi'].map((c,i)=>`<span style="--i:${i}">${c}</span>`).join('');
+  el.classList.add('play');if(reduce){el.classList.add('calm');introT=[setTimeout(introEnd,1100)];return}
+  const at=(ms,fn)=>introT.push(setTimeout(fn,ms));const hap=n=>{try{navigator.vibrate&&navigator.vibrate(n)}catch(e){}};
+  at(1750,()=>el.classList.add('built'));
+  at(1900,()=>el.classList.add('sp3'));
+  at(3150,()=>{el.classList.add('bl1');hap(18)});
+  at(3550,()=>{el.classList.add('bl2');hap(28)});
+  at(3800,()=>el.classList.add('word'));
+  at(5000,introEnd);}
+function introEnd(){const el=$('#intro');if(!el||el.classList.contains('out'))return;introT.forEach(clearTimeout);if($('#landing').classList.contains('show')){slide=0;renderLanding()}el.classList.add('built','word','out');setTimeout(()=>el.remove(),700)}
 /* ================= LOADING + SKELETONS ================= */
 const LOAD={spots:true,reviews:true,profiles:true,confirms:true};
 const isLoading=()=>LOAD.spots||LOAD.reviews;
@@ -3388,7 +3423,7 @@ function renderLanding(){
   const sl=slides()[slide];
   $('#wstage').innerHTML=`<div class="w-swap"><button class="w-obj anim-${sl.a}" id="wobj" aria-label="Play animation" onclick="event.stopPropagation();kickObj()">${objFx(sl.a)}${sl.a==='map'?`<span class="w-spr map2"><span class="lay">${px('map-base')}</span><span class="lay pinl">${px('map-pin-top')}</span></span>`:`<span class="w-spr">${px(sl.i)}</span>`}</button><h1>${sl.h}</h1><p>${esc(sl.p)}</p></div>`;
   $('#wdots').innerHTML=[0,1,2].map(i=>`<i class="${i<slide?'past':i===slide?'fill':''}"></i>`).join('');
-  clearTimeout(slideT);if($('#landing').classList.contains('show'))slideT=setTimeout(nextSlide,4000);
+  clearTimeout(slideT);if($('#landing').classList.contains('show')&&!$('#intro'))slideT=setTimeout(nextSlide,4000);
 }
 function nextSlide(){slide=(slide+1)%3;renderLanding()}
 /* micro-interactions: pixel particles per object */

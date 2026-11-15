@@ -3216,15 +3216,25 @@ function toggleCards(){setCardsOff(!$('#app').classList.contains('cardsoff'))}
 
 
 /* ================= REAL MAP TILES (whole city + district) =================
-   Street tiles © OpenStreetMap contributors, © CARTO. They sit on top of the
+   Street tiles: Esri light-grey canvas (or CARTO with a key), OpenStreetMap data. They sit on top of the
    hand-drawn map; if tiles can't load, the drawn map shows instead. */
-const TILE_URL=(z,x,y)=>`https://${'abcd'[(x+y)%4]}.basemaps.cartocdn.com/light_all/${z}/${x}/${y}@2x.png`;
+/* CARTO needs a key since Sept 2026 (keyless tiles come back watermarked). With
+   RUCHI_CONFIG.cartoKey set we use CARTO; otherwise Esri's keyless light-grey canvas. */
+const CARTO_KEY=((window.RUCHI_CONFIG||{}).cartoKey||'').trim();
+const TILE_MAX=CARTO_KEY?18:16;
+const TILE_URL=CARTO_KEY
+  ?(z,x,y)=>`https://basemaps.cartocdn.com/rastertiles/light_all/${z}/${x}/${y}@2x.png?key=${encodeURIComponent(CARTO_KEY)}`
+  :(z,x,y)=>`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}`;
+const TILE_ATTR=CARTO_KEY
+  ?'© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+  :'Powered by <a href="https://www.esri.com" target="_blank" rel="noopener">Esri</a> · © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>, HERE, Garmin';
+{const a=document.getElementById('mapattr');if(a)a.innerHTML=TILE_ATTR}
 let tileOK=true,tileErr=0,tileGood=0,tileQ=0,tileZ=null,tileGC=0;const tileEls=new Map();
 const lng2tx=(l,z)=>(l+180)/360*2**z, lat2ty=(a,z)=>{const r=a*Math.PI/180;return (1-Math.log(Math.tan(r)+1/Math.cos(r))/Math.PI)/2*2**z};
 const tx2lng=(x,z)=>x/2**z*360-180, ty2lat=(y,z)=>{const n=Math.PI-2*Math.PI*y/2**z;return 180/Math.PI*Math.atan(.5*(Math.exp(n)-Math.exp(-n)))};
 function queueTiles(){if(!tileOK)return;if(!tileQ)tileQ=requestAnimationFrame(()=>{tileQ=0;updateTiles()})}
 function updateTiles(){const g=$('#tiles');if(!g||!tileOK)return;const r=mapEl.getBoundingClientRect();if(!r.width)return;
-  const s=view.s,K=BOUNDS.k;let z=Math.round(Math.log2(K*s*360/256)+.3);z=Math.max(10,Math.min(18,z));
+  const s=view.s,K=BOUNDS.k;let z=Math.round(Math.log2(K*s*360/256)+.3);z=Math.max(10,Math.min(TILE_MAX,z));
   const lngA=BOUNDS.lngMin+(-view.x/s)/K,lngB=BOUNDS.lngMin+((r.width-view.x)/s)/K,latA=BOUNDS.latMax-(-view.y/s)/K,latB=BOUNDS.latMax-((r.height-view.y)/s)/K;
   const x0=Math.floor(lng2tx(lngA,z)),x1=Math.floor(lng2tx(lngB,z)),y0=Math.floor(lat2ty(latA,z)),y1=Math.floor(lat2ty(latB,z));
   if((x1-x0+1)*(y1-y0+1)>90)return;

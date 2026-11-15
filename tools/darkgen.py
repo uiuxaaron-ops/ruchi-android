@@ -124,6 +124,7 @@ def split_sel(text):
         else: cur += ch
     out.append(cur); return out
 
+KEEP = ('.thm-pv', '.swt i')   # theme previews + switch knob keep their real colours
 ROOT_SKIP = True
 def rules(nodes, ind=''):
     global ROOT_SKIP
@@ -131,6 +132,7 @@ def rules(nodes, ind=''):
     for n in nodes:
         if n.type == 'qualified-rule':
             sel = tinycss2.serialize(n.prelude).strip()
+            if any(k in sel for k in KEEP): continue   # elements that must look the same in both themes
             if ROOT_SKIP and sel == ':root': ROOT_SKIP = False; continue   # tokens are written by hand below
             decls = [d for d in tinycss2.parse_declaration_list(n.content, skip_whitespace=True, skip_comments=True) if d.type == 'declaration']
             vals = {d.lower_name: tinycss2.serialize(d.value).strip() for d in decls}

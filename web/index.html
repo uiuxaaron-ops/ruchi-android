@@ -2480,29 +2480,78 @@ a{color:inherit}
 
 
 /* settings page */
-.set-body{padding-top:var(--s1)}
-.set-h{margin:var(--s5) var(--s1) var(--s2);font-size:13px;line-height:16px;font-weight:600;color:var(--mute)}
-.set-body .set-h:first-child{margin-top:var(--s2)}
-.set-ic{background:var(--surface);color:var(--ink);display:grid;place-items:center}
-.set-ic svg,.lav.sq svg{width:22px;height:22px}
-.thm-ck{width:24px;height:24px;flex:none;margin-left:auto;color:var(--ink)}
-.thm-ck svg{width:24px;height:24px;display:block}
-.thm-opt.on .set-ic{background:var(--p1);color:var(--on-p1)}
+.set-body{padding-top:var(--s2)}
+.set-body.set-in{animation:dzIn .28s cubic-bezier(.2,.9,.25,1) both}
+html.rm .set-body.set-in{animation:none}
+.set-h{margin:var(--s6) var(--s1) var(--s2);font-size:13px;line-height:16px;font-weight:600;color:var(--mute)}
+.set-sub{margin:var(--s1) var(--s1) var(--s4);font-size:14px;line-height:20px;color:var(--mute)}
+.set-row{min-height:56px}
+.set-row.off{opacity:.5}
+.set-ic{width:36px;height:36px;flex:none;display:grid;place-items:center;border-radius:10px;background:var(--card);color:var(--ink)}
+.set-ic svg{width:20px;height:20px}
+.set-ic .px{width:24px;height:24px}
+.set-val{margin-left:auto;font-size:14px;line-height:20px;color:var(--mute);white-space:nowrap;max-width:40%;overflow:hidden;text-overflow:ellipsis}
+.set-val+.chev{margin-left:var(--s2)}
+.set-row .ln{min-width:0;flex:1}
+.set-card{width:100%;display:flex;align-items:center;gap:var(--s3);padding:var(--s4);border-radius:var(--r-lg);background:var(--surface);text-align:left}
+.set-av{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center}
+.set-av>*{width:100%;height:100%}
+.set-card b{display:block;font-size:17px;line-height:24px}
+.set-card small{display:block;font-size:13px;line-height:18px;color:var(--mute)}
+.set-acc{margin-top:var(--s6)}
+.lbr.danger .set-ic{color:var(--danger)}
+.swt{width:44px;height:26px;flex:none;margin-left:auto;position:relative;border-radius:999px;background:var(--surface-2);transition:background .2s}
+.swt i{position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s cubic-bezier(.3,1.4,.5,1)}
+.swt.on{background:var(--p2)}
+.swt.on i{transform:translateX(18px)}
+.thm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3)}
+.thm-card{display:flex;flex-direction:column;align-items:center;gap:var(--s2);padding:var(--s3) var(--s2) var(--s3);border-radius:var(--r-lg);background:var(--surface);box-shadow:inset 0 0 0 2px transparent;transition:box-shadow .2s}
+.thm-card.on{box-shadow:inset 0 0 0 2px var(--p1)}
+.thm-l{font-size:14px;line-height:20px;font-weight:600}
+.thm-r{height:22px;color:var(--ink)}.thm-r svg{width:22px;height:22px}
+.thm-pv{width:100%;aspect-ratio:3/4;border-radius:14px;padding:10px 8px;display:flex;flex-direction:column;gap:6px;background:#F4F4F5;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);overflow:hidden}
+.thm-pv i{display:block;height:12px;border-radius:5px;background:#fff}
+.thm-pv i:nth-child(2){width:70%;background:#E4E4E7}
+.thm-pv i:nth-child(3){margin-top:auto;height:18px;border-radius:9px;background:#09090B}
+.thm-pv.dark{background:#161618;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.thm-pv.dark i{background:#2A2A2E}.thm-pv.dark i:nth-child(2){background:#3A3A40}.thm-pv.dark i:nth-child(3){background:#F4F4F5}
+.thm-pv.system{background:linear-gradient(135deg,#F4F4F5 50%,#161618 50%)}
+.thm-pv.system i{background:rgba(255,255,255,.75)}.thm-pv.system i:nth-child(2){background:rgba(160,160,170,.6)}.thm-pv.system i:nth-child(3){background:linear-gradient(90deg,#09090B 50%,#F4F4F5 50%)}
+.faq-i{border-top:1px solid var(--line)}.faq-i:first-child{border-top:0}
+.faq-i summary{list-style:none;display:flex;align-items:center;gap:var(--s3);min-height:56px;padding:var(--s3) var(--s4);cursor:pointer}
+.faq-i summary::-webkit-details-marker{display:none}
+.faq-i summary b{flex:1;font-size:15px;line-height:20px}
+.faq-i summary .chev{transition:transform .2s}
+.faq-i[open] summary .chev{transform:rotate(90deg)}
+.faq-i p{margin:0;padding:0 var(--s4) var(--s4);font-size:14px;line-height:20px;color:var(--mute)}
+.about-hd{display:flex;flex-direction:column;align-items:center;text-align:center;padding:var(--s6) 0 var(--s2)}
+.about-ic{width:72px;height:72px;display:grid;place-items:center;border-radius:22px;background:var(--surface)}
+.about-ic svg{width:44px;height:44px}
+.about-hd b{margin-top:var(--s3);font-family:var(--font-serif);font-size:28px;line-height:32px;font-weight:500}
+.about-hd small{margin-top:var(--s1);color:var(--mute);font-size:13px}
+.about-hd p{margin:var(--s2) 0 0;color:var(--mute);font-size:14px;line-height:20px}
+.del-ic{color:var(--danger)}
+.me-quick{margin-top:var(--s4)}
+.me-quick .set-ic svg{width:22px;height:22px}
+.del-ic .set-ic{width:72px;height:72px;margin:0 auto;border-radius:22px;background:rgba(229,37,42,.12);color:var(--danger)}
+.del-ic .set-ic svg{width:34px;height:34px}
+.btn.del-go{background:var(--danger);color:#fff}
 .pgear{justify-self:start;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--ink)}
 .pgear svg{width:20px;height:20px}
-html.thm-swap *,html.thm-swap *::before,html.thm-swap *::after{transition:background-color .3s,color .3s,border-color .3s,fill .3s!important}
-
-
-
-
-
-
+/* in-app "Reduce motion" */
+html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
 
 /* pins in dark mode */
 html.dark .mpin,html.dark .pin.photo .pbub{background:var(--ctd,#1F1F22)}
 html.dark .pin.px2.sel .mpin{background:var(--c)}
 html.dark .pin.px2 .lbl{background:#1F1F22;color:var(--cl,#F4F4F5)}
 html.dark .pin.px2.sel .lbl{background:var(--c);color:#fff}
+
+
+
+
+
+
 
 
 /* DARK-THEME:BEGIN (generated by tools/darkgen.py, do not edit) */
@@ -3568,9 +3617,27 @@ html:where(.dark),:where(html.dark) body{background:#2C2C31;color:var(--ink)}
 :where(html.dark) .dz-sum button{border-radius:var(--r-full);background:var(--surface)}
 :where(html.dark) .dz-here{border-radius:var(--r-full);background:rgba(118,118,128,0.24);color:var(--ink-2)}
 :where(html.dark) .set-h{color:var(--mute)}
-:where(html.dark) .set-ic{background:var(--surface);color:var(--ink)}
-:where(html.dark) .thm-ck{color:var(--ink)}
-:where(html.dark) .thm-opt.on .set-ic{background:var(--p1);color:var(--on-p1)}
+:where(html.dark) .set-sub{color:var(--mute)}
+:where(html.dark) .set-ic{border-radius:10px;background:var(--card);color:var(--ink)}
+:where(html.dark) .set-val{color:var(--mute)}
+:where(html.dark) .set-card{border-radius:var(--r-lg);background:var(--surface)}
+:where(html.dark) .set-av{border-radius:50%}
+:where(html.dark) .set-card small{color:var(--mute)}
+:where(html.dark) .lbr.danger .set-ic{color:var(--danger)}
+:where(html.dark) .swt{border-radius:999px;background:var(--surface-2)}
+:where(html.dark) .swt.on{background:var(--p2)}
+:where(html.dark) .thm-card{border-radius:var(--r-lg);background:var(--surface);box-shadow:inset 0 0 0 2px transparent}
+:where(html.dark) .thm-card.on{box-shadow:inset 0 0 0 2px var(--p1)}
+:where(html.dark) .thm-r{color:var(--ink)}
+:where(html.dark) .faq-i{border-top:1px solid var(--line)}
+:where(html.dark) .faq-i:first-child{border-top:0}
+:where(html.dark) .faq-i p{color:var(--mute)}
+:where(html.dark) .about-ic{border-radius:22px;background:var(--surface)}
+:where(html.dark) .about-hd small{color:var(--mute)}
+:where(html.dark) .about-hd p{color:var(--mute)}
+:where(html.dark) .del-ic{color:var(--danger)}
+:where(html.dark) .del-ic .set-ic{border-radius:22px;background:rgba(229,37,42,.12);color:var(--danger)}
+:where(html.dark) .btn.del-go{background:var(--danger);color:#fff}
 :where(html.dark) .pgear{border-radius:50%;background:var(--surface);color:var(--ink)}
 html:where(.dark).dark .mpin,html:where(.dark).dark .pin.photo .pbub{background:var(--ctd,#1F1F22)}
 html:where(.dark).dark .pin.px2.sel .mpin{background:var(--c)}
@@ -3588,7 +3655,7 @@ html.dark .lseg button.on{background:#3A3A40}
 <script>/* theme before first paint: no white flash in dark mode */
 (function(){var t='system';try{t=localStorage.getItem('ruchi_theme')||'system'}catch(e){}
 var d=t==='dark'||(t==='system'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);
-if(d)document.documentElement.classList.add('dark');})();</script>
+if(d)document.documentElement.classList.add('dark');try{if(localStorage.getItem('ruchi_motion')==='reduce')document.documentElement.classList.add('rm')}catch(e){}})();</script>
 </head>
 <body>
 <div id="app" class="scr">
@@ -4401,7 +4468,7 @@ async function saveCard(id){
 
 /* haptics only after the person has touched the screen (browsers block it before) */
 (function(){let tapped=false;const on=()=>{tapped=true};addEventListener('pointerdown',on,{capture:true,passive:true});addEventListener('keydown',on,{capture:true,passive:true});
-  const v=navigator.vibrate?navigator.vibrate.bind(navigator):null;if(v)try{navigator.vibrate=p=>tapped?v(p):false}catch(e){}})();
+  const v=navigator.vibrate?navigator.vibrate.bind(navigator):null;if(v)try{navigator.vibrate=p=>tapped&&localStorage.getItem('ruchi_haptics')!=='0'?v(p):false}catch(e){}})();
 /* ================= INTRO: pixel heart assembles, beats, hands off ================= */
 const HEART=['..XXX...XXX..','.XXXXX.XXXXX.','XXXXXXXXXXXXX','XXXXXXXXXXXXX','XXXXXXXXXXXXX','.XXXXXXXXXXX.','..XXXXXXXXX..','...XXXXXXX...','....XXXXX....','.....XXX.....','......X......'];
 let introT=[];
@@ -4454,9 +4521,10 @@ function applyTheme(){const p=themePref(),d=p==='dark'||(p==='system'&&!!DARKQ&&
   document.querySelectorAll('meta[name="theme-color"]').forEach(m=>m.setAttribute('content',d?'#0B0B0C':'#FFFFFF'));
   try{const SB=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.SystemBars;SB&&SB.setStyle&&SB.setStyle({style:d?'DARK':'LIGHT'}).catch(()=>{})}catch(e){}
   if(was!==d){try{const g=$('#tiles');if(g)g.innerHTML='';tileEls.clear();tileZ=null;tileOK=true;tileErr=0;tileGood=0;queueTiles()}catch(e){}}}
-function setTheme(p){try{localStorage.setItem('ruchi_theme',p)}catch(e){}try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}
-  document.documentElement.classList.add('thm-swap');applyTheme();setTimeout(()=>document.documentElement.classList.remove('thm-swap'),400);
-  if($('#setp')?.classList.contains('show'))renderSettings()}
+function setTheme(p){if(p===themePref()&&!(p==='system'))return;try{localStorage.setItem('ruchi_theme',p)}catch(e){}try{navigator.vibrate&&navigator.vibrate(6)}catch(e){}
+  const flip=()=>{applyTheme();if($('#setp')?.classList.contains('show'))renderSettings()};
+  // one cheap snapshot cross-fade instead of animating every element
+  if(document.startViewTransition&&!reduceMotion())document.startViewTransition(flip);else flip()}
 if(DARKQ){const f=()=>{if(themePref()==='system')applyTheme()};DARKQ.addEventListener?DARKQ.addEventListener('change',f):DARKQ.addListener(f)}
 const CARTO_KEY=((window.RUCHI_CONFIG||{}).cartoKey||'').trim();
 const TILE_MAX=CARTO_KEY?18:16;
@@ -4832,6 +4900,7 @@ function renderMe(){
   <div class="stat3 enter"><div><span>${px('map-pin')}</span><b>${me.spots}</b><small>Pinned</small></div><div><span>${px('smile')}</span><b>${me.recv}</b><small>Check-ins</small></div><div><span>${px('emoji-1f4f8')}</span><b>${nrev}</b><small>Reviews</small></div></div>`;
   if(left.length)h+=`<button class="todo enter" onclick="openChecklist()"><span class="pic t-bl sm">${px('target')}</span><span><b>${left.length} thing${left.length>1?'s':''} left to set up</b><small>Takes a minute. Unlocks the full app.</small></span><span class="chev">›</span></button>`;
   if(me.recv>0)h+=`<div class="impact">${px('emoji-1f525')} <b>${me.recv} ${me.recv===1?'person has':'people have'}</b> visited spots you found.</div>`;
+  {const np=plansGet().length;h+=`<div class="lb set me-quick"><button class="lbr set-row" onclick="openAsk();ASK.about=false;ASK.view='saved';renderAsk()"><span class="set-ic">${ASKIC}</span><span class="ln"><b>Saved plans</b><small>${np?`${np} plan${np>1?'s':''} from Lovely`:'Plans you save in Lovely show up here'}</small></span>${np?`<span class="set-val">${np}</span>`:''}<span class="chev">›</span></button></div>`}
   h+=`<div class="sec-h"><b>Spots you pinned</b><small>${mine.length?`${mine.length} on the map so far`:"Your finds show up here."}</small></div>`;
   h+=mine.length?`<div class="lb">`+mine.map(s=>`<button class="lbr" onclick="go('map');openSpot('${s.id}')"><span class="lav sq ${TINT[s.tag]||'pm'}">${s.photo?`<img src="${s.photo}" alt="">`:(TAG[s.tag]?.icon||px('map-pin'))}</span><span class="ln"><b>${esc(s.name)}</b><small>${esc(s.area)} · ${confirmsFor(s.id)} check-in${confirmsFor(s.id)===1?'':'s'}</small></span><span class="chev">›</span></button>`).join('')+`</div>`
     :`<div class="emptyc"><div class="pic t-gr">${px('frying-pan')}</div><b>Nothing pinned yet</b><p>Your fave thattukada deserves the spotlight.</p><button class="bigbtn" onclick="startAdd()">Pin your first spot</button></div>`;
@@ -5495,24 +5564,107 @@ const GEARSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const THEMES=[['system','System','Match your phone’s setting','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>'],
   ['light','Light','Always light','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'],
   ['dark','Dark','Always dark','<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>']];
-function openSettings(){closeSheets();renderSettings();$('#setp').classList.add('show');$('#app').classList.add('searching')}
+let APP_VER='1.9';try{const A=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.App;A&&A.getInfo&&A.getInfo().then(i=>{if(i&&i.version)APP_VER=i.version}).catch(()=>{})}catch(e){}
+const SET={view:'main'};
+const SIC={ /* simple line icons for settings rows */
+  theme:'<path d="M12 3a9 9 0 1 0 0 18c1 0 1.6-.8 1.6-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7.5" r="1.2"/><circle cx="15" cy="7.5" r="1.2"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  vib:'<rect x="8" y="4" width="8" height="16" rx="2"/><path d="M4 9v6M20 9v6"/>',
+  motion:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+  cards:'<rect x="3" y="12" width="18" height="8" rx="2"/><path d="M6 8h12M9 4h6"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>',
+  help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 0 1 5 .9c0 1.7-2.5 2.1-2.5 3.6M12 17h.01"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z"/><path d="M4 19a2 2 0 0 1 2-2h13"/>',
+  info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/>',
+  share:'<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>',
+  out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+  trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13M9 7V4h6v3"/>'};
+const sic=k=>`<span class="set-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${SIC[k]}</svg></span>`;
+const CHK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+function prefGet(k,d){try{const v=localStorage.getItem('ruchi_'+k);return v==null?d:v}catch(e){return d}}
+function prefSet(k,v){try{localStorage.setItem('ruchi_'+k,v)}catch(e){}}
+function hapticsOn(){return prefGet('haptics','1')==='1'}
+function reduceMotion(){return prefGet('motion','')==='reduce'||matchMedia('(prefers-reduced-motion: reduce)').matches}
+function applyMotion(){document.documentElement.classList.toggle('rm',prefGet('motion','')==='reduce')}
+function openSettings(){closeSheets();SET.view='main';renderSettings();$('#setp').classList.add('show');$('#app').classList.add('searching')}
 function closeSettings(){$('#setp').classList.remove('show');$('#app').classList.remove('searching')}
-function renderSettings(){const el=$('#setp');if(!el)return;const pr=profiles[myId]||{};const cur=themePref();
-  const chk='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  el.innerHTML=`<div class="sv-top nfp-top"><button class="sv-back" onclick="closeSettings()" aria-label="Back">${BACKSVG}</button><b>Settings</b><span></span></div>
-  <div class="loc-body set-body">
-    <div class="set-h">Appearance</div>
-    <div class="lb set" role="radiogroup" aria-label="Appearance">${THEMES.map(([k,l,d,ic])=>`<button class="lbr thm-opt ${cur===k?'on':''}" role="radio" aria-checked="${cur===k}" onclick="setTheme('${k}')"><span class="lav sq set-ic">${ic}</span><span class="ln"><b>${l}</b><small>${d}</small></span><span class="thm-ck">${cur===k?chk:''}</span></button>`).join('')}</div>
-    <div class="set-h">Your profile</div>
-    <div class="lb set">
-      <button class="lbr" onclick="closeSettings();startOnboarding('avatar')"><span class="lav sq t-pk">${px('smile')}</span><span class="ln"><b>Edit avatar</b><small>Hair, fit, accessories</small></span><span class="chev">›</span></button>
-      <button class="lbr" onclick="closeSettings();replayOnboarding()"><span class="lav sq t-or">${px('red-chili')}</span><span class="ln"><b>Redo taste & spice</b><small>Swipe the deck again, reset your heat</small></span><span class="chev">›</span></button>
-      <button class="lbr" onclick="closeSettings();startOnboarding('turf')"><span class="lav sq t-gr">${px('map-pin')}</span><span class="ln"><b>Change home turf</b><small>${esc(pr.home||'Not set')}</small></span><span class="chev">›</span></button>
-    </div>
-    <div class="set-h">Account</div>
-    <div class="lb set"><button class="lbr danger" onclick="closeSettings();logout()"><span class="lav sq t-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></span><span class="ln"><b>Log out</b><small>See you at the next chaya break</small></span></button></div>
-    <p class="foot">Ruchi · made in Trivandrum with 🌶️</p>
-  </div>`}
+function setGo(v){SET.view=v;renderSettings('in');const b=$('#setp .loc-body');if(b)b.scrollTop=0}
+function setBack(){if(SET.view!=='main')setGo('main');else closeSettings()}
+function swRow(ic,title,sub,on,fn){return `<button class="lbr set-row" role="switch" aria-checked="${on}" onclick="${fn}">${sic(ic)}<span class="ln"><b>${title}</b><small>${sub}</small></span><span class="swt ${on?'on':''}"><i></i></span></button>`}
+function navRow(ic,title,sub,val,fn,cls=''){return `<button class="lbr set-row ${cls}" onclick="${fn}">${ic.startsWith('<')?ic:sic(ic)}<span class="ln"><b>${title}</b>${sub?`<small>${sub}</small>`:''}</span>${val?`<span class="set-val">${val}</span>`:''}<span class="chev">›</span></button>`}
+function renderSettings(anim){const el=$('#setp');if(!el)return;const pr=profiles[myId]||{};const v=SET.view;
+  const titles={main:'Settings',appearance:'Appearance',help:'Help & FAQ',rules:'Community guidelines',about:'About Ruchi'};
+  let body='';
+  if(v==='main'){const tl={system:'System',light:'Light',dark:'Dark'}[themePref()];const sp=pr.spice!=null&&SPICE[pr.spice]?SPICE[pr.spice][0]:'Not set';
+    const nRecent=recentGet().length,nChat=(ASK.thread||[]).length;
+    body=`<button class="set-card" onclick="closeSettings();startOnboarding('avatar')"><span class="set-av">${avOf(myId)}</span><span class="ln"><b>${esc(pr.nick||'You')}</b><small>${esc(pr.home||'Trivandrum')} · Edit avatar</small></span><span class="chev">›</span></button>
+    <div class="set-h">Preferences</div><div class="lb set">
+      ${navRow('theme','Appearance','',tl,"setGo('appearance')")}
+      ${navRow('pin','Home area','',esc(pr.home||'Not set'),"closeSettings();openLoc()")}
+      ${navRow(`<span class="set-ic">${px('red-chili')}</span>`,'Taste & spice','',esc(sp),"closeSettings();replayOnboarding()")}</div>
+    <div class="set-h">Experience</div><div class="lb set">
+      ${swRow('vib','Haptic feedback','Little buzzes when you tap',hapticsOn(),"setToggle('haptics')")}
+      ${swRow('motion','Reduce motion','Fewer animations, calmer screens',prefGet('motion','')==='reduce',"setToggle('motion')")}
+      ${swRow('cards','Spot cards on the map','Show the cards at the bottom of the map',!$('#app').classList.contains('cardsoff'),"setToggle('cards')")}</div>
+    <div class="set-h">Privacy & data</div><div class="lb set">
+      ${navRow('search','Clear search history',nRecent?`${nRecent} recent search${nRecent>1?'es':''}`:'Nothing to clear','',"setClear('search')",nRecent?'':'off')}
+      ${navRow('chat','Clear Lovely chat',nChat?'Start fresh with Lovely':'Nothing to clear','',"setClear('chat')",nChat?'':'off')}</div>
+    <div class="set-h">Help & about</div><div class="lb set">
+      ${navRow('help','Help & FAQ','','',"setGo('help')")}
+      ${navRow('book','Community guidelines','The Foodie Pact','',"setGo('rules')")}
+      ${navRow('share','Share Ruchi','Bring your foodie friends','',"shareRuchi()")}
+      ${navRow('info','About Ruchi','',APP_VER,"setGo('about')")}</div>
+    <div class="lb set set-acc">
+      <button class="lbr set-row" onclick="closeSettings();logout()">${sic('out')}<span class="ln"><b>Log out</b></span></button>
+      <button class="lbr set-row danger" onclick="askDelete()">${sic('trash')}<span class="ln"><b>Delete account</b><small>Remove your profile, reviews and spots</small></span></button></div>
+    <p class="foot">Ruchi · made in Trivandrum with 🌶️</p>`}
+  if(v==='appearance'){const cur=themePref();
+    const prev=(k)=>`<span class="thm-pv ${k}"><i></i><i></i><i></i></span>`;
+    body=`<p class="set-sub">Choose how Ruchi looks. System follows your phone’s light or dark setting.</p>
+    <div class="thm-grid" role="radiogroup" aria-label="Appearance">${THEMES.map(([k,l])=>`<button class="thm-card ${cur===k?'on':''}" role="radio" aria-checked="${cur===k}" onclick="setTheme('${k}')">${prev(k)}<span class="thm-l">${l}</span><span class="thm-r">${cur===k?CHK:''}</span></button>`).join('')}</div>`}
+  if(v==='help'){const F=[['How do I add a spot?','Tap Pin in the bottom bar, drag the map so the pin sits on the place, then fill in three quick steps.'],
+      ['What’s a hidden gem?','A spot that isn’t on Google Maps, or has barely any reviews there. Those are the ones Ruchi is for.'],
+      ['How do points work?','You get points for pinning spots, reviewing and checking in. Climb the Insiders board for bragging rights.'],
+      ['Why can’t I edit someone else’s spot?','Only the person who pinned a spot can change or delete it. You can still review it or confirm it’s open.'],
+      ['Does Ruchi work offline?','Yes. The map and spots you’ve already seen open without internet. New things sync when you’re back online.'],
+      ['How do I change light or dark mode?','Settings → Appearance. Pick System to follow your phone.']];
+    body=`<div class="lb set faq">${F.map(([q,a])=>`<details class="faq-i"><summary><b>${q}</b><span class="chev">›</span></summary><p>${a}</p></details>`).join('')}</div>`}
+  if(v==='rules')body=`<p class="set-sub">Everyone on Ruchi signs the Foodie Pact. It keeps the map honest and kind.</p><div class="lb set">${PACT.map(([ic,t,d])=>`<div class="lbr set-row"><span class="set-ic">${px(ic)}</span><span class="ln"><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>`;
+  if(v==='about')body=`<div class="about-hd"><span class="about-ic">${ASKIC}</span><b>Ruchi</b><small>Version ${APP_VER}</small><p>Trivandrum’s hidden food map, made in Kerala.</p></div>
+    <div class="set-h">Credits</div><div class="lb set">
+      <div class="lbr set-row">${sic('pin')}<span class="ln"><b>Map data</b><small>© OpenStreetMap contributors</small></span></div>
+      <div class="lbr set-row">${sic('theme')}<span class="ln"><b>Map style</b><small>${CARTO_KEY?'© CARTO':'Esri, HERE, Garmin'}</small></span></div>
+      <div class="lbr set-row">${sic('info')}<span class="ln"><b>Weather</b><small>Open-Meteo</small></span></div></div>`;
+  el.innerHTML=`<div class="sv-top nfp-top"><button class="sv-back" onclick="setBack()" aria-label="Back">${BACKSVG}</button><b>${titles[v]}</b><span></span></div>
+  <div class="loc-body set-body ${anim?'set-in':''}">${body}</div>`}
+function setToggle(k){
+  if(k==='haptics'){const on=!hapticsOn();prefSet('haptics',on?'1':'0');if(on)try{navigator.vibrate&&navigator.vibrate(10)}catch(e){}}
+  if(k==='motion'){prefSet('motion',prefGet('motion','')==='reduce'?'':'reduce');applyMotion()}
+  if(k==='cards')setCardsOff(!$('#app').classList.contains('cardsoff'),true);
+  renderSettings()}
+function setClear(k){
+  if(k==='search'){if(!recentGet().length)return;try{localStorage.removeItem('ruchi_recent')}catch(e){}toast('Search history cleared')}
+  if(k==='chat'){if(!(ASK.thread||[]).length)return;ASK.thread=[];try{askReset&&askReset()}catch(e){}toast('Lovely chat cleared')}
+  renderSettings()}
+async function shareRuchi(){const d={title:'Ruchi',text:'I’m finding hidden food spots in Trivandrum on Ruchi 🌶️ Thattukadas, chaya kadas and toddy shops locals gatekeep.'};
+  try{if(navigator.share){await navigator.share(d);return}}catch(e){if(e&&e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(d.text);toast('Copied, paste it anywhere')}catch(e){toast('Sharing isn’t available here')}}
+function askDelete(){closeSettings();
+  $('#addSheet').innerHTML=`<div class="grab"></div><div class="form gate"><div class="gate-ic del-ic">${sic('trash')}</div><h2>Delete your account?</h2>
+  <div class="sub">This permanently removes your profile, reviews, check-ins, saved plans and the spots you pinned. It can’t be undone.</div>
+  <div class="actions"><button class="btn" onclick="closeSheets()">Keep account</button><button class="btn del-go" id="delGo" onclick="deleteAccount()">Delete forever</button></div></div>`;
+  showSheet('addSheet')}
+async function deleteAccount(){const b=$('#delGo');if(b){b.disabled=true;b.textContent='Deleting…'}
+  const id=myId;
+  try{if(dbx&&id&&id!=='preview'){
+    const mine=spots.filter(s=>s.by===id&&!/^osm/.test(String(s.id)));
+    await Promise.all([...mine.map(s=>dbx.doc('spots/'+s.id).delete().catch(()=>{})),
+      ...['profiles','reviews','confirms','experiments'].map(c=>dbx.doc(c+'/'+id).delete().catch(()=>{}))]);}}catch(e){}
+  try{const keep=['ruchi_theme','ruchi_uid'];Object.keys(localStorage).filter(k=>k.startsWith('ruchi_')&&!keep.includes(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}
+  try{window.RUCHI_CLOUD&&RUCHI_CLOUD.sb&&RUCHI_CLOUD.sb.auth.signOut()}catch(e){}
+  delete profiles[id];spots=spots.filter(s=>s.by!==id);if(reviewDocs[id])delete reviewDocs[id];ASK.thread=[];
+  closeSheets();sessionSet(false);go('map',true);renderLanding();show('landing','back');setTimeout(()=>toast('Your account was deleted'),400)}
 function logout(){sessionSet(false);closeSheets();go('map',true);renderLanding();show('landing','back')}
 function replayOnboarding(){closeSheets();startOnboarding()}
 

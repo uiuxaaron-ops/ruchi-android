@@ -2532,6 +2532,19 @@ html.rm .set-body.set-in{animation:none}
 .about-hd p{margin:var(--s2) 0 0;color:var(--mute);font-size:14px;line-height:20px}
 .del-ic{color:var(--danger)}
 .me-quick{margin-top:var(--s4)}
+.me-acts{display:flex;gap:var(--s2);justify-content:center;margin-top:var(--s4)}
+.me-edit{height:44px;padding:0 var(--s6);border-radius:var(--r-full);background:var(--surface);color:var(--ink);font-size:15px;line-height:20px;font-weight:600}
+.me-share{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--ink)}
+.me-share svg{width:20px;height:20px}
+.ptop .pgear{justify-self:end}
+.ed-av{display:flex;flex-direction:column;align-items:center;gap:var(--s3);padding:var(--s4) 0 var(--s2)}
+.ed-avb{position:relative;width:112px;height:112px;border-radius:50%;padding:0}
+.ed-avb>*:first-child{width:100%;height:100%;border-radius:50%;overflow:hidden}
+.ed-cam{position:absolute;right:0;bottom:2px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--card);box-shadow:0 2px 8px rgba(9,9,11,.18)}
+.ed-cam .px{width:22px;height:22px}
+.ed-avl{height:36px;padding:0 var(--s4);border-radius:var(--r-full);font-size:14px;font-weight:600;color:var(--ink);background:var(--surface)}
+.ed-add{font-style:normal;color:var(--p2);font-weight:600}
+.ed-note{margin-top:var(--s5);text-align:center}
 .me-quick .set-ic svg{width:22px;height:22px}
 .del-ic .set-ic{width:72px;height:72px;margin:0 auto;border-radius:22px;background:rgba(229,37,42,.12);color:var(--danger)}
 .del-ic .set-ic svg{width:34px;height:34px}
@@ -2546,6 +2559,10 @@ html.dark .mpin,html.dark .pin.photo .pbub{background:var(--ctd,#1F1F22)}
 html.dark .pin.px2.sel .mpin{background:var(--c)}
 html.dark .pin.px2 .lbl{background:#1F1F22;color:var(--cl,#F4F4F5)}
 html.dark .pin.px2.sel .lbl{background:var(--c);color:#fff}
+
+
+
+
 
 
 
@@ -3636,6 +3653,13 @@ html:where(.dark),:where(html.dark) body{background:#2C2C31;color:var(--ink)}
 :where(html.dark) .about-hd small{color:var(--mute)}
 :where(html.dark) .about-hd p{color:var(--mute)}
 :where(html.dark) .del-ic{color:var(--danger)}
+:where(html.dark) .me-edit{border-radius:var(--r-full);background:var(--surface);color:var(--ink)}
+:where(html.dark) .me-share{border-radius:50%;background:var(--surface);color:var(--ink)}
+:where(html.dark) .ed-avb{border-radius:50%}
+:where(html.dark) .ed-avb>*:first-child{border-radius:50%}
+:where(html.dark) .ed-cam{border-radius:50%;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,0.508)}
+:where(html.dark) .ed-avl{border-radius:var(--r-full);color:var(--ink);background:var(--surface)}
+:where(html.dark) .ed-add{color:var(--p2)}
 :where(html.dark) .del-ic .set-ic{border-radius:22px;background:rgba(229,37,42,.12);color:var(--danger)}
 :where(html.dark) .btn.del-go{background:var(--danger);color:#fff}
 :where(html.dark) .pgear{border-radius:50%;background:var(--surface);color:var(--ink)}
@@ -3702,6 +3726,7 @@ if(d)document.documentElement.classList.add('dark');try{if(localStorage.getItem(
   <section class="sv nfp" id="nfp" aria-label="Notifications"></section>
   <section class="locp" id="locp" aria-label="Change location"></section>
   <section class="locp setp" id="setp" aria-label="Settings"></section>
+  <section class="locp setp" id="edp" aria-label="Edit profile"></section>
   <div id="mapattr">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · © <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a></div>
   <section class="sv lstp" id="lstp" aria-label="All spots"></section>
   <section class="sv" id="sv" aria-label="Search">
@@ -4892,9 +4917,10 @@ function renderMe(){
   const t=pr.taste?(TASTES[pr.taste.id]||null):null;
   const stk=[t?`${px(t.e)} ${t.label}`:null,pr.spice!=null?`${px(pr.spice===4?'emoji-1f525':'red-chili')} ${SPICE[pr.spice][0]}`:null,pr.home?`${px('map-pin')} ${esc(pr.home)}`:null].filter(Boolean);
   const nrev=Object.keys(reviewDocs[myId]?.items||{}).length;
-  let h=ptop('You',`<button class="pbtn" onclick="startOnboarding('avatar')" aria-label="Edit avatar">Edit</button>`,`<button class="pgear" onclick="openSettings()" aria-label="Settings">${GEARSVG}</button>`)+`<div class="pwrap">
+  let h=ptop('Profile',`<button class="pgear" onclick="openSettings()" aria-label="Settings">${GEARSVG}</button>`)+`<div class="pwrap">
   <div class="mehero enter"><div class="sunwrap sm"><div class="sunburst"></div><button class="badgeRing" onclick="this.classList.remove('boop');void this.offsetWidth;this.classList.add('boop');burst(this,10)" aria-label="Boop">${avOf(myId)}</button></div>
-    <h1>${esc(nameOf(myId))}</h1>${stk.length?`<div class="stickers">${stk.map((x,i)=>`<span class="stk2" style="--d:${.2+i*.1}s;--r:${[-3,2,-2][i]}deg">${x}</span>`).join('')}</div>`:''}</div>
+    <h1>${esc(nameOf(myId))}</h1>${stk.length?`<div class="stickers">${stk.map((x,i)=>`<span class="stk2" style="--d:${.2+i*.1}s;--r:${[-3,2,-2][i]}deg">${x}</span>`).join('')}</div>`:''}
+    <div class="me-acts"><button class="me-edit" onclick="openEdit()">Edit profile</button><button class="me-share" onclick="shareRuchi()" aria-label="Share Ruchi">${SHARESVG}</button></div></div>
   <div class="lvcard enter"><div class="lvt"><span class="pic t-pk sm">${px('emoji-1f947')}</span><span><small>Your title</small><b>${lv.cur.t}</b></span><span class="lvpts"><b>${me.pts}</b><small>pts</small></span></div>
     <div class="mbar"><i style="width:${pct}%"></i></div><small>${lv.next?`${lv.next.min-me.pts} pts to <b>${lv.next.t}</b>`:'You’ve reached the top. Legend.'}</small></div>
   <div class="stat3 enter"><div><span>${px('map-pin')}</span><b>${me.spots}</b><small>Pinned</small></div><div><span>${px('smile')}</span><b>${me.recv}</b><small>Check-ins</small></div><div><span>${px('emoji-1f4f8')}</span><b>${nrev}</b><small>Reviews</small></div></div>`;
@@ -4910,8 +4936,7 @@ function renderMe(){
     return `<div class="rd ${st}"><div class="rn">${st==='past'?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>':st==='cur'?avOf(myId):i+1}</div>
       <div class="rc"><div class="rt"><b>${l.t}</b>${st==='cur'?'<span class="here">You’re here</span>':st==='past'?'<span class="got">Unlocked</span>':`<span class="need">${l.min-me.pts} pts to go</span>`}</div>
       <small>${PERK[i]}</small>${st==='cur'&&lv.next?`<div class="mbar"><i style="width:${pct}%"></i></div><small class="nx">${me.pts} / ${lv.next.min} pts to ${lv.next.t}</small>`:''}</div></div>`}).join('')+`</div>`;
-  h+=`<div class="lb set"><button class="lbr" onclick="openSettings()"><span class="lav sq t-pv">${GEARSVG}</span><span class="ln"><b>Settings</b><small>Appearance, profile, account</small></span><span class="chev">›</span></button></div>
-  <p class="foot">Ruchi · made in Trivandrum with 🌶️</p>`;
+  h+=`<p class="foot">Ruchi · made in Trivandrum with 🌶️</p>`;
   if(!live)h+=`<p class="note-sm">Preview mode: sign in to claude.ai to save spots and appear on the leaderboard.</p>`;
   h+=`</div>`;
   $('#page-me').innerHTML=h;
@@ -5558,6 +5583,7 @@ function enterApp(msg,fromOnboarding){
   let greeted=false;try{greeted=localStorage.getItem('ruchi_greeted')==='1'}catch(e){}
   if(msg)toast(msg);else if(!greeted){toast(p?.nick?`Hey ${p.nick}! ${a?'Here’s what’s cooking around '+a[0]+'.':'Go find something good.'}`:'Welcome to Ruchi');try{localStorage.setItem('ruchi_greeted','1')}catch(e){}}
   scheduleNudge();
+  if(EDIT_RET){EDIT_RET=false;go('me');setTimeout(openEdit,60)}
 }
 /* ================= SETTINGS ================= */
 const GEARSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>';
@@ -5587,6 +5613,26 @@ function prefSet(k,v){try{localStorage.setItem('ruchi_'+k,v)}catch(e){}}
 function hapticsOn(){return prefGet('haptics','1')==='1'}
 function reduceMotion(){return prefGet('motion','')==='reduce'||matchMedia('(prefers-reduced-motion: reduce)').matches}
 function applyMotion(){document.documentElement.classList.toggle('rm',prefGet('motion','')==='reduce')}
+/* ================= EDIT PROFILE ================= */
+const SHARESVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>';
+let EDIT_RET=false;
+function openEdit(){closeSheets();renderEdit();$('#edp').classList.add('show');$('#app').classList.add('searching')}
+function closeEdit(){$('#edp').classList.remove('show');$('#app').classList.remove('searching')}
+function editStep(k){EDIT_RET=true;closeEdit();startOnboarding(k)}
+function renderEdit(){const el=$('#edp');if(!el)return;const pr=profiles[myId]||{};
+  const t=pr.taste?(TASTES[pr.taste.id]||null):null;const sp=pr.spice!=null&&SPICE[pr.spice]?SPICE[pr.spice][0]:'';
+  const row=(ic,l,val,k)=>`<button class="lbr set-row" onclick="editStep('${k}')"><span class="set-ic">${px(ic)}</span><span class="ln"><b>${l}</b></span><span class="set-val">${val||'<i class="ed-add">Add</i>'}</span><span class="chev">›</span></button>`;
+  el.innerHTML=`<div class="sv-top nfp-top"><button class="sv-back" onclick="closeEdit()" aria-label="Back">${BACKSVG}</button><b>Edit profile</b><span></span></div>
+  <div class="loc-body set-body">
+    <div class="ed-av"><button class="ed-avb" onclick="editStep('avatar')" aria-label="Change avatar">${avOf(myId)}<span class="ed-cam">${px('emoji-1f4f8')}</span></button><button class="ed-avl" onclick="editStep('avatar')">Change avatar</button></div>
+    <div class="set-h">About you</div><div class="lb set">
+      ${row('smile','Name',esc(pr.nick||''),'name')}
+      ${row('map-pin','Home area',esc(pr.home||''),'turf')}</div>
+    <div class="set-h">Food taste</div><div class="lb set">
+      ${row(t?t.e:'curry','Taste',t?esc(t.label):'','taste')}
+      ${row('red-chili','Spice level',esc(sp),'spice')}</div>
+    <p class="set-sub ed-note">Your name and avatar show on the spots you pin and on the Insiders board.</p>
+  </div>`}
 function openSettings(){closeSheets();SET.view='main';renderSettings();$('#setp').classList.add('show');$('#app').classList.add('searching')}
 function closeSettings(){$('#setp').classList.remove('show');$('#app').classList.remove('searching')}
 function setGo(v){SET.view=v;renderSettings('in');const b=$('#setp .loc-body');if(b)b.scrollTop=0}
@@ -5596,17 +5642,14 @@ function navRow(ic,title,sub,val,fn,cls=''){return `<button class="lbr set-row $
 function renderSettings(anim){const el=$('#setp');if(!el)return;const pr=profiles[myId]||{};const v=SET.view;
   const titles={main:'Settings',appearance:'Appearance',help:'Help & FAQ',rules:'Community guidelines',about:'About Ruchi'};
   let body='';
-  if(v==='main'){const tl={system:'System',light:'Light',dark:'Dark'}[themePref()];const sp=pr.spice!=null&&SPICE[pr.spice]?SPICE[pr.spice][0]:'Not set';
+  if(v==='main'){const tl={system:'System',light:'Light',dark:'Dark'}[themePref()];
     const nRecent=recentGet().length,nChat=(ASK.thread||[]).length;
-    body=`<button class="set-card" onclick="closeSettings();startOnboarding('avatar')"><span class="set-av">${avOf(myId)}</span><span class="ln"><b>${esc(pr.nick||'You')}</b><small>${esc(pr.home||'Trivandrum')} · Edit avatar</small></span><span class="chev">›</span></button>
-    <div class="set-h">Preferences</div><div class="lb set">
+    body=`<div class="set-h">Display</div><div class="lb set">
       ${navRow('theme','Appearance','',tl,"setGo('appearance')")}
-      ${navRow('pin','Home area','',esc(pr.home||'Not set'),"closeSettings();openLoc()")}
-      ${navRow(`<span class="set-ic">${px('red-chili')}</span>`,'Taste & spice','',esc(sp),"closeSettings();replayOnboarding()")}</div>
-    <div class="set-h">Experience</div><div class="lb set">
-      ${swRow('vib','Haptic feedback','Little buzzes when you tap',hapticsOn(),"setToggle('haptics')")}
-      ${swRow('motion','Reduce motion','Fewer animations, calmer screens',prefGet('motion','')==='reduce',"setToggle('motion')")}
-      ${swRow('cards','Spot cards on the map','Show the cards at the bottom of the map',!$('#app').classList.contains('cardsoff'),"setToggle('cards')")}</div>
+      ${swRow('motion','Reduce motion','Fewer animations, calmer screens',prefGet('motion','')==='reduce',"setToggle('motion')")}</div>
+    <div class="set-h">Map & feedback</div><div class="lb set">
+      ${swRow('cards','Spot cards on the map','Cards at the bottom of the map',!$('#app').classList.contains('cardsoff'),"setToggle('cards')")}
+      ${swRow('vib','Haptic feedback','Little buzzes when you tap',hapticsOn(),"setToggle('haptics')")}</div>
     <div class="set-h">Privacy & data</div><div class="lb set">
       ${navRow('search','Clear search history',nRecent?`${nRecent} recent search${nRecent>1?'es':''}`:'Nothing to clear','',"setClear('search')",nRecent?'':'off')}
       ${navRow('chat','Clear Lovely chat',nChat?'Start fresh with Lovely':'Nothing to clear','',"setClear('chat')",nChat?'':'off')}</div>
@@ -5615,10 +5658,10 @@ function renderSettings(anim){const el=$('#setp');if(!el)return;const pr=profile
       ${navRow('book','Community guidelines','The Foodie Pact','',"setGo('rules')")}
       ${navRow('share','Share Ruchi','Bring your foodie friends','',"shareRuchi()")}
       ${navRow('info','About Ruchi','',APP_VER,"setGo('about')")}</div>
-    <div class="lb set set-acc">
+    <div class="set-h">Account</div><div class="lb set">
       <button class="lbr set-row" onclick="closeSettings();logout()">${sic('out')}<span class="ln"><b>Log out</b></span></button>
       <button class="lbr set-row danger" onclick="askDelete()">${sic('trash')}<span class="ln"><b>Delete account</b><small>Remove your profile, reviews and spots</small></span></button></div>
-    <p class="foot">Ruchi · made in Trivandrum with 🌶️</p>`}
+    <p class="foot">Ruchi ${APP_VER} · made in Trivandrum with 🌶️</p>`}
   if(v==='appearance'){const cur=themePref();
     const prev=(k)=>`<span class="thm-pv ${k}"><i></i><i></i><i></i></span>`;
     body=`<p class="set-sub">Choose how Ruchi looks. System follows your phone’s light or dark setting.</p>

@@ -2227,6 +2227,19 @@ a{color:inherit}
 #intro.calm .in-l.hzf i{animation:none!important;opacity:1;transform:none}
 #intro.calm .in-l.hzm,#intro.calm .in-l.hzb{opacity:1}
 #intro.calm .in-word b span,#intro.calm .in-word>span{opacity:1;transform:none;animation:none;transition:none}
+
+/* ===== Ask button: slowly flipping pixel heart ===== */
+.al-orb{background:#FFE4F1!important}.al-orb::before{border-color:rgba(255,62,154,.55)!important}
+.am-av{background:#FFE4F1!important}.ask-hero .pic,.t-pv.pic{background:#FFE4F1}
+.askbtn{perspective:240px}
+.hflip{position:relative;display:block;width:28px;height:28px;transform-style:preserve-3d;animation:hflip 6s cubic-bezier(.65,0,.35,1) infinite}
+.hf-f,.hf-b{position:absolute;inset:0;display:block;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.hf-b{transform:rotateY(180deg)}
+.hflip .askic{width:28px!important;height:28px!important}
+@keyframes hflip{0%,30%{transform:rotateY(0)}50%,80%{transform:rotateY(180deg)}100%{transform:rotateY(360deg)}}
+.askbtn:active .hflip{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.hflip{animation:none}}
+
 @media (prefers-reduced-motion:reduce){.ob-prog .dots i.on::after,.hchl.on,.hsteam i,.sweat,.ht-c,.spicev .heat.blast{animation:none!important}}
 
 @media (prefers-reduced-motion:reduce){.skl,.skli,.skr,.pc.skc,.ml-pin .px,.ml-dots i{animation:none!important}}
@@ -3033,7 +3046,9 @@ document.addEventListener('load',e=>{const t=e.target;if(t&&t.tagName==='IMG')t.
 document.addEventListener('error',e=>{const t=e.target;if(t&&t.tagName==='IMG')t.classList.add('imgok','broke')},true);
 
 /* ================= ASK RUCHI (AI) ================= */
-const ASKIC='<svg class="askic" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><g fill="#8B5CF6"><rect x="6" y="1" width="2" height="3"/><rect x="6" y="10" width="2" height="3"/><rect x="1" y="6" width="3" height="2"/><rect x="10" y="6" width="3" height="2"/><rect x="5" y="4" width="4" height="6"/><rect x="4" y="5" width="6" height="4"/></g><rect x="6" y="5" width="1" height="1" fill="#fff"/><g class="tw1" fill="#FF3E9A"><rect x="12" y="10" width="1" height="4"/><rect x="11" y="11" width="3" height="2"/></g><g class="tw2" fill="#14B8A6"><rect x="12" y="1" width="1" height="3"/><rect x="11" y="2" width="3" height="1"/></g></svg>';
+const ASKIC=(()=>{let dk='',fr='';HEART.forEach((row,y)=>[...row].forEach((c,x)=>{if(c!=='X')return;const hl=(y<=2&&x>=1&&x<=4)||(y===3&&x===1);
+  dk+=`<rect x="${x+.7}" y="${y+.7}" width="1" height="1"/>`;fr+=`<rect x="${x}" y="${y}" width="1.02" height="1.02" fill="${hl?'#FF6A80':'#FF2E4D'}"/>`}));
+  return `<svg class="askic" viewBox="-.5 -1 15 13.5" aria-hidden="true"><g fill="#A10D25">${dk}</g>${fr}</svg>`})();
 let AI=null;try{window.claude&&claude.use&&claude.use('sample').then(s=>{AI=s}).catch(()=>{})}catch(e){}
 const ASK={thread:[],busy:false,ctrl:null,draft:''};
 let aiPlan=[];
@@ -3965,7 +3980,7 @@ function logout(){sessionSet(false);closeSheets();go('map',true);renderLanding()
 function replayOnboarding(){closeSheets();startOnboarding()}
 
 /* ================= BOOT ================= */
-document.querySelectorAll('[data-px]').forEach(e=>e.innerHTML=px(e.dataset.px));{const a=$('#askBtn');if(a)a.innerHTML=ASKIC}
+document.querySelectorAll('[data-px]').forEach(e=>e.innerHTML=px(e.dataset.px));{const a=$('#askBtn');if(a)a.innerHTML=`<span class="hflip"><span class="hf-f">${ASKIC}</span><span class="hf-b">${ASKIC}</span></span>`}
 $('#app').classList.add('loading');drawMap();renderChips();bindCards();
 requestAnimationFrame(()=>{centerOn(8.505,76.945,.55)});
 window.addEventListener('resize',()=>renderOverlay());

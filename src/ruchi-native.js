@@ -459,6 +459,7 @@
         const app = document.getElementById('app');
         if (app && app.classList.contains('voicing')) return call('voiceCancel');
         if (document.querySelector('.sheet.show, #shareModal.show')) return call('closeSheets');
+        if (shown('#setp')) return call('closeSettings');
         if (shown('#locp')) return call('closeLoc');
         if (shown('#nfp')) return call('closeNotifs');
         if (shown('#lstp')) return call('closeList');

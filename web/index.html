@@ -2595,7 +2595,7 @@ html.lg-on .lgbub.lens{backdrop-filter:var(--lgb) saturate(1.4) brightness(1.06)
 html.lg-on .lgbub.lens.fast{backdrop-filter:saturate(1.4) brightness(1.08);-webkit-backdrop-filter:saturate(1.4) brightness(1.08)}
 html:not(.lg-on) .lgbub.lens{backdrop-filter:blur(1.5px) saturate(1.6) brightness(1.1);-webkit-backdrop-filter:blur(1.5px) saturate(1.6) brightness(1.1)}
 html.dark .lgbub.lens{background:rgba(255,255,255,.06)!important;box-shadow:inset 1.5px 1.5px 0 -.5px rgba(255,255,255,.4),inset -1px -1px 0 -.5px rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.14),0 10px 26px rgba(0,0,0,.5)!important}
-.lgbar.press{transform:none;scale:1.03}
+.lgbar.press{transform:none}
 .lgbar,.hcard.glass,#mapctl .listbtn,#mapctl .cardtog{transition:scale .45s cubic-bezier(.25,1.8,.45,1),flex .4s cubic-bezier(.3,1.25,.4,1)}
 .hcard.glass.jelly{scale:.985;transition-duration:.12s}
 #mapctl .listbtn.jelly,#mapctl .cardtog.jelly{scale:.94;transition-duration:.12s}
@@ -2609,6 +2609,10 @@ html.dark .glw i{background:radial-gradient(closest-side,rgba(255,255,255,.22),r
 #nav.mini .lgbar button.on{flex:1}
 #nav.mini{justify-content:flex-start}
 html.rm .lgbub{will-change:auto}
+
+
+
+
 
 
 
@@ -4893,19 +4897,24 @@ let bubAt=null;
 /* ---- Liquid nav bar: spring-driven droplet ----
    The droplet follows the finger with momentum, stretches along its motion,
    wobbles when it lands, and turns into a magnifying glass lens while held. */
-const BUB={x:null,w:80,vx:0,vw:0,tx:0,tw:80,lift:0,tl:0,raf:0,drag:false,fx:0};
-function bubTick(){const b=$('#lgbub');if(!b){BUB.raf=0;return}
-  const k=BUB.drag?.32:.16,d=BUB.drag?.62:.74; // stiffer while dragging
-  if(BUB.drag){BUB.vx=(BUB.fx-BUB.x)*.38;BUB.x+=BUB.vx}else{BUB.vx=(BUB.vx+(BUB.tx-BUB.x)*k)*d;BUB.x+=BUB.vx}
-  BUB.vw=(BUB.vw+(BUB.tw-BUB.w)*.2)*.7;BUB.w+=BUB.vw;BUB.lift+=(BUB.tl-BUB.lift)*.25;
-  const v=Math.max(-1,Math.min(1,BUB.vx/14));const st=Math.abs(v);
-  const L=1+BUB.lift*.16;const sx=(1+st*.32)*L,sy=(1-st*.16)*L;
-  b.style.left=BUB.x+'px';b.style.width=BUB.w+'px';b.style.transform=`scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
-  const fast=Math.abs(BUB.vx)>1.2;if(fast!==b._fast){b._fast=fast;b.classList.toggle('fast',fast)}
-  const still=!BUB.drag&&Math.abs(BUB.tx-BUB.x)<.3&&Math.abs(BUB.vx)<.08&&Math.abs(BUB.tw-BUB.w)<.3&&Math.abs(BUB.tl-BUB.lift)<.01;
-  if(still){b.style.left=BUB.tx+'px';b.style.width=BUB.tw+'px';b.style.transform=BUB.tl?`scale(${1+.16*BUB.tl})`:'';BUB.x=BUB.tx;BUB.w=BUB.tw;BUB.raf=0;return}
+const BUB={x:null,w:80,vx:0,vw:0,tx:0,tw:80,lift:0,tl:0,raf:0,drag:false,fx:0,t:0};
+function bubTick(now){const b=$('#lgbub'),bar=$('#lgbar');if(!b||!bar){BUB.raf=0;return}
+  const dt=Math.min(.032,Math.max(.001,((now||performance.now())-(BUB.t||now||0))/1000))||.016;BUB.t=now||performance.now();
+  // critically-damped-ish spring (damping ratio .82): one small overshoot, settles in ~300 ms
+  const K=BUB.drag?900:520,C=2*Math.sqrt(K)*(BUB.drag?1:.82);
+  const target=BUB.drag?BUB.fx:BUB.tx;
+  BUB.vx+=(K*(target-BUB.x)-C*BUB.vx)*dt;BUB.x+=BUB.vx*dt;
+  BUB.vw+=(K*(BUB.tw-BUB.w)-C*BUB.vw)*dt;BUB.w+=BUB.vw*dt;
+  BUB.lift+=(BUB.tl-BUB.lift)*Math.min(1,dt*18);
+  const max=bar.clientWidth-BUB.w-4;if(BUB.x<4){BUB.x=4;if(BUB.vx<0)BUB.vx*=-.2}if(BUB.x>max){BUB.x=max;if(BUB.vx>0)BUB.vx*=-.2}
+  const st=Math.min(1,Math.abs(BUB.vx)/1600);const L=1+BUB.lift*.08;
+  const sx=(1+st*.12)*L,sy=(1-st*.07)*L;
+  b.style.left=BUB.x.toFixed(1)+'px';b.style.width=BUB.w.toFixed(1)+'px';b.style.transform=`scale(${sx.toFixed(3)},${sy.toFixed(3)})`;
+  const fast=Math.abs(BUB.vx)>140;if(fast!==b._fast){b._fast=fast;b.classList.toggle('fast',fast)}
+  const still=!BUB.drag&&Math.abs(BUB.tx-BUB.x)<.4&&Math.abs(BUB.vx)<6&&Math.abs(BUB.tw-BUB.w)<.4&&Math.abs(BUB.tl-BUB.lift)<.01;
+  if(still){BUB.x=BUB.tx;BUB.w=BUB.tw;BUB.vx=0;b.style.left=BUB.tx+'px';b.style.width=BUB.tw+'px';b.style.transform=BUB.tl?`scale(${1+.08*BUB.tl})`:'';if(b._fast){b._fast=false;b.classList.remove('fast')}BUB.raf=0;BUB.t=0;return}
   BUB.raf=requestAnimationFrame(bubTick)}
-function bubKick(){if(!BUB.raf)BUB.raf=requestAnimationFrame(bubTick)}
+function bubKick(){if(!BUB.raf){BUB.t=0;BUB.raf=requestAnimationFrame(bubTick)}}
 function moveBub(anim){const bar=$('#lgbar'),bub=$('#lgbub'),t=bar&&bar.querySelector('button.on');if(!t)return;
   const L=t.offsetLeft,W=t.offsetWidth;BUB.tx=L;BUB.tw=W;
   if(!anim||BUB.x==null||reduceMotion()){cancelAnimationFrame(BUB.raf);BUB.raf=0;BUB.x=L;BUB.w=W;BUB.vx=0;bub.style.left=L+'px';bub.style.width=W+'px';bub.style.transform='';bubAt={L,W};return}

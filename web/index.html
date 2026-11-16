@@ -2633,8 +2633,78 @@ html.rm .lgbub{will-change:auto}
 .wtip small{display:block;margin-top:2px;color:var(--mute);font-size:13px;line-height:18px}
 .wlogo{position:absolute;top:-32px;left:50%;width:64px;height:64px;margin-left:-32px;border-radius:50%;display:grid;place-items:center;background:var(--card);box-shadow:0 0 0 4px var(--card)}
 .wlogo svg{width:36px;height:36px}
-@media (prefers-reduced-motion:no-preference){.wtip{animation:wtipIn .45s cubic-bezier(.2,.9,.25,1) both}.wtip:nth-child(2){animation-delay:.06s}.wtip:nth-child(3){animation-delay:.12s}
- @keyframes wtipIn{from{opacity:0;transform:translateY(10px)}}}
+
+
+/* ===== landing pop-ups ===== */
+.welcome{--fade:1;background:rgba(9,9,11,calc(.4*var(--fade)))}
+.welcome.out{animation:popFadeOut .26s ease forwards}
+.welcome.out .wcard{transform:translateY(110%)!important;transition:transform .26s cubic-bezier(.4,0,1,1)!important}
+@keyframes popFadeOut{to{background:rgba(9,9,11,0)}}
+.wcard{touch-action:none;transition:transform .35s cubic-bezier(.2,.9,.25,1);animation:popUp .55s cubic-bezier(.2,1.25,.35,1) both}
+@keyframes popUp{from{transform:translateY(100%)}}
+.pgrab{position:absolute;top:8px;left:50%;width:40px;height:5px;margin-left:-20px;border-radius:3px;background:var(--surface-2)}
+.pclose{position:absolute;top:var(--s3);right:var(--s3);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--surface);color:var(--ink);transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.pclose svg{width:18px;height:18px}.pclose:active{transform:scale(.88) rotate(90deg)}
+.wcard h2{margin-top:var(--s1)}
+.wave span{display:inline-block;animation:waveIn .5s calc(.25s + var(--i)*.035s) cubic-bezier(.3,1.5,.5,1) both}
+.wnm{display:inline;color:var(--p2)}
+.wave-av .avimg,.wave-av .wlogo{animation:avPop .6s .1s cubic-bezier(.3,1.7,.5,1) both}
+@keyframes avPop{from{transform:scale(.3);opacity:0}}
+.whand{position:absolute;top:-30px;left:calc(50% + 18px);width:34px;height:34px;display:grid;place-items:center;animation:hand 1.2s .7s ease-in-out both;transform-origin:20% 80%}
+.whand .px{width:30px;height:30px}
+@keyframes hand{0%{transform:scale(0) rotate(-30deg)}20%{transform:scale(1.15) rotate(12deg)}35%{transform:scale(1) rotate(-8deg)}50%{transform:rotate(10deg)}65%{transform:rotate(-6deg)}100%{transform:rotate(0)}}
+.wtip{width:100%;border:0;font:inherit;color:inherit;text-align:left;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.wtip:active{transform:scale(.97)}
+.wtip{animation:wtipIn .5s calc(.45s + var(--k,0)*.08s) cubic-bezier(.2,1.2,.35,1) both}
+.wtip:nth-child(2){--k:1}.wtip:nth-child(3){--k:2}
+@keyframes wtipIn{from{opacity:0;transform:translateY(14px) scale(.96)}}
+.bigbtn.shine{position:relative;overflow:hidden}
+.bigbtn.shine::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);animation:shine 1.1s 1s ease-in-out}
+html.dark .bigbtn.shine::after{background:linear-gradient(110deg,transparent 30%,rgba(0,0,0,.18) 50%,transparent 70%)}
+@keyframes shine{to{transform:translateX(120%)}}
+.ptiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2);margin:var(--s4) 0}
+.ptile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--s3) var(--s2);border-radius:var(--r-md);background:var(--surface);animation:wtipIn .5s calc(.35s + var(--i)*.08s) cubic-bezier(.2,1.2,.35,1) both}
+.ptic .px{width:28px;height:28px}
+.ptile b{font-family:var(--font-serif);font-size:24px;line-height:28px}
+.ptile small{font-size:12px;line-height:16px;color:var(--mute)}
+.pdays{color:var(--p2)}
+.plist{display:flex;flex-direction:column;gap:var(--s2);margin:0 0 var(--s5);text-align:left}
+.prow{display:flex;align-items:center;gap:var(--s3);width:100%;padding:var(--s2) var(--s3) var(--s2) var(--s2);border-radius:var(--r-md);background:var(--surface);text-align:left;animation:wtipIn .5s calc(.4s + var(--i)*.08s) cubic-bezier(.2,1.2,.35,1) both;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.prow:active{transform:scale(.97)}
+.prt{width:48px;height:48px;flex:none;border-radius:12px;overflow:hidden;display:grid;place-items:center;background:var(--card)}
+.prt img{width:100%;height:100%;object-fit:cover}.prt .px{width:30px;height:30px}
+.prow b{display:block;font-size:15px;line-height:20px}.prow small{display:block;font-size:13px;line-height:18px;color:var(--mute)}
+.phero-ic{width:72px;height:72px;margin:var(--s2) auto var(--s2);display:grid;place-items:center;border-radius:22px;background:var(--surface);animation:avPop .6s .1s cubic-bezier(.3,1.7,.5,1) both}
+.phero-ic .px{width:44px;height:44px}
+.phero-ic.hop .px{animation:hop 1s .6s cubic-bezier(.3,1.6,.5,1) 2}
+@keyframes hop{30%{transform:translateY(-10px)}60%{transform:translateY(0)}}
+.ppod{display:flex;justify-content:center;align-items:flex-end;gap:var(--s3);margin:var(--s2) 0 var(--s3)}
+.ppd{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;animation:avPop .55s calc(.15s + var(--i)*.12s) cubic-bezier(.3,1.7,.5,1) both}
+.ppav{width:52px;height:52px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 3px var(--card)}
+.ppav>*{width:100%;height:100%}
+.ppd.p0 .ppav{width:68px;height:68px;box-shadow:0 0 0 3px var(--p2)}
+.ppd i{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;display:grid;place-items:center;background:var(--p1);color:var(--on-p1);font-style:normal;font-size:12px;font-weight:700}
+.ppd.p0 i{background:var(--p2);color:#fff}
+.ppd small{font-size:12px;line-height:16px;color:var(--mute);max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pmeter{margin:var(--s4) 0 var(--s5);text-align:left}
+.pml{display:flex;justify-content:space-between;font-size:13px;line-height:18px;font-weight:600;color:var(--ink-2);margin-bottom:var(--s2)}
+.pbar{height:10px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.pbar i{display:block;height:100%;width:0;border-radius:5px;background:var(--p2);transition:width 1.1s .45s cubic-bezier(.2,.9,.25,1)}
+.pkick{display:inline-flex;margin-top:var(--s1);height:28px;align-items:center;padding:0 var(--s3);border-radius:14px;background:var(--t-p2);color:var(--p2);font-size:13px;font-weight:700}
+.ppick{display:flex;align-items:center;gap:var(--s4);width:100%;margin:var(--s4) 0 var(--s5);padding:var(--s3);border-radius:var(--r-lg);background:var(--surface);text-align:left;animation:wtipIn .55s .3s cubic-bezier(.2,1.2,.35,1) both;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.ppick:active{transform:scale(.97)}
+.ppimg{width:84px;height:84px;flex:none;border-radius:16px;overflow:hidden;display:grid;place-items:center;background:var(--card)}
+.ppimg img{width:100%;height:100%;object-fit:cover}.ppimg .px{width:52px;height:52px}
+.ppt b{display:block;font-size:18px;line-height:24px}.ppt small{display:block;color:var(--mute);font-size:14px;line-height:20px}
+.ppt em{display:inline-flex;align-items:center;gap:4px;margin-top:var(--s1);font-style:normal;font-size:12px;font-weight:700;color:var(--p2)}.ppt em .px{width:16px;height:16px}
+.plater{display:block;margin:var(--s3) auto 0;height:36px;padding:0 var(--s4);font-size:14px;font-weight:600;color:var(--mute)}
+html.rm .wcard,html.rm .wcard *,html.rm .bigbtn.shine::after{animation:none!important}
+html.rm .pbar i{transition:none}
+@media (prefers-reduced-motion:reduce){.wcard,.wcard *,.bigbtn.shine::after{animation:none!important}.pbar i{transition:none}}
+
+
+
+
 
 
 /* DARK-THEME:BEGIN (generated by tools/darkgen.py, do not edit) */
@@ -3739,6 +3809,36 @@ html:where(.dark).dark .hcard.glass,html:where(.dark).dark #lgbar,html:where(.da
 :where(html.dark) .wtic{border-radius:12px;background:var(--card)}
 :where(html.dark) .wtip small{color:var(--mute)}
 :where(html.dark) .wlogo{border-radius:50%;background:var(--card);box-shadow:0 0 0 4px var(--card)}
+:where(html.dark) .welcome{--fade:1;background:rgba(9,9,11,calc(.4*var(--fade)))}
+:where(html.dark) .pgrab{border-radius:3px;background:var(--surface-2)}
+:where(html.dark) .pclose{border-radius:50%;background:var(--surface);color:var(--ink)}
+:where(html.dark) .wnm{color:var(--p2)}
+:where(html.dark) .wtip{border:0;color:inherit}
+:where(html.dark) .wtip:nth-child(2){--k:1}
+:where(html.dark) .wtip:nth-child(3){--k:2}
+:where(html.dark) .bigbtn.shine::after{background:linear-gradient(110deg,transparent 30%,rgba(22,22,24,0.45) 50%,transparent 70%)}
+html:where(.dark).dark .bigbtn.shine::after{background:linear-gradient(110deg,transparent 30%,rgba(0,0,0,.18) 50%,transparent 70%)}
+:where(html.dark) .ptile{border-radius:var(--r-md);background:var(--surface)}
+:where(html.dark) .ptile small{color:var(--mute)}
+:where(html.dark) .pdays{color:var(--p2)}
+:where(html.dark) .prow{border-radius:var(--r-md);background:var(--surface)}
+:where(html.dark) .prt{border-radius:12px;background:var(--card)}
+:where(html.dark) .prow small{color:var(--mute)}
+:where(html.dark) .phero-ic{border-radius:22px;background:var(--surface)}
+:where(html.dark) .ppav{border-radius:50%;box-shadow:0 0 0 3px var(--card)}
+:where(html.dark) .ppd.p0 .ppav{box-shadow:0 0 0 3px var(--p2)}
+:where(html.dark) .ppd i{border-radius:11px;background:var(--p1);color:var(--on-p1)}
+:where(html.dark) .ppd.p0 i{background:var(--p2);color:#fff}
+:where(html.dark) .ppd small{color:var(--mute)}
+:where(html.dark) .pml{color:var(--ink-2)}
+:where(html.dark) .pbar{border-radius:5px;background:var(--surface-2)}
+:where(html.dark) .pbar i{border-radius:5px;background:var(--p2)}
+:where(html.dark) .pkick{border-radius:14px;background:var(--t-p2);color:var(--p2)}
+:where(html.dark) .ppick{border-radius:var(--r-lg);background:var(--surface)}
+:where(html.dark) .ppimg{border-radius:16px;background:var(--card)}
+:where(html.dark) .ppt small{color:var(--mute)}
+:where(html.dark) .ppt em{color:var(--p2)}
+:where(html.dark) .plater{color:var(--mute)}
 html.dark .tl-dot{color:var(--on-p1)}
 html.dark .dz-seg button.on small{color:rgba(11,11,12,.62)}
 html.dark .lseg button span{color:#B4B4BC}
@@ -5662,25 +5762,91 @@ function needPact(){
 }
 
 /* ---------- welcome pop-up ---------- */
-/* one welcome pop-up (replaces the old 3-slide tour) */
+/* ================= LANDING POP-UPS =================
+   One pop-up per app open:
+   - first time ever      -> Welcome (confetti, waving avatar, tips)
+   - away 7+ days         -> Welcome back (days away, what's new since)
+   - every other open     -> rotating daily pop: Insiders rank / new near you / pick for right now
+   All share one card: spring entrance, swipe down to dismiss, count-ups, shimmer CTA. */
 const WELCOME=[
  {i:'map-pin',h:'Tap any pin',p:'Every pin is a spot locals swear by. Pink ring = hidden gem.'},
  {i:'trophy',h:'Drop your spots',p:'Pin, review, check in. Earn points and climb the Insiders board.'},
  {ask:1,h:'Ask Lovely',p:'Your food buddy plans where to eat and when.'}];
-function showWelcome(){renderWelcome();$('#welcome').classList.add('show')}
-function renderWelcome(){const p=profiles[myId]||{};const nm=(p.nick||'').trim();
-  $('#welcome').innerHTML=`<div class="wcard" role="dialog" aria-modal="true" aria-labelledby="wTitle">
-    <div class="wav">${p.av?avImg(p.av):`<span class="wlogo">${ASKIC}</span>`}</div>
-    <h2 id="wTitle">Welcome to Ruchi${nm?`, ${esc(nm)}`:''}</h2>
+const AWAY_DAYS=7;let LANDED=false,POP=null;
+const waveTxt=t=>[...t].map((c,i)=>c===' '?' ':`<span style="--i:${i}">${esc(c)}</span>`).join('');
+function lastSeenGet(){return +prefGet('last_seen','0')||0}
+function lastSeenTouch(){prefSet('last_seen',String(Date.now()))}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&LANDED)lastSeenTouch()});
+addEventListener('pagehide',()=>{if(LANDED)lastSeenTouch()});
+function landingPop(force){if(LANDED&&!force)return;LANDED=true;const last=lastSeenGet();
+  const ready=()=>!LOAD.spots&&!LOAD.profiles;let tries=0;
+  const go_=()=>{if(!ready()&&tries++<20){setTimeout(go_,150);return}
+    if($('#landing').classList.contains('show')||$('#onboard').classList.contains('show'))return;
+    const p=profiles[myId]||{};
+    if(!p.welcomed)showWelcome();
+    else if(last&&Date.now()-last>AWAY_DAYS*864e5)showPop('back',{last});
+    else{const k=pickDaily();if(k)showPop(k)}
+    lastSeenTouch()};
+  setTimeout(go_,450)}
+function dailyRank(){const sb=scoreboard();const ranked=sb.filter(r=>r.pts>0);const i=ranked.findIndex(r=>r.id===myId);const me=sb.find(r=>r.id===myId)||{pts:0};
+  return {i,me,ranked,up:i>0?ranked[i-1]:null,top:ranked.slice(0,3)}}
+function nearHome(){const [la,ln]=originLL();return spots.filter(s=>s.lat&&s.lng).map(s=>({s,d:kmBetween(la,ln,s.lat,s.lng)})).filter(x=>x.d<4).sort((a,b)=>(b.s.createdAt||0)-(a.s.createdAt||0)||a.d-b.d).slice(0,3)}
+function pickNow(){const h=new Date().getHours();const slot=h<11?['Breakfast','breakfast','puttu','appam','dosa']:h<16?['Lunch','meals','biryani','sadya','fish']:h<20?['Evening','chaya','tea','snack','pazham']:['Late night','late','porotta','beef','thattukada'];
+  const [la,ln]=originLL();const sc=s=>{const t=((s.timing||'')+' '+(s.dish||'')+' '+(s.name||'')+' '+(s.tag||'')).toLowerCase();let v=slot.reduce((a,k)=>a+(t.includes(k.toLowerCase())?2:0),0);if(s.hidden)v+=1;v-=Math.min(3,kmBetween(la,ln,s.lat,s.lng)/2);return v};
+  const best=spots.slice().sort((a,b)=>sc(b)-sc(a))[0];return best?{s:best,slot:slot[0]}:null}
+function pickDaily(){const opts=[];const r=dailyRank();opts.push('rank');if(nearHome().length)opts.push('near');if(pickNow())opts.push('pick');
+  const i=(+prefGet('pop_i','0')||0)%opts.length;prefSet('pop_i',String(i+1));return opts[i]}
+function showWelcome(){showPop('welcome')}
+function showPop(kind,data={}){POP={kind,data};const el=$('#welcome');el.innerHTML=popHTML(kind,data);el.classList.add('show');el.classList.remove('out');
+  el.onclick=e=>{if(e.target.id==='welcome')closeWelcome()};
+  const card=el.querySelector('.wcard');bindPopSwipe(card);requestAnimationFrame(()=>{countUp(card);card.querySelectorAll('.pbar i').forEach(b=>{b.style.width=b.dataset.w})});
+  try{navigator.vibrate&&navigator.vibrate(kind==='welcome'?[8,40,12]:8)}catch(e){}
+  if(kind==='welcome'&&!reduceMotion())setTimeout(()=>{try{confetti()}catch(e){}},380)}
+function popHTML(kind,d){const p=profiles[myId]||{};const nm=esc((p.nick||'').trim());const av=p.av?avImg(p.av):`<span class="wlogo">${ASKIC}</span>`;
+  const close=`<button class="pclose" onclick="closeWelcome()" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+  const shell=(inner,label)=>`<div class="wcard pop-${kind}" role="dialog" aria-modal="true" aria-label="${label}"><div class="pgrab"></div>${inner}</div>`;
+  if(kind==='welcome')return shell(`<div class="wav wave-av">${av}<span class="whand">${px('party-popper')}</span></div>
+    <h2 class="wave">${waveTxt('Welcome to Ruchi'+(nm?', ':''))}${nm?`<span class="wnm">${waveTxt(p.nick.trim())}</span>`:''}</h2>
     <p class="wsub">Trivandrum’s hidden food map, made by locals.</p>
-    <div class="wtips">${WELCOME.map(w=>`<div class="wtip"><span class="wtic">${w.ask?ASKIC:px(w.i)}</span><span><b>${w.h}</b><small>${w.p}</small></span></div>`).join('')}</div>
-    <button class="bigbtn" onclick="closeWelcome()">Let’s eat</button></div>`;
-  $('#welcome').onclick=e=>{if(e.target.id==='welcome')closeWelcome()}}
-async function closeWelcome(){
-  $('#welcome').classList.remove('show');const p=profiles[myId];
-  if(p&&!p.welcomed){p.welcomed=true;try{localStorage.setItem('ruchi_profile',JSON.stringify(p))}catch(e){}if(live&&dbx&&myId){try{await dbx.doc('profiles/'+myId).update({welcomed:true})}catch(e){}}}
-  scheduleNudge();
-}
+    <div class="wtips">${WELCOME.map(w=>`<button class="wtip" onclick="tapFx(this.firstElementChild)"><span class="wtic">${w.ask?ASKIC:px(w.i)}</span><span><b>${w.h}</b><small>${w.p}</small></span></button>`).join('')}</div>
+    <button class="bigbtn shine" onclick="closeWelcome()">Let’s eat</button>`,'Welcome to Ruchi');
+  if(kind==='back'){const days=Math.max(AWAY_DAYS,Math.floor((Date.now()-d.last)/864e5));const fresh=spots.filter(s=>(s.createdAt||0)>d.last);const r=dailyRank();
+    const tiles=[[fresh.length,'new spots','map-pin'],[r.i>=0?r.i+1:0,r.i>=0?'your rank':'not ranked','trophy'],[r.me.pts||0,'your points','emoji-1f525']];
+    return shell(`${close}<div class="wav wave-av">${av}</div>
+    <h2>Welcome back${nm?', '+nm:''}!</h2><p class="wsub">You were away <b class="pdays"><span data-count="${days}">0</span> days</b>. Here’s what you missed.</p>
+    <div class="ptiles">${tiles.map(([n,l,ic],i)=>`<div class="ptile" style="--i:${i}"><span class="ptic">${px(ic)}</span><b>${l==='your rank'?'#':''}<span data-count="${n}">0</span></b><small>${l}</small></div>`).join('')}</div>
+    ${fresh.length?`<div class="plist">${fresh.slice(0,2).map((s,i)=>popRow(s,i)).join('')}</div>`:''}
+    <button class="bigbtn shine" onclick="closeWelcome();${fresh.length?'openList()':''}">${fresh.length?'See what’s new':'Back to the map'}</button>`,'Welcome back')}
+  if(kind==='rank'){const r=dailyRank();const lv=level(r.me.pts);let head,sub,pct=0,cta='See the leaderboard';
+    if(r.i<0){head='Get on the board';sub='Pin your first spot and you’re ranked. Each pin is 10 pts.';pct=0;cta='Pin a spot'}
+    else if(r.i===0){head='You’re #1 in Trivandrum';sub=r.ranked[1]?`${esc(nameOf(r.ranked[1].id))} is ${r.me.pts-r.ranked[1].pts} pts behind. Defend the crown.`:'First insider in town. Keep pinning.';pct=100}
+    else{const gap=r.up.pts-r.me.pts+1;head=`You’re #${r.i+1} on Insiders`;sub=`<b>${gap} pt${gap>1?'s':''}</b> to pass <b>${esc(nameOf(r.up.id))}</b>. That’s ${Math.ceil(gap/10)} pin${Math.ceil(gap/10)>1?'s':''} away.`;pct=Math.min(92,Math.round(r.me.pts/Math.max(1,r.up.pts+1)*100))}
+    const pod=r.top.length?`<div class="ppod">${[1,0,2].filter(i=>r.top[i]).map(i=>`<div class="ppd p${i}" style="--i:${i}"><span class="ppav">${avOf(r.top[i].id)}</span><i>${i+1}</i><small>${esc(nameOf(r.top[i].id)).slice(0,10)}</small></div>`).join('')}</div>`:`<div class="phero-ic">${px('trophy')}</div>`;
+    return shell(`${close}${pod}<h2>${r.i>=0?`You’re #<span data-count="${r.i+1}">${r.i+1}</span> on Insiders`:head}</h2>${r.i===0?`<p class="wsub">${sub}</p>`:`<p class="wsub">${sub}</p>`}
+    <div class="pmeter"><div class="pml"><span>${esc(lv.cur.t)}</span><span><span data-count="${r.me.pts}">0</span> pts</span></div><div class="pbar"><i data-w="${Math.max(6,pct)}%"></i></div></div>
+    <button class="bigbtn shine" onclick="closeWelcome();${r.i<0?'startAdd()':"go('board')"}">${cta}</button>`,'Your Insiders rank')}
+  if(kind==='near'){const L=nearHome();const area=esc(p.home||'you');
+    return shell(`${close}<div class="phero-ic hop">${px('map-pin')}</div><h2>Fresh around ${area}</h2><p class="wsub">${L.length} spot${L.length>1?'s':''} near you worth a detour.</p>
+    <div class="plist">${L.map((x,i)=>popRow(x.s,i,x.d)).join('')}</div>
+    <button class="bigbtn shine" onclick="closeWelcome()">Explore the map</button>`,'New near you')}
+  if(kind==='pick'){const pk=pickNow();const s=pk.s;const T=TAG[s.tag]||TAG.meals;
+    return shell(`${close}<div class="pkick">${esc(pk.slot)} pick</div><h2>Perfect right now</h2>
+    <button class="ppick" onclick="closeWelcome();openSpot('${s.id}')"><span class="ppimg">${s.photo?`<img src="${s.photo}" alt="">`:T.icon}</span><span class="ppt"><b>${esc(s.name)}</b><small>${esc(s.dish||'')}</small>${s.hidden?`<em>${px('emoji-1f48e')} Hidden gem</em>`:''}</span></button>
+    <button class="bigbtn shine" onclick="closeWelcome();openSpot('${s.id}')">Take me there</button>
+    <button class="plater" onclick="closeWelcome()">Maybe later</button>`,'Pick for right now')}
+  return ''}
+function popRow(s,i,d){const T=TAG[s.tag]||TAG.meals;return `<button class="prow" style="--i:${i}" onclick="closeWelcome();openSpot('${s.id}')"><span class="prt">${s.photo?`<img src="${s.photo}" alt="">`:T.icon}</span><span class="ln"><b>${esc(s.name)}</b><small>${esc(s.dish||T.label||'')}${d!=null?` · ${d<1?Math.round(d*1000)+' m':d.toFixed(1)+' km'}`:''}</small></span><span class="chev">›</span></button>`}
+function bindPopSwipe(card){if(!card)return;let y0=null,dy=0,t0=0;
+  card.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;y0=e.clientY;dy=0;t0=performance.now();card.style.transition='none';try{card.setPointerCapture(e.pointerId)}catch(_){}});
+  card.addEventListener('pointermove',e=>{if(y0==null)return;dy=Math.max(0,e.clientY-y0);card.style.transform=`translateY(${dy}px)`;$('#welcome').style.setProperty('--fade',String(Math.max(0,1-dy/400)))});
+  const end=()=>{if(y0==null)return;const v=dy/Math.max(1,performance.now()-t0);y0=null;card.style.transition='';
+    if(dy>110||v>.6)closeWelcome();else{card.style.transform='';$('#welcome').style.removeProperty('--fade')}};
+  card.addEventListener('pointerup',end);card.addEventListener('pointercancel',end)}
+async function closeWelcome(){const el=$('#welcome');if(!el.classList.contains('show'))return;el.classList.add('out');
+  setTimeout(()=>{el.classList.remove('show','out');el.style.removeProperty('--fade');el.innerHTML=''},reduceMotion()?0:260);
+  const p=profiles[myId];const wasWelcome=POP&&POP.kind==='welcome';POP=null;
+  if(wasWelcome&&p&&!p.welcomed){p.welcomed=true;try{localStorage.setItem('ruchi_profile',JSON.stringify(p))}catch(e){}if(live&&dbx&&myId){try{await dbx.doc('profiles/'+myId).update({welcomed:true})}catch(e){}}}
+  scheduleNudge()}
 
 function confetti(){
   const cv=$('#confetti');const r=$('#app').getBoundingClientRect();cv.width=r.width;cv.height=r.height;cv.style.display='block';
@@ -5695,10 +5861,9 @@ function enterApp(msg,fromOnboarding){
   show(null);if(!WX.mode)loadWeather();bindNav();setTimeout(()=>moveBub(false),60);go('map',true);renderChips();rerenderAll();
   const p=profiles[myId];const a=AREAS.find(x=>x[0]===p?.home);
   if(a)centerOn(a[1],a[2],1);else centerOn(8.505,76.945,.55);
-  if(fromOnboarding&&p&&!p.welcomed){setTimeout(showWelcome,350);return}
-  let greeted=false;try{greeted=localStorage.getItem('ruchi_greeted')==='1'}catch(e){}
-  if(msg)toast(msg);else if(!greeted){toast(p?.nick?`Hey ${p.nick}! ${a?'Here’s what’s cooking around '+a[0]+'.':'Go find something good.'}`:'Welcome to Ruchi');try{localStorage.setItem('ruchi_greeted','1')}catch(e){}}
-  scheduleNudge();setTimeout(()=>{lgInit();lgScan();bindGlassTouch()},400);
+  if(msg)toast(msg);
+  try{localStorage.setItem('ruchi_greeted','1')}catch(e){}
+  if(!LANDED&&!EDIT_RET)landingPop();else scheduleNudge();setTimeout(()=>{lgInit();lgScan();bindGlassTouch()},400);
   if(EDIT_RET){EDIT_RET=false;go('me');setTimeout(openEdit,60)}
 }
 
